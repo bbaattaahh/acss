@@ -3,23 +3,10 @@ import numpy as np
 import cv2
 from matplotlib import pyplot as plt
 
+from find_the_asparagus import find_the_asparagus
+
+
 PIXEL_MILLIMETER_RATIO = 0.001
-
-def runningMean(x, N):
-    y = np.zeros((len(x),))
-    for ctr in range(len(x)):
-         y[ctr] = np.sum(x[ctr:(ctr+N)])
-    return y/N
-
-
-
-def sum_coloumn_value(img):
-    temp = np.zeros(2560L)
-
-    for x in range(0, 2560L):
-        temp[x] = sum(img[:,x])
-
-    return temp
 
 
 def get_max_area_contur(conturs):
@@ -39,17 +26,10 @@ def get_max_area_contur(conturs):
 #
 # plt.plot(temp2)
 # plt.show()
-img = cv2.imread('images/test_img_1.jpg', 0)
-img_col = cv2.imread('images/test_img_1.jpg')
+img = cv2.imread('images/test_img_2.jpg', 0)
+img_col = cv2.imread('images/test_img_2.jpg')
 
-temp = sum_coloumn_value(img)
-
-max_white = int(temp.argmax())
-
-my_img = img[:, (max_white-200):(max_white+100)]
-
-#plt.imshow(my_img)
-
+my_img = find_the_asparagus(img)
 # define range of blue color in HSV
 lower_white = np.array([180])
 upper_white = np.array([255])
@@ -61,12 +41,12 @@ kernel = np.ones((5,5),np.uint8)
 dilation = cv2.dilate(mask,kernel,iterations = 1)
 
 
-# plt.imshow(dilation)
+plt.imshow(dilation)
 
 contours,hierarchy = cv2.findContours(dilation, 1, 2)
 
 max_area_contur = get_max_area_contur(contours)
-
+max_white = 1000
 
 x,y,w,h = cv2.boundingRect(max_area_contur)
 # Correction to get the right place the rectangle
