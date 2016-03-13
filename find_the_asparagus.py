@@ -9,8 +9,6 @@ def find_the_asparagus(img, sub_image):
 
     final_sp = get_asparagus_vertical_range(my_img, sub_image)
 
-    plt.imshow(final_sp)
-
     return final_sp
 
 

@@ -54,7 +54,7 @@ img_col = cv2.imread('images/test_img_2.jpg')
 
 
 first_sub_img = asparagus_sub_image(0, 0, 0, 0)
-my_img = find_the_asparagus(img, first_sub_img)
+find_the_asparagus(img, first_sub_img)
 
 
 
@@ -67,15 +67,16 @@ my_class.calculate_sub_image(0)
 a = plt.imshow(my_class.sub_image)
 
 
-print(my_class.sub_image)
+plt.hist(my_class.sub_image.ravel(),256,[0,256]); plt.show()
 
-plt.imshow(my_class.original_picture)
 
-lower_white = np.array([180])
+
+
+lower_white = np.array([150])
 upper_white = np.array([255])
 
 
-mask = cv2.inRange(my_img, lower_white, upper_white)
+mask = cv2.inRange(my_class.sub_image, lower_white, upper_white)
 
 kernel = np.ones((5,5),np.uint8)
 dilation = cv2.dilate(mask,kernel,iterations = 1)
@@ -86,12 +87,16 @@ plt.imshow(dilation)
 contours,hierarchy = cv2.findContours(dilation, 1, 2)
 
 max_area_contur = get_max_area_contur(contours)
-max_white = 1000
+
 
 x,y,w,h = cv2.boundingRect(max_area_contur)
 # Correction to get the right place the rectangle
-x = x + (max_white-200)
+x = x + my_class.list_of_asparagus_subimages[0].top_left_corner_x
+y = y + my_class.list_of_asparagus_subimages[0].top_left_corner_y
+
 # OBJECT ORIENTATED PROGRAMMING MY FRIEND!!!
 cv2.rectangle(img,(x,y),(x+w,y+h),(0, 0, 125),2)
 
 plt.imshow(img)
+
+print 1
