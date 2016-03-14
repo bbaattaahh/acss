@@ -11,6 +11,8 @@ from calculate_millimeter_value_from_pixel_value import calculate_millimeter_val
 
 from classify_the_asparagus import classify_the_asparagus
 
+from print_claasification_result_to_picture import print_classification_result_to_picture
+
 PIXEL_MILLIMETER_RATIO = 110.0/1571.0
 
 class whole_image:
@@ -25,7 +27,7 @@ class whole_image:
 
 
     def add_asparagus(self, asparagus):
-        self.list_of_asparagus_subimages.append(asparagus)
+        self.list_of_asparaguses.append(asparagus)
 
 
     def calculate_sub_image(self, index):
@@ -124,7 +126,7 @@ y_range2 = my_class.list_of_asparagus_subimages[0].top_left_corner_y + my_class.
 
 img[y_range1:y_range2, x_range1:x_range2] = my_class.sub_image
 
-cv2.imshow('frame',img)
+# cv2.imshow('frame',img)
 # plt.imshow(img)
 
 
@@ -132,5 +134,11 @@ first_asparagus.hight_pixel = rect[1][1]
 first_asparagus.width_pixel = rect[1][0]
 calculate_millimeter_value_from_pixel_value(PIXEL_MILLIMETER_RATIO, first_asparagus)
 classify_the_asparagus(first_asparagus)
+
+my_class.add_asparagus(first_asparagus)
+
+print_classification_result_to_picture(my_class)
+plt.imshow(my_class.original_picture)
+cv2.imshow('frame',my_class.original_picture)
 
 print 1
