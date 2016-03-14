@@ -10,13 +10,19 @@ from determine_exact__asparagus import get_the_lower_limit_of_white
 PIXEL_MILLIMETER_RATIO = 11/1571
 
 class whole_image:
-    def __init__(self, original_picture, list_of_asparagus_subimages, sub_image):
+    def __init__(self, original_picture, list_of_asparagus_subimages, list_of_asparaguses, sub_image):
         self.original_picture = original_picture
         self.list_of_asparagus_subimages = list_of_asparagus_subimages
+        self.list_of_asparaguses = list_of_asparaguses
         self.sub_image = sub_image
 
     def add_asparagus_subimage(self, subimage):
         self.list_of_asparagus_subimages.append(subimage)
+
+
+    def add_asparagus(self, asparagus):
+        self.list_of_asparagus_subimages.append(asparagus)
+
 
     def calculate_sub_image(self, index):
         act_sum_img = self.list_of_asparagus_subimages[index]
@@ -32,6 +38,11 @@ class asparagus_sub_image:
         self.hight = hight
 
 
+class asparagus:
+    def __init__(self, width, hight, classification):
+        self.width = width
+        self.hight = hight
+        self.classification = classification
 
 
 
@@ -62,7 +73,7 @@ find_the_asparagus(img, first_sub_img)
 
 
 
-my_class = whole_image(img, [], 0)
+my_class = whole_image(img, [], [], 0)
 
 my_class.add_asparagus_subimage(first_sub_img)
 
