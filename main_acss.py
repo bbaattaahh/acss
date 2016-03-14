@@ -4,7 +4,8 @@ import cv2
 from matplotlib import pyplot as plt
 
 from find_the_asparagus import find_the_asparagus
-from find_the_asparagus import get_the_lower_limit_of_white
+
+from determine_exact__asparagus import get_the_lower_limit_of_white
 
 PIXEL_MILLIMETER_RATIO = 11/1571
 
@@ -50,8 +51,8 @@ def get_max_area_contur(conturs):
     return max_area_contur
 
 
-img = cv2.imread('images/test_img_1.jpg', 0)
-img_col = cv2.imread('images/test_img_1.jpg')
+img = cv2.imread('images/test_img_2.jpg', 0)
+img_col = cv2.imread('images/test_img_2.jpg')
 
 
 
@@ -82,14 +83,23 @@ contours,hierarchy = cv2.findContours(dilation, 1, 2)
 max_area_contur = get_max_area_contur(contours)
 
 
+rect = cv2.minAreaRect(max_area_contur)
+box = cv2.cv.BoxPoints(rect)
+box = np.int0(box)
+cv2.drawContours(my_class.sub_image,[box],0,(0,0,255),10)
+
 x,y,w,h = cv2.boundingRect(max_area_contur)
-# Correction to get the right place the rectangle
-x = x + my_class.list_of_asparagus_subimages[0].top_left_corner_x
-y = y + my_class.list_of_asparagus_subimages[0].top_left_corner_y
+cv2.rectangle(my_class.sub_image,(x,y),(x+w,y+h),(0, 255, 0),10)
 
-# OBJECT ORIENTATED PROGRAMMING MY FRIEND!!!
-cv2.rectangle(img_col,(x,y),(x+w,y+h),(0, 255, 0),10)
 
-plt.imshow(img_col)
+x_range1 = my_class.list_of_asparagus_subimages[0].top_left_corner_x
+x_range2 = my_class.list_of_asparagus_subimages[0].top_left_corner_x + my_class.list_of_asparagus_subimages[0].width
+y_range1 = my_class.list_of_asparagus_subimages[0].top_left_corner_y
+y_range2 = my_class.list_of_asparagus_subimages[0].top_left_corner_y + my_class.list_of_asparagus_subimages[0].hight
+
+img[y_range1:y_range2, x_range1:x_range2] = my_class.sub_image
+
+cv2.imshow('frame',img)
+# plt.imshow(img)
 
 print 1
