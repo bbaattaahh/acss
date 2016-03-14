@@ -34,7 +34,7 @@ find_the_asparagus(img, first_sub_img)
 
 
 
-my_class = whole_image(img, [], [], 0)
+my_class = whole_image(img, img, [], [], 0)
 
 my_class.add_asparagus_subimage(first_sub_img)
 
