@@ -7,7 +7,11 @@ from find_the_asparagus import find_the_asparagus
 
 from determine_exact__asparagus import get_the_lower_limit_of_white
 
-PIXEL_MILLIMETER_RATIO = 11/1571
+from calculate_millimeter_value_from_pixel_value import calculate_millimeter_value_from_pixel_value
+
+from classify_the_asparagus import classify_the_asparagus
+
+PIXEL_MILLIMETER_RATIO = 110.0/1571.0
 
 class whole_image:
     def __init__(self, original_picture, list_of_asparagus_subimages, list_of_asparaguses, sub_image):
@@ -64,9 +68,15 @@ def get_max_area_contur(conturs):
     return max_area_contur
 
 
-img = cv2.imread('images/test_img_2.jpg', 0)
-img_col = cv2.imread('images/test_img_2.jpg')
+def define_default_asparagus():
+    return asparagus(0, 0, 0, 0, "None")
 
+
+img = cv2.imread('images/test_img_1.jpg', 0)
+img_col = cv2.imread('images/test_img_1.jpg')
+
+
+first_asparagus = define_default_asparagus()
 
 
 
@@ -80,6 +90,8 @@ my_class = whole_image(img, [], [], 0)
 my_class.add_asparagus_subimage(first_sub_img)
 
 my_class.calculate_sub_image(0)
+
+
 
 lower_white = np.array([get_the_lower_limit_of_white(my_class.sub_image)])
 upper_white = np.array([255])
@@ -114,5 +126,11 @@ img[y_range1:y_range2, x_range1:x_range2] = my_class.sub_image
 
 cv2.imshow('frame',img)
 # plt.imshow(img)
+
+
+first_asparagus.hight_pixel = rect[1][1]
+first_asparagus.width_pixel = rect[1][0]
+calculate_millimeter_value_from_pixel_value(PIXEL_MILLIMETER_RATIO, first_asparagus)
+classify_the_asparagus(first_asparagus)
 
 print 1
