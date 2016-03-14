@@ -39,9 +39,11 @@ class asparagus_sub_image:
 
 
 class asparagus:
-    def __init__(self, width, hight, classification):
-        self.width = width
-        self.hight = hight
+    def __init__(self, width_pixel, hight_pixel, width_millimeter, hight_millimeter, classification):
+        self.width_pixel = width_pixel
+        self.hight_pixel = hight_pixel
+        self.width_millimeter = width_millimeter
+        self.hight_millimeter = hight_millimeter
         self.classification = classification
 
 
