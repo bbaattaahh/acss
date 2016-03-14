@@ -4,6 +4,7 @@ import cv2
 from matplotlib import pyplot as plt
 
 from find_the_asparagus import find_the_asparagus
+from find_the_asparagus import get_the_lower_limit_of_white
 
 PIXEL_MILLIMETER_RATIO = 11/1571
 
@@ -66,12 +67,7 @@ my_class.add_asparagus_subimage(first_sub_img)
 
 my_class.calculate_sub_image(0)
 
-plt.hist(my_class.sub_image.ravel(),256,[0,256]); plt.show()
-
-
-print(my_class.sub_image.ravel())
-
-lower_white = np.array([150])
+lower_white = np.array([get_the_lower_limit_of_white(my_class.sub_image)])
 upper_white = np.array([255])
 
 
