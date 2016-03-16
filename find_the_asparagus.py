@@ -20,7 +20,7 @@ def get_asparagus_horizontal_range(img, sub_image):
     sum_coloumn_values_smoothed = runningMean(sum_coloumn_values, 25)
 
     diff_sum_coloumn_values = np.diff(sum_coloumn_values_smoothed)
-
+    # TODO Here needed a check it is could be an asparagus, mean +- std or that kind of staff... 
     stat_index = diff_sum_coloumn_values.argmax()
     end_index = diff_sum_coloumn_values.argmin()
 
