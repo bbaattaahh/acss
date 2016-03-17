@@ -1,12 +1,12 @@
 __author__ = 'Henrik'
 
 class whole_image:
-    def __init__(self, original_picture, picture_with_modifications, list_of_asparagus_subimages, list_of_asparaguses, sub_image):
+    def __init__(self, original_picture, picture_with_modifications, list_of_asparagus_subimages, list_of_asparaguses):
         self.original_picture = original_picture
         self.picture_with_modifications = picture_with_modifications
         self.list_of_asparagus_subimages = list_of_asparagus_subimages
         self.list_of_asparaguses = list_of_asparaguses
-        self.sub_image = sub_image
+
 
     def add_asparagus_subimage(self, subimage):
         self.list_of_asparagus_subimages.append(subimage)

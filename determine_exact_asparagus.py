@@ -10,13 +10,13 @@ from find_the_asparagus import runningMean
 
 def determine_exact_asparagus(my_class):
 
-    first_asparagus = define_default_asparagus()
+    first_sub_image = my_class.list_of_asparagus_subimages[0].sub_image
 
-    lower_white = np.array([get_the_lower_limit_of_white(my_class.sub_image)])
+    lower_white = np.array([get_the_lower_limit_of_white(first_sub_image)])
     upper_white = np.array([255])
 
 
-    mask = cv2.inRange(my_class.sub_image, lower_white, upper_white)
+    mask = cv2.inRange(first_sub_image, lower_white, upper_white)
 
     kernel = np.ones((2,2),np.uint8)
     dilation = cv2.dilate(mask,kernel,iterations = 1)
@@ -30,10 +30,10 @@ def determine_exact_asparagus(my_class):
     rect = cv2.minAreaRect(max_area_contur)
     box = cv2.cv.BoxPoints(rect)
     box = np.int0(box)
-    cv2.drawContours(my_class.sub_image,[box],0,(0,0,255),10)
+    cv2.drawContours(first_sub_image,[box],0,(0,0,255),10)
 
     x,y,w,h = cv2.boundingRect(max_area_contur)
-    cv2.rectangle(my_class.sub_image,(x,y),(x+w,y+h),(0, 255, 0),10)
+    cv2.rectangle(first_sub_image,(x,y),(x+w,y+h),(0, 255, 0),10)
 
 
     x_range1 = my_class.list_of_asparagus_subimages[0].top_left_corner_x
@@ -41,12 +41,12 @@ def determine_exact_asparagus(my_class):
     y_range1 = my_class.list_of_asparagus_subimages[0].top_left_corner_y
     y_range2 = my_class.list_of_asparagus_subimages[0].top_left_corner_y + my_class.list_of_asparagus_subimages[0].hight
 
-    my_class.original_picture[y_range1:y_range2, x_range1:x_range2] = my_class.sub_image
+    my_class.picture_with_modifications[y_range1:y_range2, x_range1:x_range2] = first_sub_image
 
     # cv2.imshow('frame',img)
     # plt.imshow(img)
 
-
+    first_asparagus = define_default_asparagus()
     first_asparagus.hight_pixel = rect[1][1]
     first_asparagus.width_pixel = rect[1][0]
 

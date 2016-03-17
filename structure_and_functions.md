@@ -12,6 +12,8 @@
     3. Get the numeric derivalt
     4. Get the min and max value of it
     5. Apply safety band
+    
+    ++ Handle the case when there is no asparagus on the picture 
 
 # Classification of the found asparagus
     1. calculate the characteristic parameters, bounding box
