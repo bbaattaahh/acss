@@ -6,6 +6,7 @@
     http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html
 
 # Find the asparagus
+
     in-progress
     1. Dummy versoion : filter by summa, horizontally and vertically
     2. mouving avarage by the pixel posotion
@@ -19,7 +20,11 @@
     1. calculate the characteristic parameters, bounding box
 
 # Print the result to the image
-
+    1. Easy: cv2.putText
+    
 # Display the correc image delayed
     LATER, it is real time now
     
+# Think about it
+    Usage of histogram equalization, which methode, when
+    Blob detection to find how many asparagus on the image
