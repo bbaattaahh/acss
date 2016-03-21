@@ -4,6 +4,11 @@
 
 # Calculate the pixel millimeter ratio
     http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html
+Later, it will be a burned variable at first
+
+# Image preprocessing
+1. Motion detection
+2. Histogram equlization
 
 # Find the asparagus
 
