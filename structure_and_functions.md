@@ -32,6 +32,28 @@ Later, it will be a burned variable at first
 # Display the correc image delayed
     LATER, it is real time now
     
-# Think about it
-    Usage of histogram equalization, which methode, when
-    Blob detection to find how many asparagus on the image
+# Think about / Ideas:
+	- olyankamera kellen amelzikenk beepitett szabalyozhato fenyforrasa van
+	- rgb layerek kulon kezelese(kesobb)
+	- preprocessing hist exualzation, wighted by the frequency of the colours
+	- drop the end and the begining of the histogram if let us say it is les then the summa pixes 0,5%
+	- if we found the one asparagus picture part, the equalize it it, + other tricks
+	- usage of spared matrixis may be / it is not too good idea
+	- preserve the fluencity of the camera mouvi
+	- colour code to classification results
+	- !!!handle that case when tehre is now asparage at all
+	- analiis flow!!! 
+	- link together the final output image, (link, rotation, resize)
+
+
+# Need to buy:
+	web camera
+	black organic base piant
+	monitor?? VGA VS HMDI (both)
+	Racpberry PI VS laptop
+
+	
+# Burned constants:
+	pixel-mm ratio
+	threshol of the motion detection, beetween the last two images
+	safety area in the detecting of the asparagus
