@@ -1,6 +1,8 @@
-# Read in the image
+# Read in the image/video
     NOW it is just one image
+    For the testing an video wuold be much better
     Later it will be a camera image
+    
 
 # Calculate the pixel millimeter ratio
     http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html
