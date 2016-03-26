@@ -10,7 +10,7 @@ from find_the_asparagus import runningMean
 
 def determine_exact_asparagus(my_class):
 
-    first_sub_image = my_class.list_of_asparagus_subimages[0].sub_image
+    first_sub_image = my_class.asparagus_subimages[0].sub_image
 
     lower_white = np.array([get_the_lower_limit_of_white(first_sub_image)])
     upper_white = np.array([255])
@@ -36,10 +36,10 @@ def determine_exact_asparagus(my_class):
     cv2.rectangle(first_sub_image,(x,y),(x+w,y+h),(0, 255, 0),10)
 
 
-    x_range1 = my_class.list_of_asparagus_subimages[0].top_left_corner_x
-    x_range2 = my_class.list_of_asparagus_subimages[0].top_left_corner_x + my_class.list_of_asparagus_subimages[0].width
-    y_range1 = my_class.list_of_asparagus_subimages[0].top_left_corner_y
-    y_range2 = my_class.list_of_asparagus_subimages[0].top_left_corner_y + my_class.list_of_asparagus_subimages[0].hight
+    x_range1 = my_class.asparagus_subimages[0].top_left_corner_x
+    x_range2 = my_class.asparagus_subimages[0].top_left_corner_x + my_class.asparagus_subimages[0].width
+    y_range1 = my_class.asparagus_subimages[0].top_left_corner_y
+    y_range2 = my_class.asparagus_subimages[0].top_left_corner_y + my_class.asparagus_subimages[0].hight
 
     my_class.picture_with_modifications[y_range1:y_range2, x_range1:x_range2] = first_sub_image
 
