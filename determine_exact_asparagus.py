@@ -2,10 +2,9 @@ __author__ = 'Henrik'
 
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
-from asparagus import define_default_asparagus
 
-from find_the_asparagus import runningMean
+from asparagus import define_default_asparagus
+from experiments.find_the_asparagus import runningMean
 
 
 def determine_exact_asparagus(my_class):

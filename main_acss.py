@@ -6,12 +6,11 @@ from moviepy.editor import *
 import numpy as np
 
 from image_flow import image_flow
-from asparagus_sub_image import asparagus_sub_image
 from whole_image import whole_image
 
-from detect_background import detect_background
+from get_asparagus_sub_images import get_asparagus_sub_images
 
-from find_the_asparagus import find_the_asparagus
+from detect_background import detect_background
 
 from determine_exact_asparagus import determine_exact_asparagus
 
@@ -21,6 +20,8 @@ from classify_the_asparagus import classify_the_asparagus
 
 from print_claasification_result_to_picture import print_classification_result_to_picture
 
+
+TEMPLATE = cv2.imread('images/object_to_search_2.jpg',0)
 
 PIXEL_MILLIMETER_RATIO = 110.0/1571.0
 
@@ -65,35 +66,23 @@ for x in range(0, 10):
 
     # img = my_img
 
-    my_class = whole_image(img, img)
+    my_class = whole_image(img)
+
+    my_class.background_mask = filterer_of_background.actual_mask
+
+    get_asparagus_sub_images(my_class, TEMPLATE)
+
+    # determine_exact_asparagus(my_class)
 
 
-    first_sub_img = asparagus_sub_image([] ,0, 0, 0, 0)
-    first_sub_img.sub_image = find_the_asparagus(img, first_sub_img)
-
-
-
-    my_class.add_asparagus_subimage(first_sub_img)
-
-
-    determine_exact_asparagus(my_class)
-    first_asparagus = my_class.asparaguses[0]
-    calculate_millimeter_value_from_pixel_value(PIXEL_MILLIMETER_RATIO, first_asparagus)
-
-    classify_the_asparagus(first_asparagus)
-
-    my_class.add_asparagus(first_asparagus)
-
-    print_classification_result_to_picture(my_class)
-
-    #plt.imshow(my_class.picture_with_modifications)
-    cv2.imshow('frame',my_class.picture_with_modifications)
-    filtered_image = cv2.bitwise_and(img, filterer_of_background.actual_mask)
-    cv2.imshow('filtered',filtered_image)
+    cv2.imshow('frame',my_class.original_picture)
+    cv2.waitKey(0)
+    #filtered_image = cv2.bitwise_and(img, filterer_of_background.actual_mask)
+    #cv2.imshow('filtered',filtered_image)
 
     my_image_folw.add_whole_image(my_class)
 
-    print 1
+print 1
 
 
 

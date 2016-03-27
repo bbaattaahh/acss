@@ -11,7 +11,7 @@ def print_classification_result_to_picture(my_calss):
                     (400, int(my_calss.picture_with_modifications.shape[0])),
                     cv2.FONT_HERSHEY_SIMPLEX,
                     10,
-                    255,
+                    int(my_calss.picture_with_modifications.shape[0] * 0.1 * 8 / 6),
                     thickness = 20)
 
 
