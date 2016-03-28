@@ -41,6 +41,9 @@ for x in range(0, 10):
 
     img_col = clip.get_frame(act_str)
 
+    # Hecking
+    img_col = cv2.imread("images/test_img_1.jpg")
+
     img = cv2.cvtColor(img_col, cv2.COLOR_BGR2GRAY)
 
     if filterer_of_background.former_image == None:
@@ -72,7 +75,7 @@ for x in range(0, 10):
 
     get_asparagus_sub_images(my_class, TEMPLATE)
 
-    # determine_exact_asparagus(my_class)
+    determine_exact_asparagus(my_class)
 
 
     cv2.imshow('frame',my_class.original_picture)

@@ -9,47 +9,55 @@ from experiments.find_the_asparagus import runningMean
 
 def determine_exact_asparagus(my_class):
 
-    first_sub_image = my_class.asparagus_subimages[0].sub_image
+    if my_class.asparaguses == []:
+        return None
 
-    lower_white = np.array([get_the_lower_limit_of_white(first_sub_image)])
-    upper_white = np.array([255])
+    for act_asparagus in my_class.asparaguses:
+        sub_image = act_asparagus.sub_image
 
+        # TODO levels linear here, instead simple hist equalization
+        sub_image = cv2.equalizeHist(sub_image)
 
-    mask = cv2.inRange(first_sub_image, lower_white, upper_white)
-
-    kernel = np.ones((2,2),np.uint8)
-    dilation = cv2.dilate(mask,kernel,iterations = 1)
-
-
-    contours,hierarchy = cv2.findContours(dilation, 1, 2)
-
-    max_area_contur = get_max_area_contur(contours)
+        sub_image = cv2.blur(sub_image,(5,5))
 
 
-    rect = cv2.minAreaRect(max_area_contur)
-    box = cv2.cv.BoxPoints(rect)
-    box = np.int0(box)
-    cv2.drawContours(first_sub_image,[box],0,(0,0,255),10)
-
-    x,y,w,h = cv2.boundingRect(max_area_contur)
-    cv2.rectangle(first_sub_image,(x,y),(x+w,y+h),(0, 255, 0),10)
 
 
-    x_range1 = my_class.asparagus_subimages[0].top_left_corner_x
-    x_range2 = my_class.asparagus_subimages[0].top_left_corner_x + my_class.asparagus_subimages[0].width
-    y_range1 = my_class.asparagus_subimages[0].top_left_corner_y
-    y_range2 = my_class.asparagus_subimages[0].top_left_corner_y + my_class.asparagus_subimages[0].hight
+        edges = cv2.Canny(sub_image,50,100)
+        kernel = np.ones((10,5),np.uint8)
+        dilate = cv2.dilate(edges,kernel,iterations = 1)
+        erosion = cv2.erode(dilate,kernel,iterations = 1)
 
-    my_class.picture_with_modifications[y_range1:y_range2, x_range1:x_range2] = first_sub_image
 
-    # cv2.imshow('frame',img)
-    # plt.imshow(img)
+        #mask = cv2.inRange(sub_image, lower_white, upper_white)
 
-    first_asparagus = define_default_asparagus()
-    first_asparagus.hight_pixel = rect[1][1]
-    first_asparagus.width_pixel = rect[1][0]
+        #cv2.imshow('mask2',mask)
+        cv2.imshow('edges',erosion)
+        cv2.waitKey(0)
 
-    my_class.add_asparagus(first_asparagus)
+
+
+
+        contours,hierarchy = cv2.findContours(erosion, 1, 2)
+
+        max_area_contur = get_max_area_contur(contours)
+
+
+        rect = cv2.minAreaRect(max_area_contur)
+        box = cv2.cv.BoxPoints(rect)
+        box = np.int0(box)
+        cv2.drawContours(sub_image,[box],0,(0,0,255),10)
+
+        #eZ NEM JÓ
+        x,y,w,h = cv2.boundingRect(max_area_contur)
+        cv2.rectangle(sub_image,(x,y),(x+w,y+h),(0, 255, 0),3)
+
+        cv2.imshow('sub_image',sub_image)
+        cv2.waitKey(0)
+
+        act_asparagus.width_pixel = w
+        act_asparagus.hight_pixel = h
+
 
     return None
 
