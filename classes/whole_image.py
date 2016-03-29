@@ -1,13 +1,13 @@
 __author__ = 'Henrik'
 
-from datetime import datetime
+import datetime
 
 class whole_image:
     def __init__(self,
                  original_picture,
                  picture_with_modifications = None,
                  background_mask = None,
-                 creation_time_original_image = datetime.now(),
+                 creation_time_original_image = datetime.datetime.now(),
                  asparaguses = []):
 
         self.original_picture = original_picture

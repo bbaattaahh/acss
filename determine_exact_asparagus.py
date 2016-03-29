@@ -35,29 +35,26 @@ def determine_exact_asparagus(my_class):
         cv2.imshow('edges',erosion)
         cv2.waitKey(0)
 
+        inv_erosion = 255 - erosion
+
+        h, w = inv_erosion.shape[:2]
+        mask = np.zeros((h+2, w+2), np.uint8)
+
+        # Floodfill from point (0, 0)
+        cv2.floodFill(inv_erosion, mask, (0,0), 0);
 
 
+        cv2.imshow('edges',inv_erosion)
+        cv2.waitKey(0)
 
-        contours,hierarchy = cv2.findContours(erosion, 1, 2)
+        contours,hierarchy = cv2.findContours(inv_erosion, 1, 2)
 
         max_area_contur = get_max_area_contur(contours)
 
-
         rect = cv2.minAreaRect(max_area_contur)
-        box = cv2.cv.BoxPoints(rect)
-        box = np.int0(box)
-        cv2.drawContours(sub_image,[box],0,(0,0,255),10)
 
-        #eZ NEM JÓ
-        x,y,w,h = cv2.boundingRect(max_area_contur)
-        cv2.rectangle(sub_image,(x,y),(x+w,y+h),(0, 255, 0),3)
-
-        cv2.imshow('sub_image',sub_image)
-        cv2.waitKey(0)
-
-        act_asparagus.width_pixel = w
-        act_asparagus.hight_pixel = h
-
+        act_asparagus.width_pixel = rect[1][0]
+        act_asparagus.hight_pixel = rect[1][1]
 
     return None
 

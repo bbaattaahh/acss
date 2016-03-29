@@ -5,8 +5,6 @@ import numpy as np
 
 def get_asparagus_sub_images(my_whole_image, template):
 
-    # methods = ['cv2.TM_CCOEFF', 'cv2.TM_CCOEFF_NORMED', 'cv2.TM_CCORR',
-    #             'cv2.TM_CCORR_NORMED', 'cv2.TM_SQDIFF', 'cv2.TM_SQDIFF_NORMED']
 
     methode = cv2.TM_SQDIFF_NORMED
 
@@ -20,7 +18,6 @@ def get_asparagus_sub_images(my_whole_image, template):
     cv2.waitKey(0)
 
     conturs_result = cv2.findContours(mask_res,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-    mask_res = cv2.equalizeHist(mask_res)
 
 
     conturs = conturs_result[0]
@@ -30,8 +27,9 @@ def get_asparagus_sub_images(my_whole_image, template):
     for contur in conturs:
         x,y,w,h = cv2.boundingRect(contur)
 
-        # contour_res = res[y-10:y+h+10, x-10:x+w+10]
-        # min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(contour_res)
+        if check_contour_touch_image_edge(x,y,w,h,res):
+            continue
+
 
         x_upper_range = x + w + template.shape[1] + SAFETY_ZONE
         y_upper_range = y + h + template.shape[0] + SAFETY_ZONE
@@ -49,6 +47,21 @@ def get_asparagus_sub_images(my_whole_image, template):
 
     return None
 
+
+def check_contour_touch_image_edge(x,y,w,h,res):
+    if x == 0:
+        return True
+
+    if y == 0:
+        return True
+
+    if x + w >= res.shape[1]:
+        return True
+
+    if y + h >= res.shape[0]:
+        return True
+
+    return False
 
 # im = cv2.imread("images/test_img_9.jpg", cv2.IMREAD_GRAYSCALE)
 # test_whole_image = whole_image(im)

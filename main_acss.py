@@ -16,7 +16,7 @@ from determine_exact_asparagus import determine_exact_asparagus
 
 from calculate_millimeter_value_from_pixel_value import calculate_millimeter_value_from_pixel_value
 
-from classify_the_asparagus import classify_the_asparagus
+from classify_the_asparagus import classify_the_asparaguses
 
 from print_claasification_result_to_picture import print_classification_result_to_picture
 
@@ -77,6 +77,9 @@ for x in range(0, 10):
 
     determine_exact_asparagus(my_class)
 
+    calculate_millimeter_value_from_pixel_value(PIXEL_MILLIMETER_RATIO, my_class)
+
+    classify_the_asparaguses(my_class)
 
     cv2.imshow('frame',my_class.original_picture)
     cv2.waitKey(0)

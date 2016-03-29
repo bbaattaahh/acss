@@ -1,5 +1,10 @@
 __author__ = 'Henrik'
 
+def classify_the_asparaguses(my_whole_image):
+    for act_asparagus in my_whole_image.asparaguses:
+        classify_the_asparagus(act_asparagus)
+
+
 def classify_the_asparagus(asparagus):
 
     if asparagus.width_millimeter < 10:
