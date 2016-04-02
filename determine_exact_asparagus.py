@@ -32,6 +32,7 @@ def determine_exact_asparagus(my_class):
         erosion = cv2.erode(dilate,kernel,iterations = 4)
 
 
+
         #mask = cv2.inRange(sub_image, lower_white, upper_white)
 
         #cv2.imshow('mask2',mask)
