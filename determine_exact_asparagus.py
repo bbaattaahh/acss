@@ -1,6 +1,6 @@
 __author__ = 'Henrik'
 
-# TODO: Logg the event when it founds nothing
+# TODO: Log the event when it founds nothing
 # TODO: Edge detection closing must to be a little bit cleverer, may be an iterative solution would be the bast...
 # TODO: Until we found some thing
 # TODO: Handle the case when there is no maxarae contour
