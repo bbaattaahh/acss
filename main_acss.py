@@ -1,4 +1,8 @@
 __author__ = 'Henrik'
+
+# TODO: Read on the burned constans from config file. (JSON)
+# TODO: Delete the images which are too old. Old means that they are not necessery too show them a the users anymore.
+
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
@@ -42,7 +46,7 @@ for x in range(0, 10):
     img_col = clip.get_frame(act_str)
 
     # Hecking
-    img_col = cv2.imread("images/test_img_1.jpg")
+    #img_col = cv2.imread("images/test_img_1.jpg")
 
     img = cv2.cvtColor(img_col, cv2.COLOR_BGR2GRAY)
 

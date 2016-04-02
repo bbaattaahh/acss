@@ -1,11 +1,16 @@
 __author__ = 'Henrik'
 
+# TODO: Logg the event when it founds nothing
+# TODO: Edge detection closing must to be a little bit cleverer, may be an iterative solution would be the bast...
+# TODO: Until we found some thing
+# TODO: Handle the case when there is no maxarae contour
+    # NOW farmer version : increased the number of the iterations of the edosion and dilatation
+
+
 import cv2
 import numpy as np
 
-from asparagus import define_default_asparagus
 from experiments.find_the_asparagus import runningMean
-
 
 def determine_exact_asparagus(my_class):
 
@@ -21,12 +26,10 @@ def determine_exact_asparagus(my_class):
         sub_image = cv2.blur(sub_image,(5,5))
 
 
-
-
         edges = cv2.Canny(sub_image,50,100)
-        kernel = np.ones((10,5),np.uint8)
-        dilate = cv2.dilate(edges,kernel,iterations = 1)
-        erosion = cv2.erode(dilate,kernel,iterations = 1)
+        kernel = np.ones((10,10),np.uint8)
+        dilate = cv2.dilate(edges,kernel,iterations = 4)
+        erosion = cv2.erode(dilate,kernel,iterations = 4)
 
 
         #mask = cv2.inRange(sub_image, lower_white, upper_white)
@@ -37,17 +40,19 @@ def determine_exact_asparagus(my_class):
 
         inv_erosion = 255 - erosion
 
-        h, w = inv_erosion.shape[:2]
+        inv_erosion_with_white_frame= cv2.copyMakeBorder(inv_erosion,2,2,2,2,cv2.BORDER_CONSTANT,value=[255])
+
+        h, w = inv_erosion_with_white_frame.shape[:2]
         mask = np.zeros((h+2, w+2), np.uint8)
 
         # Floodfill from point (0, 0)
-        cv2.floodFill(inv_erosion, mask, (0,0), 0);
+        cv2.floodFill(inv_erosion_with_white_frame, mask, (0,0), 0);
 
 
-        cv2.imshow('edges',inv_erosion)
+        cv2.imshow('edges',inv_erosion_with_white_frame)
         cv2.waitKey(0)
 
-        contours,hierarchy = cv2.findContours(inv_erosion, 1, 2)
+        contours,hierarchy = cv2.findContours(inv_erosion_with_white_frame, 1, 2)
 
         max_area_contur = get_max_area_contur(contours)
 
