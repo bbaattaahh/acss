@@ -44,13 +44,13 @@ Later, it will be a burned variable at first
 	- !!!handle that case when tehre is now asparage at all
 	- analiis flow!!! 
 	- link together the final output image, (link, rotation, resize)
-
+	- !!!!! i know how the backgraound look like, i don`t take adventage of it!!!!!
 
 # Need to buy:
-	web camera
-	black organic base piant
-	monitor?? VGA VS HMDI (both)
-	Racpberry PI VS laptop
+	web camera - Bought
+	black organic base piant - Bought
+	monitor?? VGA VS HMDI (both) - I will be my monitor in the bigining
+	Racpberry PI VS laptop - laptop, because of the webcam
 
 	
 # Burned constants:

@@ -2,6 +2,8 @@ __author__ = 'Henrik'
 
 # TODO: Read on the burned constans from config file. (JSON)
 # TODO: Delete the images which are too old. Old means that they are not necessery too show them a the users anymore.
+# TODO: NO motion detection, use only the "middle of the immage" when they are concatonated (config)
+
 
 import numpy as np
 import cv2
@@ -38,6 +40,7 @@ clip = VideoFileClip("videos/test_2.3gp")
 first_image = clip.get_frame("00:00:00")
 first_image_gray = cv2.cvtColor(first_image, cv2.COLOR_BGR2GRAY)
 
+first_imgage_to_concatenate = copy.deepcopy(first_image)
 
 filterer_of_background = detect_background(first_image_gray)
 

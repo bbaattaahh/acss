@@ -1,0 +1,16 @@
+[templates]
+asparagus_template_image = "jani"
+
+[pixel_millimeter_ratio]
+pixel_millimeter_ratio = 12.34
+
+[get_asparagus_sub_images]
+safety_zone_width = 20
+
+[camera_settings]
+width = 2304
+high = 1536
+
+[narrow_image_to_concatonate_them]
+higher_limit = 1000
+lower_limit = 1100
