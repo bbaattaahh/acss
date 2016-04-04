@@ -27,7 +27,7 @@ def determine_exact_asparagus(my_class):
 
 
         edges = cv2.Canny(sub_image,50,100)
-        kernel = np.ones((10,10),np.uint8)
+        kernel = np.ones((10,5),np.uint8)
         dilate = cv2.dilate(edges,kernel,iterations = 4)
         erosion = cv2.erode(dilate,kernel,iterations = 4)
 
@@ -56,6 +56,12 @@ def determine_exact_asparagus(my_class):
         contours,hierarchy = cv2.findContours(inv_erosion_with_white_frame, 1, 2)
 
         max_area_contur = get_max_area_contur(contours)
+        if max_area_contur is None:
+            cv2.imshow('unfunded asparagus',inv_erosion)
+            cv2.waitKey(0)
+            my_class.asparaguses.remove(act_asparagus)
+            return None
+
 
         rect = cv2.minAreaRect(max_area_contur)
 
@@ -88,6 +94,11 @@ def get_the_lower_limit_of_white(img):
 
 
 def get_max_area_contur(conturs):
+    if len(conturs) == 0:
+        print "Not found asparagus"
+        return None
+
+
     max_area_contur = conturs[0]
     max_area = cv2.contourArea(max_area_contur)
 

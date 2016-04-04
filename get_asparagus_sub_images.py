@@ -22,7 +22,7 @@ def get_asparagus_sub_images(my_whole_image, template):
 
     conturs = conturs_result[0]
 
-    SAFETY_ZONE = 20
+    SAFETY_ZONE = 40
 
     for contur in conturs:
         x,y,w,h = cv2.boundingRect(contur)

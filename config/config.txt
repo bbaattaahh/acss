@@ -1,5 +1,5 @@
 [templates]
-asparagus_template_image = "jani"
+asparagus_template_image = jani
 
 [pixel_millimeter_ratio]
 pixel_millimeter_ratio = 12.34
@@ -12,5 +12,5 @@ width = 2304
 high = 1536
 
 [narrow_image_to_concatonate_them]
-higher_limit = 1000
-lower_limit = 1100
+upper_limit = 200
+lower_limit = 600
