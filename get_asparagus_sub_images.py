@@ -14,8 +14,8 @@ def get_asparagus_sub_images(my_whole_image, template):
     mask_res = cv2.inRange(res, 0, 0.07)
 
     # cv2.imshow("res", res)
-    cv2.imshow("mask_res", mask_res)
-    cv2.waitKey(0)
+    # cv2.imshow("mask_res", mask_res)
+    # cv2.waitKey(0)
 
     conturs_result = cv2.findContours(mask_res,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 
@@ -42,8 +42,8 @@ def get_asparagus_sub_images(my_whole_image, template):
 
         temp_asparagus.sub_image = my_whole_image.original_picture[y:y_upper_range, x:x_upper_range]
         my_whole_image.add_asparagus(temp_asparagus)
-        cv2.imshow("sub_image", temp_asparagus.sub_image)
-        cv2.waitKey(0)
+        # cv2.imshow("sub_image", temp_asparagus.sub_image)
+        # cv2.waitKey(0)
 
     return None
 

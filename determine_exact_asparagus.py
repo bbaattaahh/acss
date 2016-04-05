@@ -32,12 +32,9 @@ def determine_exact_asparagus(my_class):
         erosion = cv2.erode(dilate,kernel,iterations = 4)
 
 
-
-        #mask = cv2.inRange(sub_image, lower_white, upper_white)
-
         #cv2.imshow('mask2',mask)
-        cv2.imshow('edges',erosion)
-        cv2.waitKey(0)
+        # cv2.imshow('edges',erosion)
+        # cv2.waitKey(0)
 
         inv_erosion = 255 - erosion
 
@@ -50,15 +47,15 @@ def determine_exact_asparagus(my_class):
         cv2.floodFill(inv_erosion_with_white_frame, mask, (0,0), 0);
 
 
-        cv2.imshow('edges',inv_erosion_with_white_frame)
-        cv2.waitKey(0)
+        # cv2.imshow('edges',inv_erosion_with_white_frame)
+        # cv2.waitKey(0)
 
         contours,hierarchy = cv2.findContours(inv_erosion_with_white_frame, 1, 2)
 
         max_area_contur = get_max_area_contur(contours)
         if max_area_contur is None:
-            cv2.imshow('unfunded asparagus',inv_erosion)
-            cv2.waitKey(0)
+            # cv2.imshow('unfunded asparagus',inv_erosion)
+            # cv2.waitKey(0)
             my_class.asparaguses.remove(act_asparagus)
             return None
 
@@ -77,9 +74,6 @@ def get_the_lower_limit_of_white(img):
     hist = cv2.calcHist([img],[0],None,[256],[0,256])
     moving_avarage_hist_signal = runningMean(hist, 15)
 
-    # plt.plot(hist)
-    # plt.plot(moving_avarage_hist_signal)
-    # plt.show()
 
     max_place = moving_avarage_hist_signal.argmax()
     next_min_place = max_place

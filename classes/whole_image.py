@@ -10,8 +10,8 @@ class whole_image:
                  background_mask = None,
                  creation_time_original_image = datetime.datetime.now(),
                  asparaguses = [],
-                 overlap_forward = None,
-                 overlap_backward = None):
+                 overlap_forward = 0,
+                 overlap_backward = 0):
 
         self.original_picture = original_picture
         self.original_picture_colourful = original_picture_colourful

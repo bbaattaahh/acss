@@ -33,6 +33,7 @@ from print_claasification_result_to_picture import print_classification_result_t
 
 from calculate_overlap import calculate_overlap
 
+from display_results import diplay_results
 
 config = ConfigParser.RawConfigParser()
 
@@ -92,8 +93,8 @@ for x in range(0, 10):
                                               background_mask = None,
                                               creation_time_original_image = datetime.datetime.now(),
                                               asparaguses = [],
-                                              overlap_forward = None,
-                                              overlap_backward = None))
+                                              overlap_forward = 0,
+                                              overlap_backward = 0))
 
 
     # my_image_folw.whole_images[i].background_mask = filterer_of_background.actual_mask
@@ -116,6 +117,15 @@ for x in range(0, 10):
     # cv2.waitKey(0)
 
     i = i + 1
+
+    if i>4:
+        delay = config.getfloat('display_results', 'delay_in_sec')
+        width_to_display = config.getint('display_results', 'width_of_displayed_image')
+        res = diplay_results(my_image_folw, delay, width_to_display)
+
+        cv2.imshow('res',res)
+        cv2.waitKey(0)
+
 
 
 print 1
