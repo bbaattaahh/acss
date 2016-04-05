@@ -80,6 +80,7 @@ def calculate_ending_pixel(image_flow, start_image_index, start_pixel, width_to_
 
     image_index = start_image_index
 
+
     while True:
         image_index = image_index - 1
         sum_pixel = sum_pixel + \
