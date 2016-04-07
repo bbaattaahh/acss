@@ -5,4 +5,4 @@ class image_flow:
 
 
     def add_whole_image(self, whole_image):
-        self.whole_images.append(whole_image)
+        self.whole_images.insert(0, whole_image)

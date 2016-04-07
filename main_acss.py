@@ -54,7 +54,7 @@ first_imgage_to_concatenate = copy.deepcopy(first_image)
 filterer_of_background = detect_background(first_image_gray)
 
 i = 0
-for x in range(0, 10):
+for x in range(0, 27):
 
     act_str = '00:00:' + str(x)
 
@@ -65,27 +65,6 @@ for x in range(0, 10):
 
     img = cv2.cvtColor(img_col, cv2.COLOR_BGR2GRAY)
 
-    # if filterer_of_background.former_image == None:
-    #     filterer_of_background.former_image = img
-    #     continue
-    # else:
-    #     image_difference = cv2.absdiff(img, filterer_of_background.former_image)
-    #     filterer_of_background.act_image = img
-    #     mask = cv2.inRange(image_difference, 20, 255)
-    #     filterer_of_background.add_mask(mask)
-    #
-    #     if len(filterer_of_background.masks) > 4:
-    #         del filterer_of_background.masks[0]
-    #
-    #
-    #     commulatied_mask = mask
-    #
-    #     for act_mask in filterer_of_background.masks:
-    #         commulatied_mask = cv2.bitwise_or(commulatied_mask, act_mask)
-    #
-    #     filterer_of_background.actual_mask = commulatied_mask
-
-
     # img = my_img
     my_image_folw.add_whole_image(whole_image(img,
                                               original_picture_colourful = img_col,
@@ -93,11 +72,9 @@ for x in range(0, 10):
                                               background_mask = None,
                                               creation_time_original_image = datetime.datetime.now(),
                                               asparaguses = [],
-                                              overlap_forward = 0,
+                                              overlap_forward = 0 ,
                                               overlap_backward = 0))
 
-
-    # my_image_folw.whole_images[i].background_mask = filterer_of_background.actual_mask
 
     get_asparagus_sub_images(my_image_folw.whole_images[i], TEMPLATE)
 
@@ -108,8 +85,8 @@ for x in range(0, 10):
     classify_the_asparaguses(my_image_folw.whole_images[i])
 
     if i<>0:
-        calculate_overlap(my_image_folw.whole_images[i],
-                          my_image_folw.whole_images[i-1],
+        calculate_overlap(my_image_folw.whole_images[0],
+                          my_image_folw.whole_images[1],
                           config.getint('narrow_image_to_concatonate_them', 'upper_limit'),
                           config.getint('narrow_image_to_concatonate_them', 'lower_limit'))
 
@@ -124,9 +101,9 @@ for x in range(0, 10):
         res = diplay_results(my_image_folw, delay, width_to_display)
 
         cv2.imshow('res',res)
-        cv2.waitKey(0)
-
-
+        k = cv2.waitKey(5) & 0xFF
+        if k == 27:
+            break
 
 print 1
 

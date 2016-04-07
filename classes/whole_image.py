@@ -19,7 +19,7 @@ class whole_image:
         self.background_mask = background_mask
         self.creation_time_original_image = creation_time_original_image
         self.asparaguses = asparaguses
-        self.overlap_forward = overlap_forward,
+        self.overlap_forward = overlap_forward
         self.overlap_backward = overlap_backward
 
 

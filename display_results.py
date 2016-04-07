@@ -3,36 +3,34 @@ __author__ = 'Henrik'
 import numpy as np
 import datetime
 
+# from print_classification_result_to_picture import print_classification_result_to_picture
 
 def diplay_results(image_flow, delay, width_to_display):
 
     start_image_index, start_pixel = calculate_starting_pixel(image_flow, delay)
 
-    end_image_index, end_pixel = calculate_ending_pixel(image_flow, start_image_index, start_pixel, width_to_display)
+    end_image_index = calculate_ending_pixel(image_flow, start_image_index, start_pixel, width_to_display)
 
-    image_without_text = image_to_display(image_flow, start_image_index, start_pixel, end_image_index, end_pixel)
+    image_without_text = image_to_display(image_flow, start_image_index, start_pixel, end_image_index)
+
+
 
     #TODO Put the text on it
 
     return image_without_text
 
 
-def image_to_display(image_flow, start_image_index, start_pixel, end_image_index, end_pixel):
+def image_to_display(image_flow, start_image_index, start_pixel, end_image_index):
 
-    final_image = image_flow.whole_images[start_image_index].original_picture_colourful[:,0:start_pixel,:]
+    width_of_first_image = image_flow.whole_images[start_image_index].original_picture_colourful.shape[1]
 
-    for act_index in range(start_image_index+1, end_image_index-1):
-        final_image = concat_images(image_flow.whole_images[act_index].original_picture_colourful,
-                                    final_image,
-                                    image_flow.whole_images[act_index].overlap_forward)
+    final_image = image_flow.whole_images[start_image_index].original_picture_colourful[:,start_pixel:width_of_first_image,:]
 
-    coloumn_number_end_image = image_flow.whole_images[end_image_index].original_picture_colourful.shape[1]
+    for act_index in range(start_image_index + 1, end_image_index):
+        final_image = concat_images(final_image,
+                                    image_flow.whole_images[act_index].original_picture_colourful,
+                                    image_flow.whole_images[act_index].overlap_backward)
 
-    end_image_chunk = image_flow.whole_images[start_image_index].original_picture_colourful[:, end_pixel:coloumn_number_end_image, :]
-
-    final_image = concat_images(end_image_chunk,
-                                final_image,
-                                image_flow.whole_images[end_image_index].overlap_forward)
 
     return final_image
 
@@ -45,17 +43,23 @@ def calculate_starting_pixel(image_flow, delay):
     time_diffs = get_time_differences(image_flow, now)
 
     for i in range(0, len(time_diffs)):
-        if delay > time_diffs[i]:
+        if delay < time_diffs[i]:
             break
 
-    y1 = image_flow.whole_images[i].original_picture_colourful.shape[1]
-    y2 = image_flow.whole_images[i].original_picture_colourful.shape[1] - image_flow.whole_images[i].overlap_backward
+    if i <> 0:
+        i = i - 1
+
+    y1 = 0
+    y2 = image_flow.whole_images[i].original_picture_colourful.shape[1] - image_flow.whole_images[i].overlap_forward
 
     x1 = time_diffs[i]
-    x2 = time_diffs[i-1]
+    x2 = time_diffs[i + 1]
     x = delay
 
     y = (y2-y1)*(x-x1)/(x2-x1)+y1
+
+    if y < 0:
+        y = 0
 
     return (i, y)
 
@@ -76,25 +80,25 @@ def get_time_differences(image_flow, now):
 
 def calculate_ending_pixel(image_flow, start_image_index, start_pixel, width_to_display):
 
-    sum_pixel = start_pixel - image_flow.whole_images[start_image_index].overlap_backward
+    sum_pixel = image_flow.whole_images[start_image_index].original_picture_colourful.shape[1] - \
+                image_flow.whole_images[start_image_index].overlap_forward - \
+                start_pixel
+
 
     image_index = start_image_index
 
 
     while True:
-        image_index = image_index - 1
+        image_index = image_index + 1
         sum_pixel = sum_pixel + \
                     image_flow.whole_images[image_index].original_picture_colourful.shape[1] - \
-                    image_flow.whole_images[image_index].overlap_backward
+                    image_flow.whole_images[image_index].overlap_forward
+
 
         if (sum_pixel > width_to_display):
             break
 
-    last_pixel = sum_pixel - width_to_display + image_flow.whole_images[image_index].overlap_backward
-
-
-
-    return (image_index, last_pixel)
+    return image_index
 
 
 def concat_images(image_left, image_right, overlap):
