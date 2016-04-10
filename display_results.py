@@ -102,8 +102,8 @@ def calculate_ending_pixel(image_flow, start_image_index, start_pixel, width_to_
 
 
 def concat_images(image_left, image_right, overlap):
-    right_piece = image_right[:, overlap:image_right.shape[1], :]
-    concatenated_image = np.hstack((image_left, right_piece))
+    left_piece = image_left[:, 0:image_left.shape[1]-overlap, :]
+    concatenated_image = np.hstack((left_piece, image_right))
 
     return concatenated_image
 

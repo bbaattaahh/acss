@@ -90,12 +90,13 @@ for x in range(0, 27):
                           config.getint('narrow_image_to_concatonate_them', 'upper_limit'),
                           config.getint('narrow_image_to_concatonate_them', 'lower_limit'))
 
-    # cv2.imshow('frame',my_class.original_picture)
-    # cv2.waitKey(0)
+        #cv2.imshow('frame1',my_image_folw.whole_images[0].original_picture_colourful)
+        #cv2.imshow('frame2',my_image_folw.whole_images[1].original_picture_colourful)
+        #cv2.waitKey(0)
 
     i = i + 1
 
-    if i>4:
+    if i>7:
         delay = config.getfloat('display_results', 'delay_in_sec')
         width_to_display = config.getint('display_results', 'width_of_displayed_image')
         res = diplay_results(my_image_folw, delay, width_to_display)
