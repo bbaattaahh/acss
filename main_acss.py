@@ -35,6 +35,8 @@ from calculate_overlap import calculate_overlap
 
 from display_results import diplay_results
 
+from calculate_overlap2 import calcualte_overlap2
+
 config = ConfigParser.RawConfigParser()
 
 config.read('config/config.txt')
@@ -85,10 +87,9 @@ for x in range(0, 27):
     classify_the_asparaguses(my_image_folw.whole_images[i])
 
     if i<>0:
-        calculate_overlap(my_image_folw.whole_images[0],
-                          my_image_folw.whole_images[1],
-                          config.getint('narrow_image_to_concatonate_them', 'upper_limit'),
-                          config.getint('narrow_image_to_concatonate_them', 'lower_limit'))
+        calcualte_overlap2(my_image_folw,
+                           config.getint('narrow_image_to_concatonate_them', 'upper_limit'),
+                           config.getint('narrow_image_to_concatonate_them', 'lower_limit'))
 
         #cv2.imshow('frame1',my_image_folw.whole_images[0].original_picture_colourful)
         #cv2.imshow('frame2',my_image_folw.whole_images[1].original_picture_colourful)

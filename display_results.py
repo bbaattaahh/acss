@@ -95,7 +95,7 @@ def calculate_ending_pixel(image_flow, start_image_index, start_pixel, width_to_
                     image_flow.whole_images[image_index].overlap_forward
 
 
-        if (sum_pixel > width_to_display):
+        if sum_pixel > width_to_display or image_index == len(image_flow.whole_images)-1:
             break
 
     return image_index
