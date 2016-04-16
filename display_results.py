@@ -11,7 +11,11 @@ def diplay_results(image_flow, delay, width_to_display):
 
     end_image_index = calculate_ending_pixel(image_flow, start_image_index, start_pixel, width_to_display)
 
-    image_without_text = image_to_display(image_flow, start_image_index, start_pixel, end_image_index)
+    image_without_text = image_to_display(image_flow,
+                                          start_image_index,
+                                          start_pixel,
+                                          end_image_index,
+                                          width_to_display)
 
 
 
@@ -20,7 +24,7 @@ def diplay_results(image_flow, delay, width_to_display):
     return image_without_text
 
 
-def image_to_display(image_flow, start_image_index, start_pixel, end_image_index):
+def image_to_display(image_flow, start_image_index, start_pixel, end_image_index, expected_width):
 
     width_of_first_image = image_flow.whole_images[start_image_index].original_picture_colourful.shape[1]
 
@@ -32,9 +36,17 @@ def image_to_display(image_flow, start_image_index, start_pixel, end_image_index
                                     image_flow.whole_images[act_index].overlap_backward)
 
 
-    return final_image
+    cut_to_size_final_image = cut_to_width_size_image(final_image, expected_width)
 
+    return cut_to_size_final_image
 
+def cut_to_width_size_image(image, expected_width):
+    if image.shape[1] <= expected_width:
+        return image
+
+    expected_width_image = image[:,0:expected_width,:]
+
+    return expected_width_image
 
 def calculate_starting_pixel(image_flow, delay):
 
