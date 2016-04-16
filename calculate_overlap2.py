@@ -23,10 +23,22 @@ def calcualte_overlap2(image_flow, upper_narrow_limit, lower_narrow_limit):
 
     stitcher = calculate_overlap_dummy()
     x_difference_in_picture = stitcher.stitch([imageA, imageB])
-    overlap = imageA.shape[1] + x_difference_in_picture
+
+    # print x_difference_in_picture
+
+    if x_difference_in_picture is None:
+        overlap = image_flow.whole_images[1].overlap_forward
+
+    if x_difference_in_picture is not None and x_difference_in_picture > 0:
+        overlap = imageA.shape[1] + (-1) * x_difference_in_picture
+
+    if x_difference_in_picture is not None and x_difference_in_picture <= 0:
+        overlap = imageA.shape[1]
 
     image_flow.whole_images[0].overlap_forward = overlap
     image_flow.whole_images[1].overlap_backward = overlap
+
+    print overlap
 
     return None
 
@@ -40,7 +52,7 @@ def dummy_sticher(kpsA, kpsB, matches, status):
             continue
 
         actual_good_match = matches[match_index]
-        print actual_good_match
+        # print actual_good_match
         left_image_keypoint = kpsA[actual_good_match[1]]
         right_image_keypoint = kpsB[actual_good_match[0]]
 
