@@ -94,7 +94,7 @@ for x in range(0, 27):
 
     i = i + 1
 
-    if i>7:
+    if i>4:
         delay = config.getfloat('display_results', 'delay_in_sec')
         width_to_display = config.getint('display_results', 'width_of_displayed_image')
         res = diplay_results(my_image_folw, delay, width_to_display)
