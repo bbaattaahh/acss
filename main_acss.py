@@ -78,13 +78,13 @@ for x in range(0, 27):
                                               overlap_backward = 0))
 
 
-    get_asparagus_sub_images(my_image_folw.whole_images[i], TEMPLATE)
+    get_asparagus_sub_images(my_image_folw.whole_images[0], TEMPLATE)
 
-    determine_exact_asparagus(my_image_folw.whole_images[i])
+    determine_exact_asparagus(my_image_folw.whole_images[0])
 
-    calculate_millimeter_value_from_pixel_value(PIXEL_MILLIMETER_RATIO, my_image_folw.whole_images[i])
+    calculate_millimeter_value_from_pixel_value(PIXEL_MILLIMETER_RATIO, my_image_folw.whole_images[0])
 
-    classify_the_asparaguses(my_image_folw.whole_images[i])
+    classify_the_asparaguses(my_image_folw.whole_images[0])
 
     if i<>0:
         calcualte_overlap2(my_image_folw,

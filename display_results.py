@@ -3,7 +3,7 @@ __author__ = 'Henrik'
 import numpy as np
 import datetime
 
-# from print_classification_result_to_picture import print_classification_result_to_picture
+from print_claasification_result_to_picture import print_classification_result_to_picture
 
 def diplay_results(image_flow, delay, width_to_display):
 
@@ -18,10 +18,15 @@ def diplay_results(image_flow, delay, width_to_display):
                                           width_to_display)
 
 
+    image_with_text = print_classification_result_to_picture(image_flow,
+                                                             start_image_index,
+                                                             start_pixel,
+                                                             end_image_index,
+                                                             width_to_display,
+                                                             image_without_text)
 
-    #TODO Put the text on it
 
-    return image_without_text
+    return image_with_text
 
 
 def image_to_display(image_flow, start_image_index, start_pixel, end_image_index, expected_width):

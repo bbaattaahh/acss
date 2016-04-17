@@ -17,4 +17,4 @@ lower_limit = 600
 
 [display_results]
 delay_in_sec = 3
-width_of_displayed_image = 1500
+width_of_displayed_image = 1000
