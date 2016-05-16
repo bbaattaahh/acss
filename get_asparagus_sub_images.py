@@ -11,11 +11,11 @@ def get_asparagus_sub_images(my_whole_image, template):
     res = cv2.matchTemplate(my_whole_image.original_picture,template,methode)
     #min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
 
-    mask_res = cv2.inRange(res, 0, 0.07)
+    mask_res = cv2.inRange(res, 0, 0.1)
 
-    # cv2.imshow("res", res)
-    # cv2.imshow("mask_res", mask_res)
-    # cv2.waitKey(0)
+    cv2.imshow("res", res)
+    cv2.imshow("mask_res", mask_res)
+    cv2.waitKey(0)
 
     conturs_result = cv2.findContours(mask_res,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 

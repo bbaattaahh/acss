@@ -37,18 +37,23 @@ from display_results import diplay_results
 
 from calculate_overlap2 import calcualte_overlap2
 
+from preprocess_input_image import preprocess_input_image
+
 config = ConfigParser.RawConfigParser()
 
 config.read('config/config.txt')
 
-TEMPLATE = cv2.imread('images/object_to_search_2.jpg',0)
+TEMPLATE = cv2.imread('images/uj.jpg',0)
 
 PIXEL_MILLIMETER_RATIO = 110.0/1571.0
 
 my_image_folw = image_flow([])
 
-clip = VideoFileClip("videos/test_2.3gp")
+clip = VideoFileClip("videos/live_test_2.avi")
 first_image = clip.get_frame("00:00:00")
+
+first_image = preprocess_input_image(first_image)
+
 first_image_gray = cv2.cvtColor(first_image, cv2.COLOR_BGR2GRAY)
 
 first_imgage_to_concatenate = copy.deepcopy(first_image)
@@ -56,12 +61,16 @@ first_imgage_to_concatenate = copy.deepcopy(first_image)
 filterer_of_background = detect_background(first_image_gray)
 
 i = 0
-for x in range(0, 27):
+
+for x in range(35, 59):
 
     act_str = '00:00:' + str(x)
 
     img_col = clip.get_frame(act_str)
 
+    img_col = preprocess_input_image(img_col)
+
+    cv2.imwrite("D:/" + str(x) + ".jpg", img_col)
     # Hecking
     #img_col = cv2.imread("images/test_img_1.jpg")
 
