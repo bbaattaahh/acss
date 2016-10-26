@@ -1,1 +1,6 @@
 .ipynb_checkpoints
+.idea
+.cache
+__pycache__
+*-local
+*.pyc
