@@ -1,3 +1,5 @@
 numpy
 cv2
 matplotlib
+opencv
+math

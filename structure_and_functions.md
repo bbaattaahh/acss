@@ -14,14 +14,8 @@ Later, it will be a burned variable at first
 
 # Find the asparagus
 
-    in-progress
-    1. Dummy versoion : filter by summa, horizontally and vertically
-    2. mouving avarage by the pixel posotion
-    3. Get the numeric derivalt
-    4. Get the min and max value of it
-    5. Apply safety band
-    
-    ++ Handle the case when there is no asparagus on the picture 
+    Use Viola–Jones object detection. It is implemented in OpenCV
+
 
 # Classification of the found asparagus
     1. calculate the characteristic parameters, bounding box
@@ -41,14 +35,11 @@ Later, it will be a burned variable at first
 	- usage of spared matrixis may be / it is not too good idea
 	- preserve the fluencity of the camera mouvi
 	- colour code to classification results
-	- !!!handle that case when tehre is now asparage at all
 	- analiis flow!!! 
 	- link together the final output image, (link, rotation, resize)
 	- !!!!! i know how the backgraound look like, i don`t take adventage of it!!!!!
 
 # Need to buy:
-	web camera - Bought
-	black organic base piant - Bought
 	monitor?? VGA VS HMDI (both) - I will be my monitor in the bigining
 	Racpberry PI VS laptop - laptop, because of the webcam
 

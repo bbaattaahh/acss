@@ -31,7 +31,6 @@ from classify_the_asparagus import classify_the_asparaguses
 
 from print_claasification_result_to_picture import print_classification_result_to_picture
 
-from calculate_overlap import calculate_overlap
 
 from display_results import diplay_results
 

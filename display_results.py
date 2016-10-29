@@ -45,6 +45,7 @@ def image_to_display(image_flow, start_image_index, start_pixel, end_image_index
 
     return cut_to_size_final_image
 
+
 def cut_to_width_size_image(image, expected_width):
     if image.shape[1] <= expected_width:
         return image
