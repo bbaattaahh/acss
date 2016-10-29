@@ -1,3 +1,5 @@
+# try built in openCV functions OpenCV, (MOG, MOG2, GMG algorithm)
+
 class moving_filter:
     masks = []
     masked_image = None
