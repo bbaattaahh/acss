@@ -1,42 +1,20 @@
 __author__ = 'Henrik'
 
-# TODO: Read on the burned constans from config file. (JSON)
-# TODO: Delete the images which are too old. Old means that they are not necessery too show them a the users anymore.
-# TODO: NO motion detection, use only the "middle of the immage" when they are concatonated (config)
 
-
-import numpy as np
-import cv2
-from matplotlib import pyplot as plt
-from moviepy.editor import *
-import numpy as np
+import ConfigParser
 import copy
 import datetime
-import ConfigParser
 
-
-
-from image_flow import image_flow
-from whole_image import whole_image
-
-from get_asparagus_sub_images import get_asparagus_sub_images
-
-from detect_background import detect_background
-
-from determine_exact_asparagus import determine_exact_asparagus
+import cv2
+from moviepy.editor import *
 
 from calculate_millimeter_value_from_pixel_value import calculate_millimeter_value_from_pixel_value
-
 from classify_the_asparagus import classify_the_asparaguses
-
-from print_claasification_result_to_picture import print_classification_result_to_picture
-
-
+from determine_exact_asparagus import determine_exact_asparagus
 from display_results import diplay_results
-
-from calculate_overlap2 import calcualte_overlap2
-
+from image_flow import image_flow
 from preprocess_input_image import preprocess_input_image
+from whole_image import whole_image
 
 config = ConfigParser.RawConfigParser()
 
