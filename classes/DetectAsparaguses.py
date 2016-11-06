@@ -9,7 +9,7 @@ class DetectAsparaguses(object):
 
     def __init__(self,
                  image,
-                 cascade_file=None,
+                 cascade_file,
                  detection_scale=0.25,
                  swing_angle=45):
         self.image = image
@@ -56,11 +56,9 @@ class DetectAsparaguses(object):
         rot_mat[0, 2] += rot_move[0]
         rot_mat[1, 2] += rot_move[1]
         return cv2.warpAffine(src, rot_mat, (int(math.ceil(nw)), int(math.ceil(nh))), flags=cv2.INTER_LANCZOS4)
-    #
-    #
+
+
     # def is_rectangle_on_orignal_image(self, original_image, rotated_image, rectangle, angle):
-    #     xy_limits = self.image_borders(original_image)
-    #
     #     for vertex in rectangle.vertices:
     #         original_vertex = self.calulate_original_coordinat_before_rotation(original_image,
     #                                                                            rotated_image,

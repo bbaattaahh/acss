@@ -15,6 +15,7 @@ class TestDetectAsparaguses(unittest.TestCase):
 
         # when
         detect_asparaguses = DetectAsparaguses(image=image,
+                                               cascade_file=None,
                                                detection_scale=detection_scale)
 
         # that
@@ -54,6 +55,21 @@ class TestDetectAsparaguses(unittest.TestCase):
 
         # that
         self.assertEqual(actual_candidates, expected_candidates)
+
+    def test_rotate_about_center(self):
+        # given
+        image = cv2.imread("./images/DetectAsparaguses/test_rotate_about_center_input.jpg")
+
+        expected_rotated_image = cv2.imread("./images/DetectAsparaguses/test_rotate_about_center_output.jpg")
+
+        # when
+        detect_asparaguses = DetectAsparaguses(image=image,
+                                               cascade_file=None)
+        actual_rotated_image = detect_asparaguses.rotate_about_center(image, 25)
+
+        # that
+        difference_because_of_jpg_compression = sum(sum(sum(actual_rotated_image - expected_rotated_image)))
+        self.assertLess(difference_because_of_jpg_compression, 1000)
 
 
 if __name__ == '__main__':
