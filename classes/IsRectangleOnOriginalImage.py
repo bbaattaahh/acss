@@ -14,14 +14,14 @@ class IsRectangleOnOriginalImage:
 
     def is_rectangle_on_original_image(self):
         for vertex in self.rectangle_on_rotated_image.vertices:
-            original_vertex = self.calulate_original_coordinat_before_rotation(vertex)
+            original_vertex = self.calculate_original_coordinate_before_rotation(vertex)
 
             if not self.is_vertex_on_original_image(original_vertex):
                 return False
 
         return True
 
-    def calulate_original_coordinat_before_rotation(self, vertex):
+    def calculate_original_coordinate_before_rotation(self, vertex):
         point_numpy = np.array([[vertex[0]],[vertex[1]]])
 
         w_original = self.original_image.shape[1]

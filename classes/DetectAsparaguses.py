@@ -3,7 +3,7 @@ import numpy as np
 import math
 
 import Rectangle
-import IsRectangleOnImage
+
 
 class DetectAsparaguses(object):
 

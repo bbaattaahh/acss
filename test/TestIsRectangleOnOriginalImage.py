@@ -9,7 +9,8 @@ class TestIsRectangleOnOriginalImage(unittest.TestCase):
     def test_is_rectangle_on_original_image_true(self):
         # given
         rectangle_on_rotated_image = Rectangle(20, 20, 20, 30, 0)
-        original_image = cv2.imread("./images/IsRectangleOnOriginalImage/test_is_rectangle_on_original_image_true_input.jpg")
+        original_image = cv2.imread(
+            "./images/IsRectangleOnOriginalImage/test_is_rectangle_on_original_image_true_input.jpg")
         angle = 0
 
         # when
@@ -19,6 +20,42 @@ class TestIsRectangleOnOriginalImage(unittest.TestCase):
 
         # that
         self.assertEqual(is_rectangle_on_original_image.is_it, True)
+
+    def test_calculate_original_coordinate_before_rotation__no_rotation(self):
+        # given
+        original_image = cv2.imread(
+            "./images/IsRectangleOnOriginalImage/test_calculate_original_coordinate_before_rotation_working_input.jpg")
+        rectangle_on_rotated_image = Rectangle(20, 20, 20, 30, 0)
+        angle = 0
+        vertex = [0, 0]
+        expected_original_vertex = [0, 0]
+
+        # when
+        is_rectangle_on_original_image = IsRectangleOnOriginalImage(original_image,
+                                                                    rectangle_on_rotated_image,
+                                                                    angle)
+        actual_original_vertex = is_rectangle_on_original_image.calculate_original_coordinate_before_rotation(vertex)
+
+        # that
+        self.assertEqual(actual_original_vertex, expected_original_vertex)
+
+    def test_calculate_original_coordinate_before_rotation__45_rotation(self):
+        # given
+        original_image = cv2.imread(
+            "./images/IsRectangleOnOriginalImage/test_calculate_original_coordinate_before_rotation_working_input.jpg")
+        rectangle_on_rotated_image = Rectangle(20, 20, 20, 30, 0)
+        angle = 45
+        vertex = [0, 0]
+        expected_original_vertex = [159.99999999999997, -160.0]
+
+        # when
+        is_rectangle_on_original_image = IsRectangleOnOriginalImage(original_image,
+                                                                    rectangle_on_rotated_image,
+                                                                    angle)
+        actual_original_vertex = is_rectangle_on_original_image.calculate_original_coordinate_before_rotation(vertex)
+
+        # that
+        self.assertEqual(actual_original_vertex, expected_original_vertex)
 
 
 if __name__ == '__main__':
