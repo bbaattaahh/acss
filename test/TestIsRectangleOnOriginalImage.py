@@ -57,6 +57,23 @@ class TestIsRectangleOnOriginalImage(unittest.TestCase):
         # that
         self.assertEqual(actual_original_vertex, expected_original_vertex)
 
+    def test_is_vertex_on_original_image__false(self):
+        # given
+        original_image = cv2.imread(
+            "./images/IsRectangleOnOriginalImage/test_is_vertex_on_original_image_input.jpg")
+        rectangle_on_rotated_image = Rectangle(0, 0, 0, 0, 0)
+        angle = 45
+        vertex = [641, 480]
+
+        # when
+        is_rectangle_on_original_image = IsRectangleOnOriginalImage(original_image,
+                                                                    rectangle_on_rotated_image,
+                                                                    angle)
+        actual_decision = is_rectangle_on_original_image.is_vertex_on_original_image(vertex)
+
+        # that
+        self.assertEqual(actual_decision, False)
+
 
 if __name__ == '__main__':
     unittest.main()
