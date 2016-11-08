@@ -8,6 +8,7 @@ class TestDetectAsparaguses(unittest.TestCase):
     def test_image_detection_on(self):
         # given
         image = cv2.imread("./images/DetectAsparaguses/test_image_detection_on_input.jpg")
+        cascade_file = "./cascade_files/cascade.xml"
         detection_scale = 0.25
 
         expected_output_image = cv2.imread("./images/DetectAsparaguses/test_image_detection_on_output.jpg",
@@ -15,7 +16,7 @@ class TestDetectAsparaguses(unittest.TestCase):
 
         # when
         detect_asparaguses = DetectAsparaguses(image=image,
-                                               cascade_file=None,
+                                               cascade_file=cascade_file,
                                                detection_scale=detection_scale)
 
         # that
@@ -51,7 +52,7 @@ class TestDetectAsparaguses(unittest.TestCase):
                                                detection_scale=detection_scale,
                                                swing_angle=swing_angle)
 
-        actual_candidates = detect_asparaguses.asparagus_detection_candidates()
+        actual_candidates = detect_asparaguses.asparagus_detection_candidates
 
         # that
         self.assertEqual(actual_candidates, expected_candidates)
@@ -59,18 +60,56 @@ class TestDetectAsparaguses(unittest.TestCase):
     def test_rotate_about_center(self):
         # given
         image = cv2.imread("./images/DetectAsparaguses/test_rotate_about_center_input.jpg")
-
-        expected_rotated_image = cv2.imread("./images/DetectAsparaguses/test_rotate_about_center_output.jpg")
+        cascade_file = "./cascade_files/cascade.xml"
+        expected_rotated_image = cv2.imread("./images/DetectAsparaguses/test_rotate_about_center_output.jpg",
+                                            cv2.IMREAD_GRAYSCALE)
 
         # when
         detect_asparaguses = DetectAsparaguses(image=image,
-                                               cascade_file=None)
-        actual_rotated_image = detect_asparaguses.rotate_about_center(image, 25)
+                                               cascade_file=cascade_file)
+        actual_rotated_image = detect_asparaguses.rotate_about_center(25)
 
         # that
-        difference_because_of_jpg_compression = sum(sum(sum(actual_rotated_image - expected_rotated_image)))
-        self.assertLess(difference_because_of_jpg_compression, 1000)
+        difference_because_of_jpg_compression = sum(sum(actual_rotated_image - expected_rotated_image))
+        self.assertLess(difference_because_of_jpg_compression, 32000)
 
+    def test_get_asparagus_number_on_image__one(self):
+        # given
+        image = cv2.imread("./images/DetectAsparaguses/test_get_asparagus_number_on_image__one.jpg")
+        cascade_file = "./cascade_files/cascade.xml"
+        detection_scale = 0.25
+        swing_angle = 45
+
+        expected_asparagus_number = 1
+
+        # when
+        detect_asparaguses = DetectAsparaguses(image=image,
+                                               cascade_file=cascade_file,
+                                               detection_scale=detection_scale,
+                                               swing_angle=swing_angle)
+        actual_asparagus_number = detect_asparaguses.get_asparagus_number_on_image()
+
+        # that
+        self.assertEquals(actual_asparagus_number, expected_asparagus_number)
+
+    def test_get_asparagus_number_on_image__two(self):
+        # given
+        image = cv2.imread("./images/DetectAsparaguses/test_get_asparagus_number_on_image__two.jpg")
+        cascade_file = "./cascade_files/cascade.xml"
+        detection_scale = 0.25
+        swing_angle = 45
+
+        expected_asparagus_number = 2
+
+        # when
+        detect_asparaguses = DetectAsparaguses(image=image,
+                                               cascade_file=cascade_file,
+                                               detection_scale=detection_scale,
+                                               swing_angle=swing_angle)
+        actual_asparagus_number = detect_asparaguses.get_asparagus_number_on_image()
+
+        # that
+        self.assertEquals(actual_asparagus_number, expected_asparagus_number)
 
 if __name__ == '__main__':
     unittest.main()
