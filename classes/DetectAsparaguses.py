@@ -37,7 +37,20 @@ class DetectAsparaguses(object):
             asparagus_cascade = cv2.CascadeClassifier(self.cascade_file)
             actual_asparagus_candidates = asparagus_cascade.detectMultiScale(rotated_image_detection_on, 4, 31)
             if len(actual_asparagus_candidates) != 0:
-                detections[angle] = actual_asparagus_candidates.tolist()
+                for actual_asparagus_candidate in actual_asparagus_candidates:
+                    rectangle = Rectangle(top_left_x=actual_asparagus_candidate[0],
+                                          top_left_y=actual_asparagus_candidate[1],
+                                          width=actual_asparagus_candidate[2],
+                                          high=actual_asparagus_candidate[3],
+                                          angle=0)
+                    is_rectangle_on_original_image = IsRectangleOnOriginalImage(self.image_detection_on,
+                                                                                rectangle_on_rotated_image=rectangle,
+                                                                                angle=angle)
+
+                    if is_rectangle_on_original_image.is_it:
+                        actual_value = detections.get(angle, [])
+                        actual_value.append(actual_asparagus_candidate.tolist())
+                        detections[angle] = actual_value
 
         return detections
 
@@ -62,6 +75,10 @@ class DetectAsparaguses(object):
                               (int(math.ceil(nw)), int(math.ceil(nh))),
                               flags=cv2.INTER_LANCZOS4)
 
+    def get_final_candidates(self):
+        return None
+
+    # TODO This method is wrong it is no all the case give back appropriate result.
     def get_asparagus_number_on_image(self):
         max_len = 0
 
@@ -70,4 +87,3 @@ class DetectAsparaguses(object):
                 max_len = len(value)
 
         return max_len
-
