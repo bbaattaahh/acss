@@ -58,14 +58,17 @@ class Rectangle:
         bottom_left_corner_list = self.vector_to_list(bottom_left_corner)
         return bottom_left_corner_list
 
-    def to_vector(self, x, y):
+    @staticmethod
+    def to_vector(x, y):
         return np.array([[x],[y]])
 
-    def rotation_matrix(self, angle):
+    @staticmethod
+    def rotation_matrix(angle):
         rad = np.deg2rad(angle)
         rotMatrix = np.array([[np.cos(rad), -np.sin(rad)],
                               [np.sin(rad), np.cos(rad)]])
         return rotMatrix
 
-    def vector_to_list(self, vector):
+    @staticmethod
+    def vector_to_list(vector):
         return vector[0].tolist() + vector[1].tolist()
