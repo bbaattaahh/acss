@@ -4,7 +4,8 @@ import math
 
 from Rectangle import Rectangle
 from IsRectangleOnOriginalImage import IsRectangleOnOriginalImage
-
+from AsparagusCandidate import AsparagusCandidate
+from ChooseFinalCandidates import ChooseFinalCandidates
 
 class DetectAsparaguses(object):
 
@@ -29,8 +30,8 @@ class DetectAsparaguses(object):
                                     interpolation=cv2.INTER_CUBIC)
         return rescaled_image
 
-    def asparagus_detection_candidates(self):
-        detections = dict()
+    def get_asparagus_candidates(self):
+        detections = []
 
         for angle in range(-self.swing_angle, self.swing_angle+1):
             rotated_image_detection_on = self.rotate_about_center(angle)
@@ -48,9 +49,14 @@ class DetectAsparaguses(object):
                                                                                 angle=angle)
 
                     if is_rectangle_on_original_image.is_it:
-                        actual_value = detections.get(angle, [])
-                        actual_value.append(actual_asparagus_candidate.tolist())
-                        detections[angle] = actual_value
+                        actual_asparagus_candidate = AsparagusCandidate(top_left_x=actual_asparagus_candidate[0],
+                                                                        top_left_y=actual_asparagus_candidate[1],
+                                                                        width=actual_asparagus_candidate[2],
+                                                                        high=actual_asparagus_candidate[3],
+                                                                        angle=angle)
+                        detections.append(actual_asparagus_candidate)
+
+        choose_final_candidates = ChooseFinalCandidates(detections, )
 
         return detections
 
@@ -75,15 +81,4 @@ class DetectAsparaguses(object):
                               (int(math.ceil(nw)), int(math.ceil(nh))),
                               flags=cv2.INTER_LANCZOS4)
 
-    def get_final_candidates(self):
-        return None
 
-    # TODO This method is wrong it is no all the case give back appropriate result.
-    def get_asparagus_number_on_image(self):
-        max_len = 0
-
-        for key, value in self.asparagus_detection_candidates.iteritems():
-            if len(value) > max_len:
-                max_len = len(value)
-
-        return max_len

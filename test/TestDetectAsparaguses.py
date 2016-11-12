@@ -73,43 +73,6 @@ class TestDetectAsparaguses(unittest.TestCase):
         difference_because_of_jpg_compression = sum(sum(actual_rotated_image - expected_rotated_image))
         self.assertLess(difference_because_of_jpg_compression, 32000)
 
-    def test_get_asparagus_number_on_image__one(self):
-        # given
-        image = cv2.imread("./images/DetectAsparaguses/test_get_asparagus_number_on_image__one.jpg")
-        cascade_file = "./cascade_files/cascade.xml"
-        detection_scale = 0.25
-        swing_angle = 45
-
-        expected_asparagus_number = 1
-
-        # when
-        detect_asparaguses = DetectAsparaguses(image=image,
-                                               cascade_file=cascade_file,
-                                               detection_scale=detection_scale,
-                                               swing_angle=swing_angle)
-        actual_asparagus_number = detect_asparaguses.get_asparagus_number_on_image()
-
-        # that
-        self.assertEquals(actual_asparagus_number, expected_asparagus_number)
-
-    def test_get_asparagus_number_on_image__two(self):
-        # given
-        image = cv2.imread("./images/DetectAsparaguses/test_get_asparagus_number_on_image__two.jpg")
-        cascade_file = "./cascade_files/cascade.xml"
-        detection_scale = 0.25
-        swing_angle = 45
-
-        expected_asparagus_number = 2
-
-        # when
-        detect_asparaguses = DetectAsparaguses(image=image,
-                                               cascade_file=cascade_file,
-                                               detection_scale=detection_scale,
-                                               swing_angle=swing_angle)
-        actual_asparagus_number = detect_asparaguses.get_asparagus_number_on_image()
-
-        # that
-        self.assertEquals(actual_asparagus_number, expected_asparagus_number)
 
 if __name__ == '__main__':
     unittest.main()
