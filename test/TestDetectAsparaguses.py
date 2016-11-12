@@ -3,8 +3,47 @@ import cv2
 
 from DetectAsparaguses import DetectAsparaguses
 from AsparagusCandidate import AsparagusCandidate
+from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
+
 
 class TestDetectAsparaguses(unittest.TestCase):
+    def test_data_to_analysis_one_asparagus_images_one_asparagus(self):
+        # given
+        image = \
+            cv2.imread("./images/DetectAsparaguses/test_data_to_analysis_one_asparagus_images_one_asparagus_input.jpg")
+        cascade_file = "./cascade_files/cascade.xml"
+        detection_scale = 0.25
+        swing_angle = 45
+
+        expected_image = \
+            cv2.imread("./images/DetectAsparaguses/test_data_to_analysis_one_asparagus_images_one_asparagus_output.jpg")
+        detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
+                                                                image=expected_image,
+                                                                x_top_left_on_original_image=40.513580676,
+                                                                y_top_left_on_original_image=285.822663912,
+                                                                width_on_original_image=560.0,
+                                                                high_on_original_image=100.0,
+                                                                angle_on_original_image=-12)
+
+        expected_data_to_analysis = [detection_to_one_asparagus_analysis]
+
+        # when
+        detect_asparaguses = DetectAsparaguses(image=image,
+                                               cascade_file=cascade_file,
+                                               detection_scale=detection_scale,
+                                               swing_angle=swing_angle)
+        actual_data_to_analysis = detect_asparaguses.data_to_analysis_one_asparagus_images
+
+
+        # that
+        difference_because_of_jpg_compressing = \
+            sum(sum(sum(actual_data_to_analysis[0].image - expected_data_to_analysis[0].image)))
+
+        self.assertLess(difference_because_of_jpg_compressing, 300)
+        self.assertEqual(actual_data_to_analysis[0].angle_on_original_image,
+                         expected_data_to_analysis[0].angle_on_original_image)
+
+
     def test_image_detection_on(self):
         # given
         image = cv2.imread("./images/DetectAsparaguses/test_image_detection_on_input.jpg")

@@ -6,7 +6,7 @@ from Rectangle import Rectangle
 from IsRectangleOnOriginalImage import IsRectangleOnOriginalImage
 from AsparagusCandidate import AsparagusCandidate
 from ChooseFinalCandidates import ChooseFinalCandidates
-
+from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
 
 class DetectAsparaguses(object):
 
@@ -21,12 +21,41 @@ class DetectAsparaguses(object):
         self.swing_angle = swing_angle
         self.image_detection_on = self.image_detection_on()
         self.asparagus_candidates = self.get_asparagus_candidates()
+        self.data_to_analysis_one_asparagus_images = self.data_to_analysis_one_asparagus_images()
 
+    def data_to_analysis_one_asparagus_images(self):
+        to_asparagus_analysis = []
+        for candidate in self.asparagus_candidates:
+            original_rotated_image = self.rotate_about_center(self.image,
+                                                              angle=candidate.angle)
 
-    # def get_original_one_asparagus_images(self):
-    #     images = []
-    #     for candidate in self.asparagus_candidates:
-    #         original_rotated_image = self.rotate_about_center
+            scale_back_x = candidate.top_left_x * (1/self.detection_scale)
+            scale_back_y = candidate.top_left_y * (1/self.detection_scale)
+            scale_back_w = candidate.width * (1/self.detection_scale)
+            scale_back_h = candidate.high * (1/self.detection_scale)
+
+            image_one_asparagus = self.snip_from_rgb_image(original_rotated_image,
+                                                           scale_back_x,
+                                                           scale_back_y,
+                                                           scale_back_w,
+                                                           scale_back_h)
+            original_top_left_corner = self.calculate_original_coordinate_before_rotation(
+                                                                        image=self.image,
+                                                                        angle=candidate.angle,
+                                                                        vertex=[scale_back_x, scale_back_y])
+
+            actual_detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
+                                                            image=image_one_asparagus,
+                                                            x_top_left_on_original_image=original_top_left_corner[0],
+                                                            y_top_left_on_original_image=original_top_left_corner[1],
+                                                            width_on_original_image=scale_back_w,
+                                                            high_on_original_image=scale_back_h,
+                                                            angle_on_original_image=candidate.angle)
+
+            to_asparagus_analysis.append(actual_detection_to_one_asparagus_analysis)
+
+        return to_asparagus_analysis
+
 
 
     def image_detection_on(self):
@@ -90,3 +119,45 @@ class DetectAsparaguses(object):
                               rot_mat,
                               (int(math.ceil(nw)), int(math.ceil(nh))),
                               flags=cv2.INTER_LANCZOS4)
+
+    @staticmethod
+    def snip_from_rgb_image(image, x, y, w, h):
+        return image[y : y+h, x : x+w, :]
+
+    @staticmethod
+    def calculate_original_coordinate_before_rotation(image, angle, vertex):
+        point_numpy = np.array([[vertex[0]],[vertex[1]]])
+
+        w_original = image.shape[1]
+        h_original = image.shape[0]
+
+        # now calculate new image width and height
+        rangle = np.deg2rad(angle)  # angle in radians
+        w_rotated = abs(np.sin(rangle) * h_original) + abs(np.cos(rangle) * w_original)
+        h_rotated = abs(np.cos(rangle) * h_original) + abs(np.sin(rangle) * w_original)
+
+
+        # From top left coorner to centrum of image
+        centrum_vector = np.array([[-w_rotated / 2], [-h_rotated / 2]])
+
+        point_relative_to_centrum = point_numpy + centrum_vector
+
+        # Rotation back
+        theta = np.deg2rad(angle)
+        rotMatrix = np.array([[np.cos(theta), -np.sin(theta)],
+                              [np.sin(theta), np.cos(theta)]])
+        rotated_point_relative_to_centrum = np.dot(rotMatrix, point_relative_to_centrum)
+
+        # Centrum to top left coorner
+        top_left_centrum_point = rotated_point_relative_to_centrum - centrum_vector
+
+        # Compenyation with picture growth
+        w_growth_on_one_side = (w_rotated - w_original) / 2
+        h_growth_on_one_side = (h_rotated - h_original) / 2
+        compensation_vector = np.array([[w_growth_on_one_side], [h_growth_on_one_side]])
+
+        original_point = top_left_centrum_point - compensation_vector
+        original_point_list = original_point.tolist()
+        original_point_list_single_level = [original_point_list[0][0], original_point_list[1][0]]
+
+        return (original_point_list_single_level)
