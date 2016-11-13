@@ -4,7 +4,6 @@ import math
 
 from Rectangle import Rectangle
 from IsRectangleOnOriginalImage import IsRectangleOnOriginalImage
-from AsparagusCandidate import AsparagusCandidate
 from ChooseFinalCandidates import ChooseFinalCandidates
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
 
@@ -89,15 +88,18 @@ class DetectAsparaguses(object):
                                                                                 angle=angle)
 
                     if is_rectangle_on_original_image.is_it:
-                        actual_asparagus_candidate = AsparagusCandidate(top_left_x=actual_asparagus_candidate[0].tolist(),
-                                                                        top_left_y=actual_asparagus_candidate[1].tolist(),
-                                                                        width=actual_asparagus_candidate[2].tolist(),
-                                                                        high=actual_asparagus_candidate[3].tolist(),
-                                                                        angle=angle)
+                        actual_asparagus_candidate = Rectangle(
+                                                top_left_x=actual_asparagus_candidate[0].tolist(),
+                                                top_left_y=actual_asparagus_candidate[1].tolist(),
+                                                width=actual_asparagus_candidate[2].tolist(),
+                                                high=actual_asparagus_candidate[3].tolist(),
+                                                angle=angle)
+
                         detections.append(actual_asparagus_candidate)
 
         choose_final_candidates = ChooseFinalCandidates(detections, 5)
         final_candidates = choose_final_candidates.final_candidates
+
         return final_candidates
 
     @staticmethod

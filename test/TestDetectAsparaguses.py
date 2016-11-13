@@ -2,9 +2,9 @@ import unittest
 import cv2
 
 from DetectAsparaguses import DetectAsparaguses
-from AsparagusCandidate import AsparagusCandidate
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
 from Rectangle import Rectangle
+
 
 class TestDetectAsparaguses(unittest.TestCase):
     def test_data_to_analysis_one_asparagus_images_one_asparagus(self):
@@ -71,8 +71,8 @@ class TestDetectAsparaguses(unittest.TestCase):
         detection_scale = 0.25
         swing_angle = 8
 
-        asparagus_candidate_1 = AsparagusCandidate(16, 40, 140, 25, -7)
-        asparagus_candidate_2 = AsparagusCandidate(11, 56, 140, 25, -1)
+        asparagus_candidate_1 = Rectangle(16, 40, 140, 25, -7)
+        asparagus_candidate_2 = Rectangle(11, 56, 140, 25, -1)
 
         expected_candidates = [asparagus_candidate_1, asparagus_candidate_2]
 

@@ -38,7 +38,7 @@ class ChooseFinalCandidates:
 
     def is_it_fit_to_group(self, candidate, group):
         for group_member in group:
-            if self.euclidean_distance(candidate.top_left_corner, group_member.top_left_corner) < self.tolerance:
+            if self.euclidean_distance(candidate.top_left_corner(), group_member.top_left_corner()) < self.tolerance:
                 return True
 
         return False

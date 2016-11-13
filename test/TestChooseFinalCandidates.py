@@ -1,6 +1,7 @@
 import unittest
+
 from ChooseFinalCandidates import ChooseFinalCandidates
-from AsparagusCandidate import AsparagusCandidate
+from Rectangle import Rectangle
 
 
 class TestChooseFinalCandidates(unittest.TestCase):
@@ -19,9 +20,9 @@ class TestChooseFinalCandidates(unittest.TestCase):
 
     def test_final_candidates_two_candidates(self):
         # given
-        asparagus_candidate1 = AsparagusCandidate(0, 0, 100, 10, -1)
-        asparagus_candidate2 = AsparagusCandidate(1, 1, 100, 10, 0)
-        asparagus_candidate3 = AsparagusCandidate(1, 10, 100, 10, 0)
+        asparagus_candidate1 = Rectangle(0, 0, 100, 10, -1)
+        asparagus_candidate2 = Rectangle(1, 1, 100, 10, 0)
+        asparagus_candidate3 = Rectangle(1, 10, 100, 10, 0)
         candidates = [asparagus_candidate1, asparagus_candidate2, asparagus_candidate3]
         tolerance = 5
         expected_candidates = [asparagus_candidate2, asparagus_candidate3]
@@ -35,12 +36,12 @@ class TestChooseFinalCandidates(unittest.TestCase):
 
     def test_final_candidates_three_candidates(self):
         # given
-        asparagus_candidate1_1 = AsparagusCandidate(0, 0, 100, 10, -1)
-        asparagus_candidate1_2 = AsparagusCandidate(1, 1, 100, 10, 0)
-        asparagus_candidate1_3 = AsparagusCandidate(1, 2, 100, 10, 1)
-        asparagus_candidate2_1 = AsparagusCandidate(1, 10, 100, 10, 5)
-        asparagus_candidate2_2 = AsparagusCandidate(1, 12, 100, 10, 6)
-        asparagus_candidate3_1 = AsparagusCandidate(1, 22, 100, 10, 15)
+        asparagus_candidate1_1 = Rectangle(0, 0, 100, 10, -1)
+        asparagus_candidate1_2 = Rectangle(1, 1, 100, 10, 0)
+        asparagus_candidate1_3 = Rectangle(1, 2, 100, 10, 1)
+        asparagus_candidate2_1 = Rectangle(1, 10, 100, 10, 5)
+        asparagus_candidate2_2 = Rectangle(1, 12, 100, 10, 6)
+        asparagus_candidate3_1 = Rectangle(1, 22, 100, 10, 15)
         candidates = [asparagus_candidate1_1,
                       asparagus_candidate1_2,
                       asparagus_candidate1_3,
@@ -60,8 +61,8 @@ class TestChooseFinalCandidates(unittest.TestCase):
 
     def test_get_groups_single_group(self):
         # given
-        asparagus_candidate1 = AsparagusCandidate(0,0,100,10,-1)
-        asparagus_candidate2 = AsparagusCandidate(1,1,100,10,0)
+        asparagus_candidate1 = Rectangle(0,0,100,10,-1)
+        asparagus_candidate2 = Rectangle(1,1,100,10,0)
         candidates = [asparagus_candidate1, asparagus_candidate2]
         tolerance = 5
         expected_groups = [[asparagus_candidate1, asparagus_candidate2]]
@@ -75,9 +76,9 @@ class TestChooseFinalCandidates(unittest.TestCase):
 
     def test_get_groups_two_groups(self):
         # given
-        asparagus_candidate1 = AsparagusCandidate(0, 0, 100, 10, -1)
-        asparagus_candidate2 = AsparagusCandidate(1, 1, 100, 10, 0)
-        asparagus_candidate3 = AsparagusCandidate(1, 10, 100, 10, 0)
+        asparagus_candidate1 = Rectangle(0, 0, 100, 10, -1)
+        asparagus_candidate2 = Rectangle(1, 1, 100, 10, 0)
+        asparagus_candidate3 = Rectangle(1, 10, 100, 10, 0)
         candidates = [asparagus_candidate1, asparagus_candidate2, asparagus_candidate3]
         tolerance = 5
         expected_groups = [[asparagus_candidate1, asparagus_candidate2],
