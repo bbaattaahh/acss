@@ -8,6 +8,7 @@ from AsparagusCandidate import AsparagusCandidate
 from ChooseFinalCandidates import ChooseFinalCandidates
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
 
+
 class DetectAsparaguses(object):
 
     def __init__(self,
@@ -15,6 +16,7 @@ class DetectAsparaguses(object):
                  cascade_file,
                  detection_scale=0.25,
                  swing_angle=45):
+
         self.image = image
         self.cascade_file = cascade_file
         self.detection_scale = detection_scale
@@ -29,16 +31,17 @@ class DetectAsparaguses(object):
             original_rotated_image = self.rotate_about_center(self.image,
                                                               angle=candidate.angle)
 
-            scale_back_x = candidate.top_left_x * (1/self.detection_scale)
-            scale_back_y = candidate.top_left_y * (1/self.detection_scale)
-            scale_back_w = candidate.width * (1/self.detection_scale)
-            scale_back_h = candidate.high * (1/self.detection_scale)
+            scale_back_x = candidate.top_left_x / self.detection_scale
+            scale_back_y = candidate.top_left_y / self.detection_scale
+            scale_back_w = candidate.width / self.detection_scale
+            scale_back_h = candidate.high / self.detection_scale
 
             image_one_asparagus = self.snip_from_rgb_image(original_rotated_image,
                                                            scale_back_x,
                                                            scale_back_y,
                                                            scale_back_w,
                                                            scale_back_h)
+
             original_top_left_corner = self.calculate_original_coordinate_before_rotation(
                                                                         image=self.image,
                                                                         angle=candidate.angle,
@@ -58,8 +61,6 @@ class DetectAsparaguses(object):
 
         return to_asparagus_analysis
 
-
-
     def image_detection_on(self):
         grey_image = cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
         rescaled_image = cv2.resize(grey_image,
@@ -68,7 +69,6 @@ class DetectAsparaguses(object):
                                     fy=self.detection_scale,
                                     interpolation=cv2.INTER_CUBIC)
         return rescaled_image
-
 
     def get_asparagus_candidates(self):
         detections = []
@@ -104,7 +104,8 @@ class DetectAsparaguses(object):
     def rotate_about_center(image, angle):
         w = image.shape[1]
         h = image.shape[0]
-        rangle = np.deg2rad(angle)  # angle in radians
+        # angle in radians
+        rangle = np.deg2rad(angle)
         # now calculate new image width and height
         nw = abs(np.sin(rangle) * h) + abs(np.cos(rangle) * w)
         nh = abs(np.cos(rangle) * h) + abs(np.sin(rangle) * w)
@@ -128,7 +129,7 @@ class DetectAsparaguses(object):
 
     @staticmethod
     def calculate_original_coordinate_before_rotation(image, angle, vertex):
-        point_numpy = np.array([[vertex[0]],[vertex[1]]])
+        point_numpy = np.array([[vertex[0]], [vertex[1]]])
 
         w_original = image.shape[1]
         h_original = image.shape[0]
@@ -140,9 +141,9 @@ class DetectAsparaguses(object):
 
 
         # From top left coorner to centrum of image
-        centrum_vector = np.array([[-w_rotated / 2], [-h_rotated / 2]])
+        central_vector = np.array([[-w_rotated / 2], [-h_rotated / 2]])
 
-        point_relative_to_centrum = point_numpy + centrum_vector
+        point_relative_to_centrum = point_numpy + central_vector
 
         # Rotation back
         theta = np.deg2rad(angle)
@@ -151,7 +152,7 @@ class DetectAsparaguses(object):
         rotated_point_relative_to_centrum = np.dot(rotMatrix, point_relative_to_centrum)
 
         # Centrum to top left coorner
-        top_left_centrum_point = rotated_point_relative_to_centrum - centrum_vector
+        top_left_centrum_point = rotated_point_relative_to_centrum - central_vector
 
         # Compenyation with picture growth
         w_growth_on_one_side = (w_rotated - w_original) / 2
@@ -160,6 +161,6 @@ class DetectAsparaguses(object):
 
         original_point = top_left_centrum_point - compensation_vector
         original_point_list = original_point.tolist()
-        original_point_list_single_level = [original_point_list[0][0], original_point_list[1][0]]
+        original_point_list_single_level = original_point_list[0] + original_point_list[1]
 
-        return (original_point_list_single_level)
+        return original_point_list_single_level
