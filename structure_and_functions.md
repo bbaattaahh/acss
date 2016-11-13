@@ -10,7 +10,7 @@ The projet contains these boundaries. Overview.
 
 1.1. Camera calibration
 1.2. Bucket identification by ORC
-1.3. Recogition of asparagus: Viola–Jones object detection with opencv
+1.3. Detection of asparagus: Viola–Jones object detection with opencv
 1.4. Image processing of one asparagus
 1.5. Classification
 1.6. Display the result
@@ -26,8 +26,9 @@ On 0%.
 ### 1.3. Recogition: Viola–Jones object detection with opencv
 
 Use Viola–Jones object detection. It is implemented in OpenCV.
-No image rotationing because it is to expensive, instead we want to find even the not horizontal asparaguses.
-- it should be reproducible
+Image rotationing.
+Outputs :
+- image about the asparagus
 
 ### 1.4. Image processing of one asparagus
 
