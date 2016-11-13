@@ -44,13 +44,15 @@ class DetectAsparaguses(object):
                                                                         angle=candidate.angle,
                                                                         vertex=[scale_back_x, scale_back_y])
 
+            rectangle_on_original_image = Rectangle(top_left_x=original_top_left_corner[0],
+                                                    top_left_y=original_top_left_corner[1],
+                                                    width=scale_back_w,
+                                                    high=scale_back_h,
+                                                    angle=candidate.angle)
+
             actual_detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
                                                             image=image_one_asparagus,
-                                                            x_top_left_on_original_image=original_top_left_corner[0],
-                                                            y_top_left_on_original_image=original_top_left_corner[1],
-                                                            width_on_original_image=scale_back_w,
-                                                            high_on_original_image=scale_back_h,
-                                                            angle_on_original_image=candidate.angle)
+                                                            rectangle_on_original_image=rectangle_on_original_image)
 
             to_asparagus_analysis.append(actual_detection_to_one_asparagus_analysis)
 

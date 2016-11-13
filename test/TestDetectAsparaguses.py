@@ -4,7 +4,7 @@ import cv2
 from DetectAsparaguses import DetectAsparaguses
 from AsparagusCandidate import AsparagusCandidate
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
-
+from Rectangle import Rectangle
 
 class TestDetectAsparaguses(unittest.TestCase):
     def test_data_to_analysis_one_asparagus_images_one_asparagus(self):
@@ -17,13 +17,15 @@ class TestDetectAsparaguses(unittest.TestCase):
 
         expected_image = \
             cv2.imread("./images/DetectAsparaguses/test_data_to_analysis_one_asparagus_images_one_asparagus_output.jpg")
+        detection_rectangle = Rectangle(top_left_x=40.513580676,
+                                        top_left_y=285.822663912,
+                                        width=560.0,
+                                        high=100.0,
+                                        angle=-12)
+
         detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
                                                                 image=expected_image,
-                                                                x_top_left_on_original_image=40.513580676,
-                                                                y_top_left_on_original_image=285.822663912,
-                                                                width_on_original_image=560.0,
-                                                                high_on_original_image=100.0,
-                                                                angle_on_original_image=-12)
+                                                                rectangle_on_original_image=detection_rectangle)
 
         expected_data_to_analysis = [detection_to_one_asparagus_analysis]
 
@@ -40,8 +42,8 @@ class TestDetectAsparaguses(unittest.TestCase):
             sum(sum(sum(actual_data_to_analysis[0].image - expected_data_to_analysis[0].image)))
 
         self.assertLess(difference_because_of_jpg_compressing, 300)
-        self.assertEqual(actual_data_to_analysis[0].angle_on_original_image,
-                         expected_data_to_analysis[0].angle_on_original_image)
+        self.assertEqual(actual_data_to_analysis[0].rectangle_on_original_image.angle,
+                         expected_data_to_analysis[0].rectangle_on_original_image.angle)
 
 
     def test_image_detection_on(self):
