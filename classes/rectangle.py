@@ -24,50 +24,50 @@ class Rectangle:
 
     def top_right_corner(self):
         top_left_corner = self.to_vector(self.top_left_x, self.top_left_y)
-        unrotated_vector = self.to_vector(self.width, 0)
-        rotMatrix = self.rotation_matrix(self.angle)
-        rotated_vector = np.dot(rotMatrix, unrotated_vector)
+        non_rotated_vector = self.to_vector(self.width, 0)
+        rot_matrix = self.rotation_matrix(self.angle)
+        rotated_vector = np.dot(rot_matrix, non_rotated_vector)
         top_right_corner = top_left_corner + rotated_vector
         top_right_corner_list = self.vector_to_list(top_right_corner)
         return top_right_corner_list
 
     def bottom_right_corner(self):
         top_left_corner = self.to_vector(self.top_left_x, self.top_left_y)
-        unrotated_vector = self.to_vector(self.width, self.high)
-        rotMatrix = self.rotation_matrix(self.angle)
-        rotated_vector = np.dot(rotMatrix, unrotated_vector)
+        non_rotated_vector = self.to_vector(self.width, self.high)
+        rot_matrix = self.rotation_matrix(self.angle)
+        rotated_vector = np.dot(rot_matrix, non_rotated_vector)
         bottom_right_corner = top_left_corner + rotated_vector
         bottom_right_corner_list = self.vector_to_list(bottom_right_corner)
         return bottom_right_corner_list
 
     def bottom_right_corner(self):
         top_left_corner = self.to_vector(self.top_left_x, self.top_left_y)
-        unrotated_vector = self.to_vector(self.width, self.high)
-        rotMatrix = self.rotation_matrix(self.angle)
-        rotated_vector = np.dot(rotMatrix, unrotated_vector)
+        non_rotated_vector = self.to_vector(self.width, self.high)
+        rot_matrix = self.rotation_matrix(self.angle)
+        rotated_vector = np.dot(rot_matrix, non_rotated_vector)
         bottom_right_corner = top_left_corner + rotated_vector
         bottom_right_corner_list = self.vector_to_list(bottom_right_corner)
         return bottom_right_corner_list
 
     def bottom_left_corner(self):
         top_left_corner = self.to_vector(self.top_left_x, self.top_left_y)
-        unrotated_vector = self.to_vector(0, self.high)
-        rotMatrix = self.rotation_matrix(self.angle)
-        rotated_vector = np.dot(rotMatrix, unrotated_vector)
+        non_rotated_vector = self.to_vector(0, self.high)
+        rot_matrix = self.rotation_matrix(self.angle)
+        rotated_vector = np.dot(rot_matrix, non_rotated_vector)
         bottom_left_corner = top_left_corner + rotated_vector
         bottom_left_corner_list = self.vector_to_list(bottom_left_corner)
         return bottom_left_corner_list
 
     @staticmethod
     def to_vector(x, y):
-        return np.array([[x],[y]])
+        return np.array([[x], [y]])
 
     @staticmethod
     def rotation_matrix(angle):
         rad = np.deg2rad(angle)
-        rotMatrix = np.array([[np.cos(rad), -np.sin(rad)],
+        rot_matrix = np.array([[np.cos(rad), -np.sin(rad)],
                               [np.sin(rad), np.cos(rad)]])
-        return rotMatrix
+        return rot_matrix
 
     @staticmethod
     def vector_to_list(vector):
