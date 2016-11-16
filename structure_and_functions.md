@@ -17,8 +17,18 @@ The projet contains these boundaries. Overview.
 
 
 ### 1.1. Camera calibration
-Establish the pixel millimater ratio. Later, it will be a burned variable at first. But the notion something like this:
+Establish the pixel millimater ratio.
+
+The solution based on this, without the corrections use only the chessboard detection function:
 http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html
+**Input:**
+- RGB picture about a chessboard
+- the length of the square of the board in millimeter
+
+**Output:**
+- millimeter pixel ratio
+- pixel millimeter ratio
+- variance of the detected chessboard squers edge size (check how good is the detection, if it is high it could be rerun)
 
 ### 1.2. Bucket identification by ORC
 On 0%.
@@ -27,17 +37,44 @@ On 0%.
 
 Use Viola–Jones object detection. It is implemented in OpenCV.
 Image rotationing.
-Outputs :
+**Input:**
+- Haar cascade xml file
+- RGB image
+- scaling ratio: before detection resize the image, because of theching method and seaching tim
+- swing angle: when run Haar cascade detection, the image is rotated because of limitation of Viola–Jones object detection algorithm
+
+**Outputs:**
 - image about the asparagus
+- rectangle data about the image, where it can be find in the original image (be able to order the objets on the image)
 
 ### 1.4. Image processing of one asparagus
+**Input:**
+- Output of 1.3. point
 
+**Output:**
+- asparagus thickness (done)
+- asparagus length (done)
+- purple flag (not done)
+- head flag (not done)
+- open head flag (not done)
+- piper flag (not done)
 
 ### 1.5. Classification
+**Input:**
+- output 1.4.
+- JSON file which contains the classification parameters
 
+**Output**
+- Unknown
 
 ### 1.6. Display the result
-Easy: cv2.putText
+
+**Input:**
+- output 1.4.
+- JSON file which contains the classification parameters
+
+**Output**
+- Unknown
 
 
 # Other
