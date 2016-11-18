@@ -1,0 +1,25 @@
+{
+	"Class 1": {
+		"thickness": {
+			"lower_limit": "lower limit in millimeter",
+			"upper_limit": "upper limit in millimeter"
+		},
+		"length": {
+			"lower_limit": "lower limit in millimeter",
+			"upper_limit": "upper limit in millimeter"
+		},
+		"purple_head": "true/false expectation"
+	},
+
+	"Class 2": {
+		"thickness": {
+			"lower_limit": "lower limit in millimeter",
+			"upper_limit": "upper limit in millimeter"
+		},
+		"length": {
+			"lower_limit": "lower limit in millimeter",
+			"upper_limit": "upper limit in millimeter"
+		},
+		"purple_head": "true/false expectation"
+	}
+}
