@@ -1,3 +1,4 @@
 {
-    "dropbox_folder_path": "your_dropbox_folder_path"
+    "dropbox_folder_path": "your_dropbox_folder_path",
+    "classification_specification_file" : "your classification specification path"
 }

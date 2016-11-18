@@ -2,7 +2,7 @@ class Asparagus:
     def __init__(self,
                  length,
                  thickness,
-                 head=False,
+                 head=True,
                  purple_head=False,
                  open_head=False,
                  piper=False):
