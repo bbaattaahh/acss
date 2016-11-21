@@ -3,9 +3,11 @@ import cv2
 
 class NumberImages0To9:
     def __init__(self,
-                 folder_path):
+                 folder_path,
+                 parent_image_resolution):
 
         self.folder_path = folder_path
+        self.parent_image_resolution = parent_image_resolution
         self.number_0 = self.get_image("0.jpg")
         self.number_1 = self.get_image("1.jpg")
         self.number_2 = self.get_image("2.jpg")
