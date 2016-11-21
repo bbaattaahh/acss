@@ -1,0 +1,16 @@
+{
+	"Purple I": {
+		"thickness": {
+			"lower_limit": 23,
+			"upper_limit": 26
+		},
+		"length": {
+			"lower_limit": 220,
+			"upper_limit": 230
+		},
+		"head": true,
+		"purple_head": true,
+		"open_head": false,
+		"piper": false
+	}
+}

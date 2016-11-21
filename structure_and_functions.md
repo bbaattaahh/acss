@@ -8,12 +8,12 @@ The code can find the videos and the images by the setting in the config-local.j
 ## Code base
 The projet contains these boundaries:
 
-1.1. Camera calibration (Done)
-1.2. Bucket identification (Not started)
-1.3. Detection of asparagus: Viola–Jones object detection with opencv (Done)
-1.4. Image processing of one asparagus (In progress)
-1.5. Classification (In progress)
-1.6. Display the result (Not started)
+- 1.1. Camera calibration (Done)
+- 1.2. Bucket identification (Not started)
+- 1.3. Detection of asparagus: Viola–Jones object detection with opencv (Done)
+- 1.4. Image processing of one asparagus (In progress)
+- 1.5. Classification (Done)
+- 1.6. Display the result (Not started)
 
 
 ### 1.1. Camera calibration
@@ -128,6 +128,7 @@ There is not final decision about this boundary.
 - global testing environment
 - automatize Viola–Jones generetion. It it an idividual or a global szolution
 - Make it available online
+- later axamine the curl of the asparagus
 
 
 ### 1.2. Bucket identification

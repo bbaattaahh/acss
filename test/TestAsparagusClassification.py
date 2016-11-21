@@ -70,6 +70,29 @@ class TestAsparagusClassification(unittest.TestCase):
         # that
         self.assertEqual(actual_classification_result, expected_classification_result)
 
+    def test_asparagus_classification_purple_I(self):
+        # given
+        asparagus = Asparagus(length=450,
+                              thickness=50,
+                              head=True,
+                              purple_head=True,
+                              open_head=False)
+        millimeter_pixel_ratio = 0.5
+        with open("./json_files/test_asparagus_classification_purple_I.json") as json_data:
+            classification_specification = json.load(json_data)
+
+        expected_classification_result = "Purple I"
+
+        # when
+        asparagus_classification = AsparagusClassification(asparagus=asparagus,
+                                                           millimeter_pixel_ratio=millimeter_pixel_ratio,
+                                                           classification_specification=classification_specification)
+
+        actual_classification_result = asparagus_classification.classification_result
+
+        # that
+        self.assertEqual(actual_classification_result, expected_classification_result)
+
 
 if __name__ == '__main__':
     unittest.main()
