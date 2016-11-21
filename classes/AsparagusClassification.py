@@ -38,17 +38,17 @@ class AsparagusClassification:
 
     def is_length_appropriate(self, length_conditions):
         thickness_in_millimeter = self.asparagus.length * self.millimeter_pixel_ratio
-        if thickness_in_millimeter < length_conditions["lower_limit"]:
+        if thickness_in_millimeter <= length_conditions["lower_limit"]:
             return False
-        if thickness_in_millimeter >= length_conditions["upper_limit"]:
+        if thickness_in_millimeter > length_conditions["upper_limit"]:
             return False
         return True
 
     def is_thickness_appropriate(self, thickness_conditions):
         thickness_in_millimeter = self.asparagus.thickness * self.millimeter_pixel_ratio
-        if thickness_in_millimeter < thickness_conditions["lower_limit"]:
+        if thickness_in_millimeter <= thickness_conditions["lower_limit"]:
             return False
-        if thickness_in_millimeter >= thickness_conditions["upper_limit"]:
+        if thickness_in_millimeter > thickness_conditions["upper_limit"]:
             return False
         return True
 
