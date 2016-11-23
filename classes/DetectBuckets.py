@@ -11,6 +11,7 @@ class DetectBuckets:
 
     @staticmethod
     def template_match(image, template):
+        return None
 
 
 
