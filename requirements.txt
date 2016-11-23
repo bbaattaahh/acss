@@ -3,3 +3,5 @@ cv2
 matplotlib
 opencv
 math
+PIL
+pytesseract
