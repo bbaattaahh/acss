@@ -1,14 +1,15 @@
-import cv2
 import unittest
+
+import cv2
 import numpy as np
 
-from NumberImages0To9 import NumberImages0To9
+from experiments.NumberImages0To9.NumberImages0To9 import NumberImages0To9
 
 
 class TestNumberImages0To9(unittest.TestCase):
     def test_number_images_0_to_9_working(self):
         # given
-        folder_path = "./images/NumberImages0To9/test_number_images_0_to_9_working_inputs"
+        folder_path = "./images/NumberImages0To9/number_images"
         parent_image_resolution = (480, 640)
         number_images_0_to_9 = NumberImages0To9(folder_path=folder_path,
                                                 parent_image_resolution=parent_image_resolution)

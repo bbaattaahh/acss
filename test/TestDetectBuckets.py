@@ -1,9 +1,9 @@
 import unittest
+
 import cv2
-import numpy as np
 
 from DetectBuckets import DetectBuckets
-from NumberImages0To9 import NumberImages0To9
+from experiments.NumberImages0To9.NumberImages0To9 import NumberImages0To9
 
 
 class TestDetectBuckets(unittest.TestCase):
