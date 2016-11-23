@@ -1,32 +1,32 @@
 import unittest
-
+import numpy as np
 import cv2
 
 from DetectBuckets import DetectBuckets
-from experiments.NumberImages0To9.NumberImages0To9 import NumberImages0To9
 
 
 class TestDetectBuckets(unittest.TestCase):
-    def test_prepare_images_working(self):
+    def test_get_bucket_marker_image_center_working(self):
         # given
-        folder_path = "./images/DetectBuckets/number_images_0_to_9"
-        parent_image_resolution = (397, 556)
-        number_images_0_to_9 = NumberImages0To9(folder_path=folder_path,
-                                                parent_image_resolution=parent_image_resolution)
-
-        image = cv2.imread("./images/DetectBuckets/test_prepare_images_working_input.jpg")
+        image = None
+        bucket_marker_image = cv2.imread(
+            "./images/DetectBuckets/test_get_bucket_marker_image_center_working__input_bucket_marker.jpg")
+        bucket_marker_dimensions_in_millimeter = None
+        pixel_millimeter_ratio = None
         detect_buckets = DetectBuckets(image=image,
-                                       number_images_0_to_9=number_images_0_to_9)
+                                       bucket_marker_image=bucket_marker_image,
+                                       bucket_marker_dimensions_in_millimeter=bucket_marker_dimensions_in_millimeter,
+                                       pixel_millimeter_ratio=pixel_millimeter_ratio)
 
-        expected_prepared_image = cv2.imread("./images/DetectBuckets/test_prepare_images_working_output.jpg",
-                                             flags=cv2.CV_LOAD_IMAGE_GRAYSCALE)
+        expected_bucket_marker_image_center = cv2.imread(
+            "./images/DetectBuckets/test_prepare_images_working_output.png")
 
         # when
-        actual_prepared_image = detect_buckets.prepare_image()
+        actual_prepared_image = detect_buckets.get_bucket_marker_image_center()
+        cv2.imwrite("nos.jpg", actual_prepared_image)
 
         # that
-        pixel_difference_because_of_jpg_distortion = sum(sum(actual_prepared_image-expected_prepared_image))
-        self.assertLess(pixel_difference_because_of_jpg_distortion, 55000)
+        self.assertEqual(np.array_equal(expected_bucket_marker_image_center))
 
 
 if __name__ == '__main__':
