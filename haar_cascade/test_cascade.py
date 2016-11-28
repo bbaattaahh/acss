@@ -5,7 +5,7 @@ import json
 import math
 
 from Rectangle import Rectangle
-
+from IsRectangleOnOriginalImage import IsRectangleOnOriginalImage
 from is_rectangle_on_original_image import is_rectangle_on_original_image
 
 
@@ -83,12 +83,14 @@ for x in t:
         # add this
         for (x, y, w, h) in asparaguses:
             act_rectangle = Rectangle(x, y, w, h)
-
-            if (is_asparagus(w, h, MIN_AREA) and is_rectangle_on_original_image(rectangle=act_rectangle,
-                                                                               original_image=act_frame_grey,
-                                                                               rotated_image=rotated_act_frame_grey,
-                                                                               angle=angle)):
-
+            isRectangleOnOriginalImage = IsRectangleOnOriginalImage(act_frame_grey,
+                                                                    act_rectangle,
+                                                                    angle)
+            # if (is_asparagus(w, h, MIN_AREA) and is_rectangle_on_original_image(rectangle=act_rectangle,
+            #                                                                    original_image=act_frame_grey,
+            #                                                                    rotated_image=rotated_act_frame_grey,
+            #                                                                    angle=angle)):
+            if isRectangleOnOriginalImage.is_it:
                 cv2.imwrite(RESULT_IMAGE_FOLDER + str(i) + ".jpg", ratated_act_frame_rgb[y:y + h, x:x + w, :])
                 cv2.rectangle(ratated_act_frame_rgb, (x, y), (x + w, y + h), (255, 255, 0), 2)
                 act_rectangle = Rectangle(x, y, w, h)
