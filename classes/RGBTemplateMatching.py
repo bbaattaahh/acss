@@ -37,11 +37,11 @@ class RGBTemplateMatching:
 
         match_green = cv2.matchTemplate(self.rgb_image[:, :, 1],
                                         self.rgb_template[:, :, 1],
-                                        RGBTemplateMatching.cv2_matching_method)
+                                        RGBTemplateMatching.cv2_method)
 
         match_blue = cv2.matchTemplate(self.rgb_image[:, :, 2],
                                        self.rgb_template[:, :, 2],
-                                       RGBTemplateMatching.cv2_matching_method)
+                                       RGBTemplateMatching.cv2_method)
 
         match_rgb = match_red + match_green + match_blue
 
