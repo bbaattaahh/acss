@@ -2,6 +2,8 @@ import cv2
 import pytesseract
 from PIL import Image
 
+from RGBTemplateMatching import RGBTemplateMatching
+
 
 class DetectBuckets:
     def __init__(self,
