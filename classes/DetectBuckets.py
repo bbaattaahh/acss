@@ -21,7 +21,8 @@ class DetectBuckets:
         recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7')
         return recognized_numbers
 
-    def resize_image(self):
+    @property
+    def resized_image(self):
 
         target_height, target_width = self.template_matching_resolution
         height, width, _ = self.image.shape
@@ -36,7 +37,8 @@ class DetectBuckets:
                                   interpolation=cv2.INTER_CUBIC)
         return resize_image
 
-    def resize_bucket_marker_template(self):
+    @property
+    def resized_bucket_marker_template(self):
         original_height, original_width = self.bucket_marker_template_original_resolution
         template_matching_height, template_matching_width = self.template_matching_resolution
         bucket_marker_template_height, bucket_marker_template_width, _ = self.bucket_marker_template.shape

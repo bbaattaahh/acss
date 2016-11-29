@@ -30,7 +30,7 @@ class TestDetectBuckets(unittest.TestCase):
         expected_resized_image = cv2.imread("./images/DetectBuckets/test_resize_image_working_output.png")
 
         # when
-        actual_resized_image = detect_buckets.resize_image()
+        actual_resized_image = detect_buckets.resized_image
 
         # that
         self.assertEqual(np.array_equal(actual_resized_image, expected_resized_image), True)
@@ -50,7 +50,7 @@ class TestDetectBuckets(unittest.TestCase):
                                     "./images/DetectBuckets/test_resized_bucket_marker_template_working_output.png")
 
         # when
-        actual_resized_bucket_marker_template = detect_buckets.resize_bucket_marker_template()
+        actual_resized_bucket_marker_template = detect_buckets.resized_bucket_marker_template
 
         # that
         self.assertEqual(np.array_equal(actual_resized_bucket_marker_template,
