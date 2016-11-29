@@ -7,11 +7,13 @@ class DetectBuckets:
     def __init__(self,
                  image,
                  bucket_marker_image,
+                 bucket_marker_image_original_resolution,
                  bucket_marker_dimensions_in_millimeter,
                  pixel_millimeter_ratio):
 
         self.image = image
         self.bucket_marker_image = bucket_marker_image
+        self.bucket_marker_image_original_resolution = bucket_marker_image_original_resolution
         self.bucket_marker_dimensions_in_millimeter = bucket_marker_dimensions_in_millimeter
         self.pixel_millimeter_ratio = pixel_millimeter_ratio
 
@@ -21,16 +23,17 @@ class DetectBuckets:
         recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7')
         return recognized_numbers
 
-    def get_bucket_marker_image_center(self):
-        height, width, _ = self.bucket_marker_image.shape
-        center_x = width/2
-        center_y = height/2
+    @staticmethod
+    def resize_image(image, target_height, target_width):
 
-        lower_x = int(center_x - width*0.05)
-        upper_x = int(center_x + width*0.05)
-        lower_y = int(center_y - height*0.05)
-        upper_y = int(center_y + height*0.05)
+        height, width, _ = image.shape
 
-        center_image = self.bucket_marker_image[lower_y:upper_y, lower_x:upper_x, :]
+        scale_factor_x = float(target_width) / width
+        scale_factor_y = float(target_height) / height
 
-        return center_image
+        resize_image = cv2.resize(image,
+                                  None,
+                                  fx=scale_factor_x,
+                                  fy=scale_factor_y,
+                                  interpolation=cv2.INTER_CUBIC)
+        return resize_image
