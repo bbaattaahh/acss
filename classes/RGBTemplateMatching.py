@@ -3,16 +3,17 @@ import numpy as np
 
 
 class RGBTemplateMatching:
+
+    cv2_matching_method = cv2.TM_CCOEFF_NORMED
+
     def __init__(self,
                  rgb_image,
                  rgb_template,
-                 threshold,
-                 cv2_method):
+                 threshold):
 
         self.rgb_image = rgb_image
         self.rgb_template = rgb_template
         self.threshold = threshold
-        self.cv2_method = cv2_method
         _, self.width, _ = self.rgb_template.shape
 
     @property
@@ -30,9 +31,17 @@ class RGBTemplateMatching:
 
     @property
     def locations(self):
-        match_red = cv2.matchTemplate(self.rgb_image[:, :, 0], self.rgb_template[:, :, 0], self.cv2_method)
-        match_green = cv2.matchTemplate(self.rgb_image[:, :, 1], self.rgb_template[:, :, 1], self.cv2_method)
-        match_blue = cv2.matchTemplate(self.rgb_image[:, :, 2], self.rgb_template[:, :, 2], self.cv2_method)
+        match_red = cv2.matchTemplate(self.rgb_image[:, :, 0],
+                                      self.rgb_template[:, :, 0],
+                                      RGBTemplateMatching.cv2_matching_method)
+
+        match_green = cv2.matchTemplate(self.rgb_image[:, :, 1],
+                                        self.rgb_template[:, :, 1],
+                                        RGBTemplateMatching.cv2_matching_method)
+
+        match_blue = cv2.matchTemplate(self.rgb_image[:, :, 2],
+                                       self.rgb_template[:, :, 2],
+                                       RGBTemplateMatching.cv2_matching_method)
 
         match_rgb = match_red + match_green + match_blue
 
