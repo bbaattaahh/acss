@@ -21,18 +21,41 @@ class TestDetectBuckets(unittest.TestCase):
     def test_resize_image_working(self):
         # given
         image = cv2.imread("./images/DetectBuckets/test_resize_image_working_input.jpg")
-        target_width = 320
-        target_height = 240
+        template_matching_resolution = (240, 320)
+        detect_buckets = DetectBuckets(image=image,
+                                       bucket_marker_template=None,
+                                       bucket_marker_template_original_resolution=None,
+                                       template_matching_resolution=template_matching_resolution)
 
         expected_resized_image = cv2.imread("./images/DetectBuckets/test_resize_image_working_output.png")
 
         # when
-        actual_resized_image = DetectBuckets.resize_image(image=image,
-                                                          target_width=target_width,
-                                                          target_height=target_height)
+        actual_resized_image = detect_buckets.resize_image()
 
         # that
         self.assertEqual(np.array_equal(actual_resized_image, expected_resized_image), True)
+
+    def test_resized_bucket_marker_template_working(self):
+        # given
+        bucket_marker_image = cv2.imread("./images/DetectBuckets/test_resized_bucket_marker_template_working_input.jpg")
+        template_matching_resolution = (1920/2, 2560/2)
+        bucket_marker_template_original_resolution = (1920, 2560)
+        detect_buckets = DetectBuckets(image=None,
+                                       bucket_marker_template=bucket_marker_image,
+                                       bucket_marker_template_original_resolution=
+                                                                bucket_marker_template_original_resolution,
+                                       template_matching_resolution=template_matching_resolution)
+
+        expected_resized_bucket_marker_template = cv2.imread(
+                                    "./images/DetectBuckets/test_resized_bucket_marker_template_working_output.png")
+
+        # when
+        actual_resized_bucket_marker_template = detect_buckets.resize_bucket_marker_template()
+
+        # that
+        self.assertEqual(np.array_equal(actual_resized_bucket_marker_template,
+                                        expected_resized_bucket_marker_template),
+                         True)
 
 
 if __name__ == '__main__':
