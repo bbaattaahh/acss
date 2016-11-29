@@ -14,19 +14,8 @@ class RGBTemplateMatching:
         self.threshold = threshold
         self.cv2_method = cv2_method
         _, self.width, _ = self.rgb_template.shape
-        self.locations = self.rgb_match()
 
-    def rgb_match(self):
-        match_red = cv2.matchTemplate(self.rgb_image[:, :, 0], self.rgb_template[:, :, 0], self.cv2_method)
-        match_green = cv2.matchTemplate(self.rgb_image[:, :, 1], self.rgb_template[:, :, 1], self.cv2_method)
-        match_blue = cv2.matchTemplate(self.rgb_image[:, :, 2], self.rgb_template[:, :, 2], self.cv2_method)
-
-        match_rgb = match_red + match_green + match_blue
-
-        locations = np.where(match_rgb >= self.threshold)
-
-        return locations
-
+    @property
     def rectangle_top_left_vertices(self):
 
         top_left_corners = []
@@ -38,6 +27,19 @@ class RGBTemplateMatching:
             top_left_corners.append([x_coordinate, y_coordinate])
 
         return top_left_corners
+
+    @property
+    def locations(self):
+        match_red = cv2.matchTemplate(self.rgb_image[:, :, 0], self.rgb_template[:, :, 0], self.cv2_method)
+        match_green = cv2.matchTemplate(self.rgb_image[:, :, 1], self.rgb_template[:, :, 1], self.cv2_method)
+        match_blue = cv2.matchTemplate(self.rgb_image[:, :, 2], self.rgb_template[:, :, 2], self.cv2_method)
+
+        match_rgb = match_red + match_green + match_blue
+
+        locations = np.where(match_rgb >= self.threshold)
+
+        return locations
+
 
     def get_x_coordinates(self):
         x_coordinates_to_one_match = []

@@ -21,7 +21,7 @@ class TestRGBTemplateMatching(unittest.TestCase):
                                                [1507, 845]]
 
         # when
-        actual_rectangle_top_left_vertices = rgb_template_matching.rectangle_top_left_vertices()
+        actual_rectangle_top_left_vertices = rgb_template_matching.rectangle_top_left_vertices
 
         # that
         self.assertEqual(actual_rectangle_top_left_vertices, expected_rectangle_top_left_vertices)
