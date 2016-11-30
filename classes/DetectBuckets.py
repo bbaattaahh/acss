@@ -18,21 +18,18 @@ class DetectBuckets:
         self.template_matching_resolution = template_matching_resolution
 
     @property
-    def detected_bucket_markers(self):
+    def matching_bucket_markers(self):
         rgb_template_matching = RGBTemplateMatching(rgb_image=self.resized_image,
                                                     rgb_template=self.resized_bucket_marker_template,
                                                     threshold=2.3)
+        return rgb_template_matching.rectangle_top_left_vertices
 
-        back_scaled_rectangle_top_left_vertices = self.scale_bucket_marker_matches(
-                                                            rgb_template_matching.rectangle_top_left_vertices)
-
-        return back_scaled_rectangle_top_left_vertices
-
-    def scale_bucket_marker_matches(self, rectangle_top_left_vertices):
+    @property
+    def detected_bucket_markers(self):
         back_scaled_vertices = []
         image_scale_factor_y, image_scale_factor_x = self.image_scale_factors
 
-        for rectangle_top_left_vertex in rectangle_top_left_vertices:
+        for rectangle_top_left_vertex in self.matching_bucket_markers:
             actual_back_scaled_x = rectangle_top_left_vertex[0]/image_scale_factor_x
             actual_back_scaled_y = rectangle_top_left_vertex[1]/image_scale_factor_y
             back_scaled_vertices.append([actual_back_scaled_x, actual_back_scaled_y])
