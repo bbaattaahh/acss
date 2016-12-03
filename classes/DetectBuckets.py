@@ -36,11 +36,10 @@ class DetectBuckets:
 
         return back_scaled_vertices
 
-
     @staticmethod
     def do_number_recognition(image):
         pil_image = Image.fromarray(image)
-        recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7')
+        recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7 -outputbase digits')
         return recognized_numbers
 
     @property
