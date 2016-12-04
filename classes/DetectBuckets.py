@@ -32,13 +32,13 @@ class DetectBuckets:
     def template_on_image(self):
         template_on_image = cv2.resize(self.bucket_marker_template,
                                        None,
-                                       fx=self.bucket_market_template_on_image_scale_factors[1],
+                                       fx=self.bucket_marker_template_on_image_scale_factors[1],
                                        fy=self.bucket_marker_template_original_resolution[0],
                                        interpolation=cv2.INTER_CUBIC)
         return template_on_image
 
     @property
-    def bucket_market_template_on_image_scale_factors(self):
+    def bucket_marker_template_on_image_scale_factors(self):
         height, width, _ = self.image.shape
 
         scale_factor_y = float(height) / self.bucket_marker_template_original_resolution[0]
