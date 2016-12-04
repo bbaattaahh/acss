@@ -18,11 +18,33 @@ class DetectBuckets:
         self.template_matching_resolution = template_matching_resolution
 
     @property
-    def matching_bucket_markers(self):
-        rgb_template_matching = RGBTemplateMatching(rgb_image=self.resized_image,
-                                                    rgb_template=self.resized_bucket_marker_template,
-                                                    threshold=2.3)
-        return rgb_template_matching.rectangle_top_left_vertices
+    def bucket_borders(self):
+        bucket_borders = []
+        _, template_width, _ = self.template_on_image.shape
+
+        for detected_template in self.detected_bucket_markers:
+            actual_bucket_border = detected_template[0] + template_width/2
+            bucket_borders.append(actual_bucket_border)
+
+        return bucket_borders
+
+    @property
+    def template_on_image(self):
+        template_on_image = cv2.resize(self.bucket_marker_template,
+                                       None,
+                                       fx=self.bucket_market_template_on_image_scale_factors[1],
+                                       fy=self.bucket_marker_template_original_resolution[0],
+                                       interpolation=cv2.INTER_CUBIC)
+        return template_on_image
+
+    @property
+    def bucket_market_template_on_image_scale_factors(self):
+        height, width, _ = self.image.shape
+
+        scale_factor_y = float(height) / self.bucket_marker_template_original_resolution[0]
+        scale_factor_x = float(width) / self.bucket_marker_template_original_resolution[1]
+
+        return scale_factor_y, scale_factor_x
 
     @property
     def detected_bucket_markers(self):
@@ -35,6 +57,13 @@ class DetectBuckets:
             back_scaled_vertices.append([actual_back_scaled_x, actual_back_scaled_y])
 
         return back_scaled_vertices
+
+    @property
+    def matching_bucket_markers(self):
+        rgb_template_matching = RGBTemplateMatching(rgb_image=self.resized_image,
+                                                    rgb_template=self.resized_bucket_marker_template,
+                                                    threshold=2.3)
+        return rgb_template_matching.rectangle_top_left_vertices
 
     @staticmethod
     def do_number_recognition(image):

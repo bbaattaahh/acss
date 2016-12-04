@@ -153,5 +153,28 @@ class TestDetectBuckets(unittest.TestCase):
         # that
         self.assertEqual(actual_detected_bucket_markers, expected_detected_bucket_markers)
 
+    def test_bucket_borders_working(self):
+        # given
+        image = cv2.imread("./images/DetectBuckets/test_bucket_borders_working__image.jpg")
+        bucket_marker_template = cv2.imread(
+            "./images/DetectBuckets/test_bucket_borders_working__bucket_marker_template.jpg")
+        bucket_marker_template_original_resolution = (1920, 2560)
+        template_matching_resolution = (480, 640)
+
+        detect_buckets = DetectBuckets(
+                       image=image,
+                       bucket_marker_template=bucket_marker_template,
+                       bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
+                       template_matching_resolution=template_matching_resolution)
+
+        expected_bucket_borders = [915, 1695]
+
+        # when
+        actual_bucket_borders = detect_buckets.bucket_borders
+
+        # that
+        self.assertEqual(actual_bucket_borders, expected_bucket_borders)
+
+
 if __name__ == '__main__':
     unittest.main()
