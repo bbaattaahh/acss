@@ -6,30 +6,6 @@ from DetectBuckets import DetectBuckets
 
 
 class TestDetectBuckets(unittest.TestCase):
-    def test_do_number_recognition_working(self):
-        # given
-        image = cv2.imread("./images/DetectBuckets/test_do_number_recognition_working.png")
-
-        expected_recognized_numbers = "100"
-
-        # when
-        actual_recognized_numbers = DetectBuckets.do_number_recognition(image=image)
-
-        # that
-        self.assertEqual(actual_recognized_numbers, expected_recognized_numbers)
-
-    def test_do_number_recognition_real_sample(self):
-        # given
-        image = cv2.imread("./images/DetectBuckets/test_do_number_recognition_real_sample.jpg")
-
-        expected_recognized_numbers = "001"
-
-        # when
-        actual_recognized_numbers = DetectBuckets.do_number_recognition(image=image)
-
-        # that
-        self.assertEqual(actual_recognized_numbers, expected_recognized_numbers)
-
     def test_resize_image_working(self):
         # given
         image = cv2.imread("./images/DetectBuckets/test_resize_image_working_input.jpg")

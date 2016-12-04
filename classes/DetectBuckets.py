@@ -1,6 +1,4 @@
 import cv2
-import pytesseract
-from PIL import Image
 
 from RGBTemplateMatching import RGBTemplateMatching
 
@@ -65,11 +63,6 @@ class DetectBuckets:
                                                     threshold=2.3)
         return rgb_template_matching.rectangle_top_left_vertices
 
-    @staticmethod
-    def do_number_recognition(image):
-        pil_image = Image.fromarray(image)
-        recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7 -outputbase digits')
-        return recognized_numbers
 
     @property
     def resized_image(self):
