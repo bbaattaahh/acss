@@ -6,6 +6,23 @@ from BucketNumbersIdentifier import BucketNumbersIdentifier
 
 
 class TestBucketNumbersIdentifier(unittest.TestCase):
+    def test_image_150_pixel_height_working(self):
+        # given
+        image = cv2.imread("./images/BucketNumbersIdentifier/test_image_150_pixel_height_working_input.png",
+                           flags=cv2.IMREAD_GRAYSCALE)
+
+        expected_image_150_pixel_height = \
+            cv2.imread("./images/BucketNumbersIdentifier/test_image_150_pixel_height_working_output.png",
+                       flags=cv2.IMREAD_GRAYSCALE)
+
+        # when
+        actual_image_150_pixel_height = BucketNumbersIdentifier.image_150_pixel_height(image)
+
+        # that
+        self.assertEqual(np.array_equal(actual_image_150_pixel_height, expected_image_150_pixel_height),
+                         True)
+
+
     def test_vanish_black_contours_beside_edges_working(self):
         # given
         image = cv2.imread("./images/BucketNumbersIdentifier/test_vanish_black_contours_beside_edges_working_input.png",

@@ -21,6 +21,33 @@ class BucketNumbersIdentifier:
     def right_bucket_number(self):
         return None
 
+
+    @staticmethod
+    def process_image(image):
+        return None
+
+    @staticmethod
+    def image_150_pixel_height(image):
+
+        original_height, _ = image.shape
+
+        target_height = 150.0
+        scale_factor = target_height / original_height
+
+        image_150_pixel_height = cv2.resize(image,
+                                                   None,
+                                                   fx=scale_factor,
+                                                   fy=scale_factor,
+                                                   interpolation=cv2.INTER_CUBIC)
+        return image_150_pixel_height
+
+
+    @staticmethod
+    def gray_image(image):
+        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        return gray_image
+
+
     @staticmethod
     def vanish_black_contours_beside_edges(image):
         black_frame_image = BucketNumbersIdentifier.set_img_frame_black(image)
@@ -51,6 +78,3 @@ class BucketNumbersIdentifier:
         recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7 -outputbase digits')
         return recognized_numbers
 
-    @staticmethod
-    def preprocess_image(image):
-        return None
