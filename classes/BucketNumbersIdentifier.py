@@ -26,6 +26,19 @@ class BucketNumbersIdentifier:
     def process_image(image):
         return None
 
+
+    @staticmethod
+    def gray_image(image):
+        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        return gray_image
+
+    @staticmethod
+    def delete_top_and_lower_20_percent_of_image(image):
+        height, _ = image.shape
+        narrowed_image = image[int(height * 0.2):int(height * 0.8), :]
+        return narrowed_image
+
+
     @staticmethod
     def image_150_pixel_height(image):
 
@@ -42,10 +55,6 @@ class BucketNumbersIdentifier:
         return image_150_pixel_height
 
 
-    @staticmethod
-    def gray_image(image):
-        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        return gray_image
 
 
     @staticmethod
