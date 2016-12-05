@@ -6,6 +6,20 @@ from BucketNumbersIdentifier import BucketNumbersIdentifier
 
 
 class TestBucketNumbersIdentifier(unittest.TestCase):
+    def test_process_image_working(self):
+        # given
+        image = cv2.imread("./images/BucketNumbersIdentifier/test_process_image_working_input.jpg")
+
+        expected_processed_image = cv2.imread(
+                "./images/BucketNumbersIdentifier/test_process_image_working_output.png",
+                flags=cv2.IMREAD_GRAYSCALE)
+
+        # when
+        actual_processed_image = BucketNumbersIdentifier.process_image(image)
+
+        # that
+        self.assertEqual(np.array_equal(actual_processed_image, expected_processed_image), True)
+
     def test_delete_top_and_lower_20_percent_of_image_working(self):
         # given
         image = cv2.imread(

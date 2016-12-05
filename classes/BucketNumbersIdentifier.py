@@ -24,8 +24,14 @@ class BucketNumbersIdentifier:
 
     @staticmethod
     def process_image(image):
-        return None
-
+        gray_image = BucketNumbersIdentifier.gray_image(image)
+        narrowed_image = BucketNumbersIdentifier.delete_top_and_lower_20_percent_of_image(gray_image)
+        image_150_pixel_height = BucketNumbersIdentifier.image_150_pixel_height(narrowed_image)
+        blured_image = BucketNumbersIdentifier.blur_image(image_150_pixel_height)
+        thresholded_and_binarized_image = BucketNumbersIdentifier.threshold_and_binarize_image(blured_image)
+        closed_image = BucketNumbersIdentifier.closed_image(thresholded_and_binarized_image)
+        final_image = BucketNumbersIdentifier.vanish_black_contours_beside_edges(closed_image)
+        return final_image
 
     @staticmethod
     def gray_image(image):
@@ -54,8 +60,21 @@ class BucketNumbersIdentifier:
                                                    interpolation=cv2.INTER_CUBIC)
         return image_150_pixel_height
 
+    @staticmethod
+    def blur_image(image):
+        blured_image = cv2.GaussianBlur(image, (5, 5), 0)
+        return blured_image
 
+    @staticmethod
+    def threshold_and_binarize_image(image):
+        _, thresholded_and_binarized_image = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        return thresholded_and_binarized_image
 
+    @staticmethod
+    def closed_image(image):
+        kernel = np.ones((5, 5), np.uint8)
+        closed_image = cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel)
+        return closed_image
 
     @staticmethod
     def vanish_black_contours_beside_edges(image):
