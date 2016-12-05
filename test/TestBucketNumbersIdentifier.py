@@ -6,6 +6,18 @@ from BucketNumbersIdentifier import BucketNumbersIdentifier
 
 
 class TestBucketNumbersIdentifier(unittest.TestCase):
+    def test_number_identification_working(self):
+        # given
+        image = cv2.imread("./images/BucketNumbersIdentifier/test_number_identification_working.jpg")
+
+        expected_identified_numbers = "002"
+
+        # when
+        actual_identified_numbers = BucketNumbersIdentifier.number_identification(image)
+
+        # that
+        self.assertEqual(expected_identified_numbers, actual_identified_numbers)
+
     def test_process_image_working(self):
         # given
         image = cv2.imread("./images/BucketNumbersIdentifier/test_process_image_working_input.jpg")

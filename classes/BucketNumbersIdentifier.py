@@ -21,6 +21,11 @@ class BucketNumbersIdentifier:
     def right_bucket_number(self):
         return None
 
+    @staticmethod
+    def number_identification(image):
+        processed_image = BucketNumbersIdentifier.process_image(image)
+        detected_numbers = BucketNumbersIdentifier.do_number_recognition(processed_image)
+        return detected_numbers
 
     @staticmethod
     def process_image(image):
@@ -43,7 +48,6 @@ class BucketNumbersIdentifier:
         height, _ = image.shape
         narrowed_image = image[int(height * 0.2):int(height * 0.8), :]
         return narrowed_image
-
 
     @staticmethod
     def image_150_pixel_height(image):
@@ -105,4 +109,3 @@ class BucketNumbersIdentifier:
         pil_image = Image.fromarray(image)
         recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7 -outputbase digits')
         return recognized_numbers
-
