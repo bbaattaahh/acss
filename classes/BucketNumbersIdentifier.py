@@ -47,11 +47,11 @@ class BucketNumbersIdentifier(RGBImageSlicer):
     def number_identification(image):
         processed_image = BucketNumbersIdentifier.process_image(image)
         detected_numbers = BucketNumbersIdentifier.do_number_recognition(processed_image)
-        filtered_numbers = BucketNumbersIdentifier.filte_out_not_digit_characters(detected_numbers)
+        filtered_numbers = BucketNumbersIdentifier.filter_out_not_digit_characters(detected_numbers)
         return filtered_numbers
 
     @staticmethod
-    def filte_out_not_digit_characters(identified_numbers):
+    def filter_out_not_digit_characters(identified_numbers):
         filtered_numbers = re.sub("[^0-9]", "", identified_numbers)
         return filtered_numbers
 

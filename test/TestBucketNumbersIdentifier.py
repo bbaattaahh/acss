@@ -6,6 +6,17 @@ from BucketNumbersIdentifier import BucketNumbersIdentifier
 
 
 class TestBucketNumbersIdentifier(unittest.TestCase):
+    def test_filter_out_not_digit_characters_working(self):
+        # given
+        identified_numbers = "00_some_false_detection_1"
+        expected_filtered_numbers = "001"
+
+        # when
+        actual_filtered_numbers = BucketNumbersIdentifier.filter_out_not_digit_characters(identified_numbers)
+
+        # that
+        self.assertEqual(actual_filtered_numbers, expected_filtered_numbers)
+
     def test_right_bucket_number_working(self):
         # given
         image = cv2.imread("./images/BucketNumbersIdentifier/test_right_bucket_number_working.png")
@@ -17,8 +28,6 @@ class TestBucketNumbersIdentifier(unittest.TestCase):
 
         # that
         self.assertEqual(actual_right_bucket_number, expected_right_bucket_number)
-
-
 
     def test_evaluate_identifications_double_correct_hit(self):
         # given
