@@ -17,6 +17,18 @@ class TestBucketNumbersIdentifier(unittest.TestCase):
         # that
         self.assertEqual(actual_filtered_numbers, expected_filtered_numbers)
 
+    def test_left_bucket_number_working(self):
+        # given
+        image = cv2.imread("./images/BucketNumbersIdentifier/test_left_bucket_number_working.png")
+        bucket_number_identifier = BucketNumbersIdentifier(image)
+        expected_left_bucket_number = "001"
+
+        # when
+        actual_left_bucket_number = bucket_number_identifier.left_bucket_number
+
+        # that
+        self.assertEqual(actual_left_bucket_number, expected_left_bucket_number)
+
     def test_right_bucket_number_working(self):
         # given
         image = cv2.imread("./images/BucketNumbersIdentifier/test_right_bucket_number_working.png")

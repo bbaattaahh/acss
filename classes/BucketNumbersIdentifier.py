@@ -14,8 +14,16 @@ class BucketNumbersIdentifier(RGBImageSlicer):
 
     @property
     def left_bucket_number(self):
+        upper_number_image = self.first_quarter
+        identified_upper_numbers = self.number_identification(upper_number_image)
 
-        return None
+        lower_number_image = self.third_quarter
+        identified_lower_numbers = self.number_identification(lower_number_image)
+
+        evaluated_identifications = self.evaluate_identifications(identified_upper_numbers,
+                                                                  identified_lower_numbers)
+
+        return evaluated_identifications
 
     @property
     def right_bucket_number(self):
