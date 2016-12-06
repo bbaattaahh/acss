@@ -6,6 +6,48 @@ from BucketNumbersIdentifier import BucketNumbersIdentifier
 
 
 class TestBucketNumbersIdentifier(unittest.TestCase):
+    def test_evaluate_identifications_double_correct_hit(self):
+        # given
+        identification_1 = "001"
+        identification_2 = "001"
+
+        expected_evaluated_identification = "001"
+
+        # when
+        actual_evaluated_identification = BucketNumbersIdentifier.evaluate_identifications(identification_1,
+                                                                                           identification_2)
+
+        # that
+        self.assertEqual(actual_evaluated_identification, expected_evaluated_identification)
+
+    def test_evaluate_identifications_one_correct_hit(self):
+        # given
+        identification_1 = "01"
+        identification_2 = "001"
+
+        expected_evaluated_identification = "001"
+
+        # when
+        actual_evaluated_identification = BucketNumbersIdentifier.evaluate_identifications(identification_1,
+                                                                                           identification_2)
+
+        # that
+        self.assertEqual(actual_evaluated_identification, expected_evaluated_identification)
+
+    def test_evaluate_identifications_contradiction(self):
+        # given
+        identification_1 = "001"
+        identification_2 = "002"
+
+        expected_evaluated_identification = "Unknown"
+
+        # when
+        actual_evaluated_identification = BucketNumbersIdentifier.evaluate_identifications(identification_1,
+                                                                                           identification_2)
+
+        # that
+        self.assertEqual(actual_evaluated_identification, expected_evaluated_identification)
+
     def test_number_identification_working(self):
         # given
         image = cv2.imread("./images/BucketNumbersIdentifier/test_number_identification_working.jpg")

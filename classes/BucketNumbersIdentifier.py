@@ -6,11 +6,10 @@ from PIL import Image
 from RGBImageSlicer import RGBImageSlicer
 
 
-class BucketNumbersIdentifier:
+class BucketNumbersIdentifier(RGBImageSlicer):
     def __init__(self,
                  bucket_marker_image):
-
-        self.rgb_image_slicer = RGBImageSlicer(image=bucket_marker_image)
+        RGBImageSlicer.__init__(self, bucket_marker_image)
 
     @property
     def left_bucket_number(self):
@@ -19,7 +18,34 @@ class BucketNumbersIdentifier:
 
     @property
     def right_bucket_number(self):
+        upper_number_image = self.second_quarter
+        identified_upper_numbers = self.number_identification(upper_number_image)
+
+        lower_number_image = self.fourth_quarter
+        identified_lower_numbers = self.number_identification(lower_number_image)
+
+
         return None
+
+    @staticmethod
+    def evaluate_identifications(identification_1, identification_2):
+        if len(identification_1) == 3 and len(identification_2) == 3 and identification_1 == identification_2:
+            return identification_1
+
+        if len(identification_1) == 3 and len(identification_2)!=3:
+            return identification_1
+
+        if len(identification_2) == 3 and len(identification_1)!=3:
+            return identification_2
+
+        return "Unknown"
+
+
+    @staticmethod
+    def is_number_appropriate(number):
+        if len(number) == 3:
+            return True
+        return False
 
     @staticmethod
     def number_identification(image):
