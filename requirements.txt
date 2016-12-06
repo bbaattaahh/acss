@@ -1,7 +1,10 @@
 numpy
 cv2
 matplotlib
-opencv
 math
 PIL
 pytesseract
+re
+
+# Other programs
+tesseract 3.02
