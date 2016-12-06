@@ -1,5 +1,6 @@
 import pytesseract
 import cv2
+import re
 import numpy as np
 from PIL import Image
 
@@ -24,8 +25,10 @@ class BucketNumbersIdentifier(RGBImageSlicer):
         lower_number_image = self.fourth_quarter
         identified_lower_numbers = self.number_identification(lower_number_image)
 
+        evaluated_identifications = self.evaluate_identifications(identified_upper_numbers,
+                                                                  identified_lower_numbers)
 
-        return None
+        return evaluated_identifications
 
     @staticmethod
     def evaluate_identifications(identification_1, identification_2):
@@ -40,18 +43,17 @@ class BucketNumbersIdentifier(RGBImageSlicer):
 
         return "Unknown"
 
-
-    @staticmethod
-    def is_number_appropriate(number):
-        if len(number) == 3:
-            return True
-        return False
-
     @staticmethod
     def number_identification(image):
         processed_image = BucketNumbersIdentifier.process_image(image)
         detected_numbers = BucketNumbersIdentifier.do_number_recognition(processed_image)
-        return detected_numbers
+        filtered_numbers = BucketNumbersIdentifier.filte_out_not_digit_characters(detected_numbers)
+        return filtered_numbers
+
+    @staticmethod
+    def filte_out_not_digit_characters(identified_numbers):
+        filtered_numbers = re.sub("[^0-9]", "", identified_numbers)
+        return filtered_numbers
 
     @staticmethod
     def process_image(image):

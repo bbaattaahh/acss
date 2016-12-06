@@ -6,6 +6,20 @@ from BucketNumbersIdentifier import BucketNumbersIdentifier
 
 
 class TestBucketNumbersIdentifier(unittest.TestCase):
+    def test_right_bucket_number_working(self):
+        # given
+        image = cv2.imread("./images/BucketNumbersIdentifier/test_right_bucket_number_working.png")
+        bucket_number_identifier = BucketNumbersIdentifier(image)
+        expected_right_bucket_number = "002"
+
+        # when
+        actual_right_bucket_number = bucket_number_identifier.right_bucket_number
+
+        # that
+        self.assertEqual(actual_right_bucket_number, expected_right_bucket_number)
+
+
+
     def test_evaluate_identifications_double_correct_hit(self):
         # given
         identification_1 = "001"
