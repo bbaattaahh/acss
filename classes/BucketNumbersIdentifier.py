@@ -39,6 +39,13 @@ class BucketNumbersIdentifier(RGBImageSlicer):
         return evaluated_identifications
 
     @staticmethod
+    def number_identification(image):
+        processed_image = BucketNumbersIdentifier.process_image(image)
+        detected_numbers = BucketNumbersIdentifier.do_number_recognition(processed_image)
+        filtered_numbers = BucketNumbersIdentifier.filter_out_not_digit_characters(detected_numbers)
+        return filtered_numbers
+
+    @staticmethod
     def evaluate_identifications(identification_1, identification_2):
         if len(identification_1) == 3 and len(identification_2) == 3 and identification_1 == identification_2:
             return identification_1
@@ -52,18 +59,6 @@ class BucketNumbersIdentifier(RGBImageSlicer):
         return "Unknown"
 
     @staticmethod
-    def number_identification(image):
-        processed_image = BucketNumbersIdentifier.process_image(image)
-        detected_numbers = BucketNumbersIdentifier.do_number_recognition(processed_image)
-        filtered_numbers = BucketNumbersIdentifier.filter_out_not_digit_characters(detected_numbers)
-        return filtered_numbers
-
-    @staticmethod
-    def filter_out_not_digit_characters(identified_numbers):
-        filtered_numbers = re.sub("[^0-9]", "", identified_numbers)
-        return filtered_numbers
-
-    @staticmethod
     def process_image(image):
         gray_image = BucketNumbersIdentifier.gray_image(image)
         narrowed_image = BucketNumbersIdentifier.delete_top_and_lower_20_percent_of_image(gray_image)
@@ -73,6 +68,17 @@ class BucketNumbersIdentifier(RGBImageSlicer):
         closed_image = BucketNumbersIdentifier.closed_image(thresholded_and_binarized_image)
         final_image = BucketNumbersIdentifier.vanish_black_contours_beside_edges(closed_image)
         return final_image
+
+    @staticmethod
+    def do_number_recognition(image):
+        pil_image = Image.fromarray(image)
+        recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7 -outputbase digits')
+        return recognized_numbers
+
+    @staticmethod
+    def filter_out_not_digit_characters(identified_numbers):
+        filtered_numbers = re.sub("[^0-9]", "", identified_numbers)
+        return filtered_numbers
 
     @staticmethod
     def gray_image(image):
@@ -139,9 +145,3 @@ class BucketNumbersIdentifier(RGBImageSlicer):
         mask = np.zeros((height + 2, width + 2), np.uint8)
         cv2.floodFill(image, mask, (0, 0), 255)
         return image
-
-    @staticmethod
-    def do_number_recognition(image):
-        pil_image = Image.fromarray(image)
-        recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7 -outputbase digits')
-        return recognized_numbers
