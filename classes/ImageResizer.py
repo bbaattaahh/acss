@@ -10,6 +10,7 @@ class ImageResizer:
         self.image = image
         self.image_height, self.image_width = self.image.shape
         self.target_height, self.target_width = target_resolution
+        
         if parent_image_resolution is None:
             self.parent_image_height, self.parent_image_width = image.shape[0:2]
         else:
