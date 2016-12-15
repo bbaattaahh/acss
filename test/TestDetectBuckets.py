@@ -62,27 +62,6 @@ class TestDetectBuckets(unittest.TestCase):
         # that
         self.assertEqual(actual_image_scale_factors, expected_image_scale_factors)
 
-    def test_template_scale_factors_working(self):
-        # given
-        image = cv2.imread("./images/DetectBuckets/test_template_scale_factors_working__image.jpg")
-        bucket_marker_template = cv2.imread("./images/DetectBuckets/"
-                                            "test_template_scale_factors_working__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = (360, 480)
-        template_matching_resolution = (240, 320)
-        detect_buckets = DetectBuckets(
-                       image=image,
-                       bucket_marker_template=bucket_marker_template,
-                       bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                       template_matching_resolution=template_matching_resolution)
-
-        expected_template_scale_factors = (0.6610169491525424, 0.6597938144329897)  # ~ 2/3
-
-        # when
-        actual_template_scale_factors = detect_buckets.template_scale_factors
-
-        # that
-        self.assertEqual(actual_template_scale_factors, expected_template_scale_factors)
-
     def test_matching_bucket_markers_working(self):
         # given
         image = cv2.imread("./images/DetectBuckets/test_matching_bucket_markers_working__image.jpg")
@@ -98,7 +77,7 @@ class TestDetectBuckets(unittest.TestCase):
                        template_matching_resolution=template_matching_resolution)
 
         expected_matching_bucket_markers = [[182, 211],
-                                            [377, 211]]
+                                            [376, 211]]
 
         # when
         actual_matching_bucket_markers_vertices = detect_buckets.matching_bucket_markers
@@ -121,7 +100,7 @@ class TestDetectBuckets(unittest.TestCase):
                        template_matching_resolution=template_matching_resolution)
 
         expected_detected_bucket_markers = [[ 728, 844],
-                                            [1508, 844]]
+                                            [1504, 844]]
 
         # when
         actual_detected_bucket_markers = detect_buckets.detected_bucket_markers
@@ -143,7 +122,7 @@ class TestDetectBuckets(unittest.TestCase):
                        bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
                        template_matching_resolution=template_matching_resolution)
 
-        expected_bucket_borders = [915, 1695]
+        expected_bucket_borders = [915.0, 1691.0]
 
         # when
         actual_bucket_borders = detect_buckets.bucket_borders

@@ -1,9 +1,13 @@
 import cv2
 
 from RGBTemplateMatching import RGBTemplateMatching
+from ImageResizer import ImageResizer
 
 
 class DetectBuckets:
+
+    always_seen_middle_part_rate = 0.2
+
     def __init__(self,
                  image,
                  bucket_marker_template,
@@ -14,6 +18,15 @@ class DetectBuckets:
         self.bucket_marker_template = bucket_marker_template
         self.bucket_marker_template_original_resolution = bucket_marker_template_original_resolution
         self.template_matching_resolution = template_matching_resolution
+
+    # TODO: test
+    @property
+    def always_seen_middle_template(self):
+        width_from = int(self.bucket_marker_template.shape[1]*(0.5 - DetectBuckets.always_seen_middle_part_rate/2))
+        width_to = int(self.bucket_marker_template.shape[1]*(0.5 + DetectBuckets.always_seen_middle_part_rate/2))
+        always_seen_middle_template = self.bucket_marker_template[:,width_from:width_to,:]
+        cv2.imwrite("jani.png", always_seen_middle_template)
+        return always_seen_middle_template
 
     @property
     def bucket_borders(self):
@@ -66,12 +79,10 @@ class DetectBuckets:
 
     @property
     def resized_image(self):
-        resize_image = cv2.resize(self.image,
-                                  None,
-                                  fx=self.image_scale_factors[1],
-                                  fy=self.image_scale_factors[0],
-                                  interpolation=cv2.INTER_CUBIC)
-        return resize_image
+        image_resizer = ImageResizer(image=self.image,
+                                     target_resolution=self.template_matching_resolution)
+        resized_image = image_resizer.resized_image
+        return resized_image
 
     @property
     def image_scale_factors(self):
@@ -85,23 +96,10 @@ class DetectBuckets:
 
     @property
     def resized_bucket_marker_template(self):
-        resized_bucket_marker_template = cv2.resize(self.bucket_marker_template,
-                                                    None,
-                                                    fx=self.template_scale_factors[1],
-                                                    fy=self.template_scale_factors[0],
-                                                    interpolation=cv2.INTER_CUBIC)
+        image_resizer = ImageResizer(image=self.bucket_marker_template,
+                                     target_resolution=self.template_matching_resolution,
+                                     parent_image_resolution=self.bucket_marker_template_original_resolution)
+        resized_bucket_marker_template = image_resizer.resized_image
         return resized_bucket_marker_template
 
-    @property
-    def template_scale_factors(self):
-        original_height, original_width = self.bucket_marker_template_original_resolution
-        template_matching_height, template_matching_width = self.template_matching_resolution
-        bucket_marker_template_height, bucket_marker_template_width, _ = self.bucket_marker_template.shape
 
-        target_height = bucket_marker_template_height * template_matching_height/original_height
-        target_width = bucket_marker_template_width * template_matching_width/original_width
-
-        scale_factor_x = float(target_width) / bucket_marker_template_width
-        scale_factor_y = float(target_height) / bucket_marker_template_height
-
-        return scale_factor_y, scale_factor_x
