@@ -19,7 +19,6 @@ class DetectBuckets:
         self.bucket_marker_template_original_resolution = bucket_marker_template_original_resolution
         self.template_matching_resolution = template_matching_resolution
 
-    # TODO: test
     @property
     def always_seen_middle_template(self):
         width_from = int(self.bucket_marker_template.shape[1]*(0.5 - DetectBuckets.always_seen_middle_part_rate/2))
@@ -102,4 +101,11 @@ class DetectBuckets:
         resized_bucket_marker_template = image_resizer.resized_image
         return resized_bucket_marker_template
 
-
+    # TODO Not tested
+    @property
+    def resized_middle_bucket_marker_template(self):
+        image_resizer = ImageResizer(image=self.always_seen_middle_template,
+                                     target_resolution=self.template_matching_resolution,
+                                     parent_image_resolution=self.bucket_marker_template_original_resolution)
+        resized_middle_bucket_marker_template = image_resizer.resized_image
+        return resized_middle_bucket_marker_template
