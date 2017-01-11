@@ -36,13 +36,12 @@ http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_calib3d/
 ### 1.2. Bucket identification by ORC
 
 #### Description:
-It identifies the bucket based on the bucket markes. (Each bucket markered by numbers redundatnly.) Use tesseract to idenrentify numbers
-Main parts:
-- set every input image to the correct resolution (image, bucketmarker template, template matching)
-- identify templates
-- identify numbers
-- get the borders
+It identifies the bucket based on the bucket markes. (Each bucket markered by numbers redundatnly.) Use tesseract to idenrentify numbers. The "main" class which orchrastrate the whole _DetectBucket_
 
+1.2.1. set every input image to the correct resolution (image, bucketmarker template, template matching) _ImageResizer_
+1.2.2. identify templates
+1.2.3. identify numbers _BucketNumbersIdentifier_
+1.2.4. pozitions conveter beetween different resolution image
 #### **Inputs:**
 - RGB image about conveyor belt
 - RGB images about a bucket marker

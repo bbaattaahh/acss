@@ -6,8 +6,6 @@ from ImageResizer import ImageResizer
 
 class DetectBuckets:
 
-    always_seen_middle_part_rate = 0.2
-
     def __init__(self,
                  image,
                  bucket_marker_template,
@@ -19,13 +17,7 @@ class DetectBuckets:
         self.bucket_marker_template_original_resolution = bucket_marker_template_original_resolution
         self.template_matching_resolution = template_matching_resolution
 
-    @property
-    def always_seen_middle_template(self):
-        width_from = int(self.bucket_marker_template.shape[1]*(0.5 - DetectBuckets.always_seen_middle_part_rate/2))
-        width_to = int(self.bucket_marker_template.shape[1]*(0.5 + DetectBuckets.always_seen_middle_part_rate/2))
-        always_seen_middle_template = self.bucket_marker_template[:,width_from:width_to,:]
-        cv2.imwrite("jani.png", always_seen_middle_template)
-        return always_seen_middle_template
+
 
     @property
     def bucket_borders(self):

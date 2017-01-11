@@ -7,24 +7,6 @@ from DetectBuckets import DetectBuckets
 
 class TestDetectBuckets(unittest.TestCase):
 
-    def test_always_seen_middle_template_working(self):
-        # given
-        bucket_marker_template = cv2.imread("./images/DetectBuckets/test_always_seen_middle_template_working_input.jpg")
-        detect_buckets = DetectBuckets(image=None,
-                                       bucket_marker_template=bucket_marker_template,
-                                       bucket_marker_template_original_resolution=None,
-                                       template_matching_resolution=None)
-
-        expected_always_seen_middle_template = \
-            cv2.imread("./images/DetectBuckets/test_always_seen_middle_template_working_output.png")
-
-        # when
-        actual_always_seen_middle_template = detect_buckets.always_seen_middle_template
-
-        # that
-        self.assertEqual(np.array_equal(actual_always_seen_middle_template, expected_always_seen_middle_template), True)
-
-
     def test_resize_image_working(self):
         # given
         image = cv2.imread("./images/DetectBuckets/test_resize_image_working_input.jpg")
