@@ -16,9 +16,9 @@ class SnipFromImage(object):
     @property
     def snipped_image(self):
         # gray image
-        if len(self.image == 2) :
+        if len(self.image.shape) == 2:
             return self.image[self.y: self.y + self.h, self.x: self.x + self.w]
 
         # rgb image
-        if len(self.image == 3) :
+        if len(self.image.shape) == 3:
             return self.image[self.y: self.y + self.h, self.x: self.x + self.w, :]
