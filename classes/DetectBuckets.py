@@ -1,6 +1,8 @@
 import cv2
 
 from ImageResizer import ImageResizer
+from DetectBucketMarkers import DetectBucketMarkers
+from BucketNumbersIdentifier import BucketNumbersIdentifier
 
 
 class DetectBuckets:
