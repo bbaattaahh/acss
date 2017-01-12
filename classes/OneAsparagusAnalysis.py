@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+from SnipFromImage import SnipFromImage
+
 
 class OneAsparagusAnalysis:
     def __init__(self,
@@ -23,7 +25,7 @@ class OneAsparagusAnalysis:
 
         largest_contour = self.largest_contour(contours)
         x, y, w, h = cv2.boundingRect(largest_contour)
-        asparagus_contour = self.snip_from_grey_image(th, x, y, w, h)
+        asparagus_contour = SnipFromImage(image=th, x=x, y=y, w=w, h=h).snipped_image
 
         kernel = np.ones((5, 5), np.uint8)
 
@@ -50,7 +52,3 @@ class OneAsparagusAnalysis:
                 largest_contour = actual_contour
 
         return largest_contour
-
-    @staticmethod
-    def snip_from_grey_image(image, x, y, w, h):
-        return image[y : y+h, x : x+w]

@@ -6,6 +6,7 @@ from Rectangle import Rectangle
 from IsRectangleOnOriginalImage import IsRectangleOnOriginalImage
 from ChooseFinalCandidates import ChooseFinalCandidates
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
+from SnipFromImage import SnipFromImage
 
 
 class DetectAsparaguses(object):
@@ -35,11 +36,11 @@ class DetectAsparaguses(object):
             scale_back_w = candidate.width / self.detection_scale
             scale_back_h = candidate.high / self.detection_scale
 
-            image_one_asparagus = self.snip_from_rgb_image(original_rotated_image,
-                                                           scale_back_x,
-                                                           scale_back_y,
-                                                           scale_back_w,
-                                                           scale_back_h)
+            image_one_asparagus = SnipFromImage(image=original_rotated_image,
+                                                x=scale_back_x,
+                                                y=scale_back_y,
+                                                w=scale_back_w,
+                                                h=scale_back_h).snipped_image
 
             original_top_left_corner = self.calculate_original_coordinate_before_rotation(
                                                                         image=self.image,
@@ -124,10 +125,6 @@ class DetectAsparaguses(object):
                               rot_mat,
                               (int(math.ceil(nw)), int(math.ceil(nh))),
                               flags=cv2.INTER_LANCZOS4)
-
-    @staticmethod
-    def snip_from_rgb_image(image, x, y, w, h):
-        return image[y : y+h, x : x+w, :]
 
     @staticmethod
     def calculate_original_coordinate_before_rotation(image, angle, vertex):
