@@ -1,6 +1,5 @@
 import cv2
 
-from RGBTemplateMatching import RGBTemplateMatching
 from ImageResizer import ImageResizer
 
 
@@ -60,12 +59,7 @@ class DetectBuckets:
 
         return back_scaled_vertices
 
-    @property
-    def matching_bucket_markers(self):
-        rgb_template_matching = RGBTemplateMatching(rgb_image=self.resized_image,
-                                                    rgb_template=self.resized_bucket_marker_template,
-                                                    threshold=2.3)
-        return rgb_template_matching.rectangle_top_left_vertices
+
 
 
     @property

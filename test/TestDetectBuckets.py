@@ -87,29 +87,6 @@ class TestDetectBuckets(unittest.TestCase):
         # that
         self.assertEqual(actual_image_scale_factors, expected_image_scale_factors)
 
-    def test_matching_bucket_markers_working(self):
-        # given
-        image = cv2.imread("./images/DetectBuckets/test_matching_bucket_markers_working__image.jpg")
-        bucket_marker_template = cv2.imread(
-            "./images/DetectBuckets/test_matching_bucket_markers_working__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = (1920, 2560)
-        template_matching_resolution = (480, 640)
-
-        detect_buckets = DetectBuckets(
-                       image=image,
-                       bucket_marker_template=bucket_marker_template,
-                       bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                       template_matching_resolution=template_matching_resolution)
-
-        expected_matching_bucket_markers = [[182, 211],
-                                            [377, 211]]
-
-        # when
-        actual_matching_bucket_markers_vertices = detect_buckets.matching_bucket_markers
-
-        # that
-        self.assertEqual(actual_matching_bucket_markers_vertices, expected_matching_bucket_markers)
-
     def test_detected_bucket_markers_working(self):
         # given
         image = cv2.imread("./images/DetectBuckets/test_detected_bucket_markers_working__image.jpg")
