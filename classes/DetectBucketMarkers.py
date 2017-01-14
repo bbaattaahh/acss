@@ -1,5 +1,6 @@
 from RGBTemplateMatching import RGBTemplateMatching
 from SnipFromImage import SnipFromImage
+from BucketNumbersIdentifier import BucketNumbersIdentifier
 
 
 class DetectBucketMarkers:
@@ -12,6 +13,17 @@ class DetectBucketMarkers:
 
         self.image = image
         self.bucket_marker_template = bucket_marker_template
+
+    @property
+    def bucket_numbers(self):
+        bucket_numbers = []
+
+        for bucket_marker in self.bucket_markers:
+            bucket_number_identifier = BucketNumbersIdentifier(bucket_marker)
+            bucket_numbers.append([bucket_number_identifier.left_bucket_number,
+                                   bucket_number_identifier.right_bucket_number])
+
+        return bucket_numbers
 
     @property
     def bucket_markers(self):

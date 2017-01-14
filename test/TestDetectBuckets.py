@@ -7,26 +7,29 @@ from DetectBuckets import DetectBuckets
 
 class TestDetectBuckets(unittest.TestCase):
 
-    def test_resize_image_working(self):
+    def test_image_to_detect_bucket_markers_working(self):
         # given
-        image = cv2.imread("./images/DetectBuckets/test_resize_image_working_input.jpg")
+        image = cv2.imread("./images/DetectBuckets/test_image_to_detect_bucket_markers_working_input.jpg")
         template_matching_resolution = (240, 320)
         detect_buckets = DetectBuckets(image=image,
                                        bucket_marker_template=None,
                                        bucket_marker_template_original_resolution=None,
                                        template_matching_resolution=template_matching_resolution)
 
-        expected_resized_image = cv2.imread("./images/DetectBuckets/test_resize_image_working_output.png")
+        expected_image_to_detect_bucket_markers = \
+            cv2.imread("./images/DetectBuckets/test_image_to_detect_bucket_markers_working_output.png")
 
         # when
-        actual_resized_image = detect_buckets.resized_image
+        actual_image_to_detect_bucket_markers = detect_buckets.image_to_detect_bucket_markers
 
         # that
-        self.assertEqual(np.array_equal(actual_resized_image, expected_resized_image), True)
+        self.assertEqual(np.array_equal(actual_image_to_detect_bucket_markers, expected_image_to_detect_bucket_markers),
+                         True)
 
-    def test_resized_bucket_marker_template_working(self):
+    def test_template_to_detect_bucket_markers_working(self):
         # given
-        bucket_marker_image = cv2.imread("./images/DetectBuckets/test_resized_bucket_marker_template_working_input.jpg")
+        bucket_marker_image = \
+            cv2.imread("./images/DetectBuckets/test_template_to_detect_bucket_markers_working_input.jpg")
         template_matching_resolution = (1920/2, 2560/2)
         bucket_marker_template_original_resolution = (1920, 2560)
         detect_buckets = DetectBuckets(
@@ -35,103 +38,16 @@ class TestDetectBuckets(unittest.TestCase):
                             bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
                             template_matching_resolution=template_matching_resolution)
 
-        expected_resized_bucket_marker_template = cv2.imread(
-                                    "./images/DetectBuckets/test_resized_bucket_marker_template_working_output.png")
+        expected_template_to_template_matching = cv2.imread(
+                                    "./images/DetectBuckets/test_template_to_detect_bucket_markers_working_output.png")
 
         # when
-        actual_resized_bucket_marker_template = detect_buckets.resized_bucket_marker_template
+        actual_template_to_template_matching = detect_buckets.template_to_detect_bucket_markers
 
         # that
-        self.assertEqual(np.array_equal(actual_resized_bucket_marker_template,
-                                        expected_resized_bucket_marker_template),
+        self.assertEqual(np.array_equal(actual_template_to_template_matching,
+                                        expected_template_to_template_matching),
                          True)
-
-    # def test_resized_middle_bucket_marker_template_working(self):
-    #     # given
-    #     bucket_marker_image = \
-    #         cv2.imread("./images/DetectBuckets/test_resized_middle_bucket_marker_template_working__bucket_marker_template.jpg")
-    #     template_matching_resolution = (1920/2, 2560/2)
-    #     bucket_marker_template_original_resolution = (1920, 2560)
-    #     detect_buckets = DetectBuckets(
-    #                         image=None,
-    #                         bucket_marker_template=bucket_marker_image,
-    #                         bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-    #                         template_matching_resolution=template_matching_resolution)
-    #
-    #     expected_resized_bucket_marker_template = cv2.imread(
-    #                                 "./images/DetectBuckets/test_resized_bucket_marker_template_working_output.png")
-    #
-    #     # when
-    #     actual_resized_bucket_marker_template = detect_buckets.resized_bucket_marker_template
-    #
-    #     # that
-    #     self.assertEqual(np.array_equal(actual_resized_bucket_marker_template,
-    #                                     expected_resized_bucket_marker_template),
-    #                      True)
-
-
-    def test_image_scale_factors_working(self):
-        # given
-        image = cv2.imread("./images/DetectBuckets/test_image_scale_factors_working.jpg")
-        template_matching_resolution = (240, 320)
-        detect_buckets = DetectBuckets(image=image,
-                                       bucket_marker_template=None,
-                                       bucket_marker_template_original_resolution=None,
-                                       template_matching_resolution=template_matching_resolution)
-
-        expected_image_scale_factors = (0.5, 0.5)
-
-        # when
-        actual_image_scale_factors = detect_buckets.image_scale_factors
-
-        # that
-        self.assertEqual(actual_image_scale_factors, expected_image_scale_factors)
-
-    def test_detected_bucket_markers_working(self):
-        # given
-        image = cv2.imread("./images/DetectBuckets/test_detected_bucket_markers_working__image.jpg")
-        bucket_marker_template = cv2.imread(
-            "./images/DetectBuckets/test_detected_bucket_markers_working__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = (1920, 2560)
-        template_matching_resolution = (480, 640)
-
-        detect_buckets = DetectBuckets(
-                       image=image,
-                       bucket_marker_template=bucket_marker_template,
-                       bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                       template_matching_resolution=template_matching_resolution)
-
-        expected_detected_bucket_markers = [[ 728, 844],
-                                            [1508, 844]]
-
-        # when
-        actual_detected_bucket_markers = detect_buckets.detected_bucket_markers
-
-        # that
-        self.assertEqual(actual_detected_bucket_markers, expected_detected_bucket_markers)
-
-    def test_bucket_borders_working(self):
-        # given
-        image = cv2.imread("./images/DetectBuckets/test_bucket_borders_working__image.jpg")
-        bucket_marker_template = cv2.imread(
-            "./images/DetectBuckets/test_bucket_borders_working__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = (1920, 2560)
-        template_matching_resolution = (480, 640)
-
-        detect_buckets = DetectBuckets(
-                       image=image,
-                       bucket_marker_template=bucket_marker_template,
-                       bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                       template_matching_resolution=template_matching_resolution)
-
-        expected_bucket_borders = [915.0, 1695.0]
-
-        # when
-        actual_bucket_borders = detect_buckets.bucket_borders
-
-        # that
-        self.assertEqual(actual_bucket_borders, expected_bucket_borders)
-
 
 if __name__ == '__main__':
     unittest.main()

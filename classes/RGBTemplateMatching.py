@@ -9,7 +9,7 @@ class RGBTemplateMatching:
     def __init__(self,
                  rgb_image,
                  rgb_template,
-                 threshold):
+                 threshold=2.3):
 
         self.rgb_image = rgb_image
         self.rgb_template = rgb_template

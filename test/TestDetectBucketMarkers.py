@@ -7,6 +7,24 @@ from DetectBucketMarkers import DetectBucketMarkers
 
 class TestDetectBucketMarkers(unittest.TestCase):
 
+    def test_bucket_numbers_working(self):
+        # given
+        image = \
+            cv2.imread("./images/DetectBucketMarkers/test_bucket_numbers_working__image.jpg")
+
+        bucket_marker_template = \
+            cv2.imread("./images/DetectBucketMarkers/test_bucket_numbers_working__bucket_marker_template.png")
+        detect_bucket_markers = DetectBucketMarkers(image=image,
+                                                    bucket_marker_template=bucket_marker_template)
+
+        expected_numbers = [['001', '002'], ['002', '003']]
+
+        # when
+        actual_numbers = detect_bucket_markers.bucket_numbers
+
+        # that
+        self.assertEqual(actual_numbers, expected_numbers)
+
     def test_bucket_markers_working(self):
         # given
         image = \
