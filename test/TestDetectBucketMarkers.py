@@ -65,6 +65,23 @@ class TestDetectBucketMarkers(unittest.TestCase):
         # that
         self.assertEqual(actual_bucket_marker_top_left_corners, expected_bucket_marker_top_left_corners)
 
+    def test_bucket_marker_middle_x_positions_working(self):
+        # given
+        image = cv2.imread("./images/DetectBucketMarkers/test_bucket_marker_middle_x_positions_working__image.jpg")
+        bucket_marker_template = cv2.imread(
+            "./images/DetectBucketMarkers/test_bucket_marker_middle_x_positions_working__bucket_marker_template.jpg")
+
+        detect_bucket_markers = DetectBucketMarkers(image=image,
+                                                    bucket_marker_template=bucket_marker_template)
+
+        expected_bucket_marker_middle_x_positions = [840, 1613]
+
+        # when
+        actual_bucket_marker_middle_x_positions = detect_bucket_markers.bucket_marker_middle_x_positions
+
+        # that
+        self.assertEqual(actual_bucket_marker_middle_x_positions, expected_bucket_marker_middle_x_positions)
+
     def test_matching_middle_templates_position_working(self):
         # given
         image = cv2.imread("./images/DetectBucketMarkers/test_matching_middle_templates_positions_working__image.jpg")

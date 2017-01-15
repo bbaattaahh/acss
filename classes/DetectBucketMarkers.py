@@ -57,6 +57,17 @@ class DetectBucketMarkers:
         return bucket_marker_top_left_corners
 
     @property
+    def bucket_marker_middle_x_positions(self):
+        always_seen_middle_template_half_width = int(self.always_seen_middle_template.shape[1] / 2)
+
+        bucket_marker_middle_x_positions = []
+
+        for matching_middle_templates_position in self.matching_middle_templates_positions:
+            bucket_marker_middle_x_positions.append(matching_middle_templates_position[0]-always_seen_middle_template_half_width)
+
+        return bucket_marker_middle_x_positions
+
+    @property
     def matching_middle_templates_positions(self):
         rgb_template_matching = RGBTemplateMatching(rgb_image=self.image,
                                                     rgb_template=self.always_seen_middle_template,
