@@ -1,5 +1,6 @@
 import more_itertools
 
+
 class BucketNumbersCorrector:
 
     def __init__(self,

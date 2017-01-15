@@ -5,6 +5,7 @@ math
 PIL
 pytesseract
 re
+more_itertools
 
 # Other programs
 tesseract 3.02
