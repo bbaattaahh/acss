@@ -1,3 +1,5 @@
+import more_itertools
+
 class BucketNumbersCorrector:
 
     def __init__(self,
@@ -9,20 +11,15 @@ class BucketNumbersCorrector:
 
     @property
     def int_flatten_bucket_numbers(self):
+        flatten_bucket_numbers = list(more_itertools.flatten(self.bucket_numbers))
         int_flatten_bucket_numbers = []
-        for number_pair in self.bucket_numbers:
-            if number_pair[0] != "":
-                number_1 = int(number_pair[0])
-            else:
-                number_1 = None
 
-            if number_pair[1] != "":
-                number_2 = int(number_pair[1])
-            else:
-                number_2 = None
+        for flatten_bucket_number in flatten_bucket_numbers:
+            if flatten_bucket_number == "":
+                int_flatten_bucket_numbers.append(None)
+                continue
 
-            int_flatten_bucket_numbers.append(number_1)
-            int_flatten_bucket_numbers.append(number_2)
+            int_flatten_bucket_numbers.append(int(flatten_bucket_number))
 
         return int_flatten_bucket_numbers
 
@@ -35,6 +32,25 @@ class BucketNumbersCorrector:
                 self.bucket_numbers[i][1] = self.bucket_numbers[i+1][0]
 
         return self.bucket_numbers
+
+    def fulfill_bucket_numbers_which_has_one_item(self, bucket_numbers):
+        for i in range(0, len(bucket_numbers)-1):
+            if bucket_numbers[i] is None:
+                continue
+            if i % 2 == 0:
+                bucket_numbers[i+1] = self.next_number(bucket_numbers[i])
+            if i % 2 == 1:
+                bucket_numbers[i+1] = bucket_numbers[i]
+
+        for i in range(len(bucket_numbers)-1, 0, -1):
+            if bucket_numbers[i-1] is not None:
+                continue
+            if i % 2 == 1:
+                bucket_numbers[i-1] = self.previous_number(bucket_numbers[i])
+            if i % 2 == 0:
+                bucket_numbers[i-1] = bucket_numbers[i]
+
+        return bucket_numbers
 
     @staticmethod
     def number_to_3digit_string(number):

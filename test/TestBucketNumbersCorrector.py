@@ -17,6 +17,36 @@ class TestBucketNumbersCorrector(unittest.TestCase):
         # that
         self.assertEqual(actual_eliminated_empty_strings, expected_eliminated_empty_strings)
 
+    def test_fulfill_bucket_numbers_which_has_one_item_at_counting_roll_over(self):
+        # given
+        bucket_numbers_which_has_one_item = [None, None, None, 1, None, None]
+        max_bucket_number = 100
+        bucket_numbers_corrector = BucketNumbersCorrector(bucket_numbers=None,
+                                                          max_bucket_number=max_bucket_number)
+        expected_fulfilled_bucket_numbers = [99, 100, 100, 1, 1, 2]
+
+        # when
+        actual_fulfilled_bucket_numbers = \
+            bucket_numbers_corrector.fulfill_bucket_numbers_which_has_one_item(bucket_numbers_which_has_one_item)
+
+        # that
+        self.assertEqual(actual_fulfilled_bucket_numbers, expected_fulfilled_bucket_numbers)
+
+    def test_fulfill_bucket_numbers_which_has_one_item_not_at_counting_roll_over(self):
+        # given
+        bucket_numbers_which_has_one_item = [None, None, None, 10, None, None]
+        max_bucket_number = 100
+        bucket_numbers_corrector = BucketNumbersCorrector(bucket_numbers=None,
+                                                          max_bucket_number=max_bucket_number)
+        expected_fulfilled_bucket_numbers = [8, 9, 9, 10, 10, 11]
+
+        # when
+        actual_fulfilled_bucket_numbers = \
+            bucket_numbers_corrector.fulfill_bucket_numbers_which_has_one_item(bucket_numbers_which_has_one_item)
+
+        # that
+        self.assertEqual(actual_fulfilled_bucket_numbers, expected_fulfilled_bucket_numbers)
+
     def test_int_flatten_bucket_numbers_working(self):
         # given
         bucket_numbers = [["001", ""], ["", "003"], ["003", "004"], ["004", "005"]]
