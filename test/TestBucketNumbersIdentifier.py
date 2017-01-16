@@ -74,7 +74,7 @@ class TestBucketNumbersIdentifier(unittest.TestCase):
         identification_1 = "001"
         identification_2 = "002"
 
-        expected_evaluated_identification = "Unknown"
+        expected_evaluated_identification = ""
 
         # when
         actual_evaluated_identification = BucketNumbersIdentifier.evaluate_identifications(identification_1,

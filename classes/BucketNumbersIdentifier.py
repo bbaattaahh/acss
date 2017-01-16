@@ -50,13 +50,13 @@ class BucketNumbersIdentifier(RGBImageSlicer):
         if len(identification_1) == 3 and len(identification_2) == 3 and identification_1 == identification_2:
             return identification_1
 
-        if len(identification_1) == 3 and len(identification_2)!=3:
+        if len(identification_1) == 3 and len(identification_2) != 3:
             return identification_1
 
-        if len(identification_2) == 3 and len(identification_1)!=3:
+        if len(identification_2) == 3 and len(identification_1) != 3:
             return identification_2
 
-        return "Unknown"
+        return ""
 
     @staticmethod
     def process_image(image):

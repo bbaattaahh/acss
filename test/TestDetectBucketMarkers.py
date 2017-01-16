@@ -11,11 +11,32 @@ class TestDetectBucketMarkers(unittest.TestCase):
         # given
         image = \
             cv2.imread("./images/DetectBucketMarkers/test_bucket_numbers_working__image.jpg")
-
         bucket_marker_template = \
             cv2.imread("./images/DetectBucketMarkers/test_bucket_numbers_working__bucket_marker_template.png")
+        max_bucket_number = 100
         detect_bucket_markers = DetectBucketMarkers(image=image,
-                                                    bucket_marker_template=bucket_marker_template)
+                                                    bucket_marker_template=bucket_marker_template,
+                                                    max_bucket_number=max_bucket_number)
+
+        expected_numbers = [['001', '002'], ['002', '003']]
+
+        # when
+        actual_numbers = detect_bucket_markers.bucket_numbers
+
+        # that
+        self.assertEqual(actual_numbers, expected_numbers)
+
+    def test_bucket_numbers_some_deleted_number_from_image(self):
+        # given
+        image = \
+            cv2.imread("./images/DetectBucketMarkers/test_bucket_numbers_some_deleted_number_from_image__image.jpg")
+        bucket_marker_template = \
+            cv2.imread("./images/DetectBucketMarkers/"
+                       "test_bucket_numbers_some_deleted_number_from_image__bucket_marker_template.png")
+        max_bucket_number = 100
+        detect_bucket_markers = DetectBucketMarkers(image=image,
+                                                    bucket_marker_template=bucket_marker_template,
+                                                    max_bucket_number=max_bucket_number)
 
         expected_numbers = [['001', '002'], ['002', '003']]
 
@@ -33,7 +54,8 @@ class TestDetectBucketMarkers(unittest.TestCase):
         bucket_marker_template = \
             cv2.imread("./images/DetectBucketMarkers/test_bucket_markers_working__bucket_marker_template.png")
         detect_bucket_markers = DetectBucketMarkers(image=image,
-                                                    bucket_marker_template=bucket_marker_template)
+                                                    bucket_marker_template=bucket_marker_template,
+                                                    max_bucket_number=None)
 
         expected_bucket_marker_1 = \
             cv2.imread("./images/DetectBucketMarkers/test_bucket_markers_working__bucket_marker_1_output.png")
@@ -54,7 +76,8 @@ class TestDetectBucketMarkers(unittest.TestCase):
             "./images/DetectBucketMarkers/test_bucket_marker_top_left_corners_working__bucket_marker_template.jpg")
 
         detect_bucket_markers = DetectBucketMarkers(image=image,
-                                                    bucket_marker_template=bucket_marker_template)
+                                                    bucket_marker_template=bucket_marker_template,
+                                                    max_bucket_number=None)
 
         expected_bucket_marker_top_left_corners = [[727, 843],
                                                    [1500, 843]]
@@ -72,7 +95,8 @@ class TestDetectBucketMarkers(unittest.TestCase):
             "./images/DetectBucketMarkers/test_bucket_marker_middle_x_positions_working__bucket_marker_template.jpg")
 
         detect_bucket_markers = DetectBucketMarkers(image=image,
-                                                    bucket_marker_template=bucket_marker_template)
+                                                    bucket_marker_template=bucket_marker_template,
+                                                    max_bucket_number=None)
 
         expected_bucket_marker_middle_x_positions = [840, 1613]
 
@@ -89,7 +113,8 @@ class TestDetectBucketMarkers(unittest.TestCase):
             "./images/DetectBucketMarkers/test_matching_middle_templates_positions_working__bucket_marker_template.jpg")
 
         detect_bucket_markers = DetectBucketMarkers(image=image,
-                                                    bucket_marker_template=bucket_marker_template)
+                                                    bucket_marker_template=bucket_marker_template,
+                                                    max_bucket_number=None)
 
         expected_matching_middle_templates_positions = [[877, 843],
                                                         [1650, 843]]
@@ -105,7 +130,8 @@ class TestDetectBucketMarkers(unittest.TestCase):
         bucket_marker_template = \
             cv2.imread("./images/DetectBucketMarkers/test_always_seen_middle_template_working_input.jpg")
         detect_bucket_markers = DetectBucketMarkers(image=None,
-                                                    bucket_marker_template=bucket_marker_template)
+                                                    bucket_marker_template=bucket_marker_template,
+                                                    max_bucket_number=None)
 
         expected_always_seen_middle_template = \
             cv2.imread("./images/DetectBucketMarkers/test_always_seen_middle_template_working_output.png")
