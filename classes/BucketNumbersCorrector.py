@@ -11,6 +11,22 @@ class BucketNumbersCorrector:
         self.max_bucket_number = max_bucket_number
 
     @property
+    def corrected_bucket_numbers(self):
+        best_matching_bucket_numbers = self.best_matching_bucket_numbers
+        corrected_bucket_numbers = self.convert_int_bucket_numbers_to_original_format(best_matching_bucket_numbers)
+        return corrected_bucket_numbers
+
+    @staticmethod
+    def convert_int_bucket_numbers_to_original_format(int_bucket_numbers):
+        str_bucket_numbers = []
+        for i in range(0, len(int_bucket_numbers), 2):
+            string_1 = BucketNumbersCorrector.number_to_3digit_string(int_bucket_numbers[i])
+            string_2 = BucketNumbersCorrector.number_to_3digit_string(int_bucket_numbers[i+1])
+            str_bucket_numbers.append([string_1, string_2])
+
+        return str_bucket_numbers
+
+    @property
     def best_matching_bucket_numbers(self):
         lowest_distance_so_far = 99999
         best_index_so_far = 0
