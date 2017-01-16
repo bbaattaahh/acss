@@ -4,18 +4,53 @@ from BucketNumbersCorrector import BucketNumbersCorrector
 
 
 class TestBucketNumbersCorrector(unittest.TestCase):
-    def test_filter_out_not_digit_characters_working(self):
+
+    def test_best_matching_bucket_numbers_004_is_badly_detected_at_roll_over(self):
         # given
-        bucket_numbers = [["001", ""], ["002", ""], ["003", "004"], ["", "005"]]
-        bucket_numbers_corrector = BucketNumbersCorrector(bucket_numbers,
-                                                          max_bucket_number=None)
-        expected_eliminated_empty_strings = [["001", "002"], ["002", "003"], ["003", "004"], ["004", "005"]]
+        bucket_numbers = [["99", "100"], ["100", "001"], ["004", ""], ["", "003"]]
+        max_bucket_number = 100
+        bucket_numbers_corrector = BucketNumbersCorrector(bucket_numbers=bucket_numbers,
+                                                          max_bucket_number=max_bucket_number)
+        expected_best_matching_bucket_numbers = [99, 100, 100, 1, 1, 2, 2, 3]
 
         # when
-        actual_eliminated_empty_strings = bucket_numbers_corrector.eliminate_empty_strings()
+        actual_best_matching_bucket_numbers = \
+            bucket_numbers_corrector.best_matching_bucket_numbers
 
         # that
-        self.assertEqual(actual_eliminated_empty_strings, expected_eliminated_empty_strings)
+        self.assertEqual(actual_best_matching_bucket_numbers, expected_best_matching_bucket_numbers)
+
+
+    def test_best_matching_bucket_numbers_004_is_badly_detected(self):
+        # given
+        bucket_numbers = [["001", ""], ["002", ""], ["004", ""], ["", "005"]]
+        max_bucket_number = 100
+        bucket_numbers_corrector = BucketNumbersCorrector(bucket_numbers=bucket_numbers,
+                                                          max_bucket_number=max_bucket_number)
+        expected_best_matching_bucket_numbers = [1, 2, 2, 3, 3, 4, 4, 5]
+
+        # when
+        actual_best_matching_bucket_numbers = \
+            bucket_numbers_corrector.best_matching_bucket_numbers
+
+        # that
+        self.assertEqual(actual_best_matching_bucket_numbers, expected_best_matching_bucket_numbers)
+
+    def test_one_item_bucket_numbers_working(self):
+        # given
+        bucket_numbers = [["001", ""], ["002", ""], ["003", "004"], ["", "005"]]
+        max_bucket_number = 100
+        index_to_keep = 2
+        bucket_numbers_corrector = BucketNumbersCorrector(bucket_numbers=bucket_numbers,
+                                                          max_bucket_number=max_bucket_number)
+        expected_one_item_bucket_numbers = [None, None, 2, None, None, None, None, None]
+
+        # when
+        actual_one_item_bucket_numbers = \
+            bucket_numbers_corrector.one_item_bucket_numbers(index_to_keep)
+
+        # that
+        self.assertEqual(actual_one_item_bucket_numbers, expected_one_item_bucket_numbers)
 
     def test_fulfill_bucket_numbers_which_has_one_item_at_counting_roll_over(self):
         # given

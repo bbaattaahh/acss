@@ -11,6 +11,33 @@ class BucketNumbersCorrector:
         self.max_bucket_number = max_bucket_number
 
     @property
+    def best_matching_bucket_numbers(self):
+        lowest_distance_so_far = 99999
+        best_index_so_far = 0
+
+        for index_to_keep in range(0, len(self.int_flatten_bucket_numbers)):
+            if self.int_flatten_bucket_numbers[index_to_keep] is None:
+                continue
+
+            act_one_item_bucket_numbers = self.one_item_bucket_numbers(index_to_keep)
+            act_fulfill_bucket_numbers = self.fulfill_bucket_numbers_which_has_one_item(act_one_item_bucket_numbers)
+            act_distance = self.bucket_numbers_distance(self.int_flatten_bucket_numbers,
+                                                        act_fulfill_bucket_numbers)
+
+            if act_distance < lowest_distance_so_far:
+                lowest_distance_so_far = act_distance
+                best_index_so_far = index_to_keep
+
+        best_one_item_bucket_numbers = self.one_item_bucket_numbers(best_index_so_far)
+        best_fulfill_bucket_numbers = self.fulfill_bucket_numbers_which_has_one_item(best_one_item_bucket_numbers)
+        return best_fulfill_bucket_numbers
+
+    def one_item_bucket_numbers(self, index_to_keep):
+        one_item_bucket_numbers = [None] * len(self.int_flatten_bucket_numbers)
+        one_item_bucket_numbers[index_to_keep] = self.int_flatten_bucket_numbers[index_to_keep]
+        return one_item_bucket_numbers
+
+    @property
     def int_flatten_bucket_numbers(self):
         flatten_bucket_numbers = list(more_itertools.flatten(self.bucket_numbers))
         int_flatten_bucket_numbers = []
@@ -23,16 +50,6 @@ class BucketNumbersCorrector:
             int_flatten_bucket_numbers.append(int(flatten_bucket_number))
 
         return int_flatten_bucket_numbers
-
-    def eliminate_empty_strings(self):
-        for i in range(0, len(self.bucket_numbers)):
-            if self.bucket_numbers[i][0] == "" and i <> 0:
-                self.bucket_numbers[i][0] = self.bucket_numbers[i-1][1]
-
-            if self.bucket_numbers[i][1] == "" and i <> len(self.bucket_numbers)-1:
-                self.bucket_numbers[i][1] = self.bucket_numbers[i+1][0]
-
-        return self.bucket_numbers
 
     def fulfill_bucket_numbers_which_has_one_item(self, bucket_numbers):
         for i in range(0, len(bucket_numbers)-1):
