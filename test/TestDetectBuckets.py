@@ -14,7 +14,8 @@ class TestDetectBuckets(unittest.TestCase):
         detect_buckets = DetectBuckets(image=image,
                                        bucket_marker_template=None,
                                        bucket_marker_template_original_resolution=None,
-                                       template_matching_resolution=template_matching_resolution)
+                                       template_matching_resolution=template_matching_resolution,
+                                       max_bucket_number=None)
 
         expected_image_to_detect_bucket_markers = \
             cv2.imread("./images/DetectBuckets/test_image_to_detect_bucket_markers_working_output.png")
@@ -36,7 +37,8 @@ class TestDetectBuckets(unittest.TestCase):
                             image=None,
                             bucket_marker_template=bucket_marker_image,
                             bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                            template_matching_resolution=template_matching_resolution)
+                            template_matching_resolution=template_matching_resolution,
+                            max_bucket_number=None)
 
         expected_template_to_template_matching = cv2.imread(
                                     "./images/DetectBuckets/test_template_to_detect_bucket_markers_working_output.png")
