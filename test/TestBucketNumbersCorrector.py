@@ -260,3 +260,4 @@ class TestBucketNumbersCorrector(unittest.TestCase):
 
         # that
         self.assertEqual(actual_string, expected_string)
+
