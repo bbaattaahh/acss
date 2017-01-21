@@ -6,6 +6,7 @@ PIL
 pytesseract
 re
 more_itertools
+moviepy
 
 # Other programs
 tesseract 3.02

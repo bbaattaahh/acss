@@ -6,12 +6,12 @@ import math
 
 from Rectangle import Rectangle
 from IsRectangleOnOriginalImage import IsRectangleOnOriginalImage
-from is_rectangle_on_original_image import is_rectangle_on_original_image
 
 
 # PARAMS
 with open('config/config-local.json') as json_data:
     config = json.load(json_data)
+
 
 STRECH_PARAMETER = 0.25
 ROTATION_ANGLE = 15
@@ -21,11 +21,13 @@ CASCADE_FILE = config["dropbox_folder_path"] + '/haar_cascade/data_whole_rotate/
 VIDEO_FILE = config["dropbox_folder_path"] + '/videos/live_test_2.avi'
 RESULT_IMAGE_FOLDER = config["dropbox_folder_path"] + '/haar_cascade/detected_asparaguses/'
 
+
 def is_asparagus(w, h, min_area):
     if h*w > min_area:
         return True
 
     return False
+
 
 def rotate_about_center(src, angle, scale=1.):
     w = src.shape[1]
@@ -51,7 +53,7 @@ asparagus_cascade = cv2.CascadeClassifier(CASCADE_FILE)
 
 clip = VideoFileClip(VIDEO_FILE)
 
-t = np.arange(30,60,0.2)
+t = np.arange(30, 60, 0.2)
 
 
 i = 1
@@ -60,7 +62,6 @@ for x in t:
     act_str = '00:00:' + str(x)
 
     act_frame_brg = clip.get_frame(act_str)
-
 
     act_frame_brg = cv2.resize(act_frame_brg,
                                None,

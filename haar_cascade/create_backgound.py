@@ -13,7 +13,7 @@ BACKGROUND_IMAGE_FOLDER = config["dropbox_folder_path"] + '/haar_cascade/neg/'
 BACKGROUND_DESCRIPTION_FILE = config["dropbox_folder_path"] + '/haar_cascade/bg.txt'
 
 RESIZE_FACTOR = 0.5
-t = np.arange(0,30,0.015)
+t = np.arange(0, 30, 0.015)
 i = 1
 
 

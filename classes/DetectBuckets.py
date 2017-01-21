@@ -1,5 +1,3 @@
-import cv2
-
 from ImageResizer import ImageResizer
 from DetectBucketMarkers import DetectBucketMarkers
 from Bucket import Bucket
@@ -53,14 +51,14 @@ class DetectBuckets:
                            detected_bucket_markers.bucket_marker_middle_x_positions + \
                            [self.image_to_detect_bucket_markers.shape[1]]
 
-        bucket_numbers_to_feed_for_loop = [[[None, detected_bucket_markers.bucket_numbers[0][0]]] + \
-                                           detected_bucket_markers.bucket_numbers + \
-                                           [[detected_bucket_markers.bucket_numbers[-1][1], None]]]
+        bucket_numbers_to_feed_for_loop = [[None, detected_bucket_markers.bucket_numbers[0][0]]] + \
+                                          detected_bucket_markers.bucket_numbers + \
+                                          [[detected_bucket_markers.bucket_numbers[-1][1], None]]
 
         for i in range(0, len(bucket_x_borders) - 1):
             actual_bucket = Bucket(start=bucket_x_borders[i],
                                    end=bucket_x_borders[i + 1],
-                                   bucket_number=bucket_numbers_to_feed_for_loop[0][i][1])
+                                   bucket_number=bucket_numbers_to_feed_for_loop[i][1])
             buckets.append(actual_bucket)
 
         return buckets
