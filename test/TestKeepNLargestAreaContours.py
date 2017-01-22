@@ -6,25 +6,24 @@ from KeepNLargestAreaContours import KeepNLargestAreaContours
 
 
 class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
-    def test_keep_n_largest_area_contours_where_invert_is_required(self):
+    def test_kept_n_largest_area_contours_image__with_invert(self):
         # given
         image = cv2.imread("./images/KeepNLargestAreaContours/"
-                           "test_keep_n_largest_area_contours_where_invert_is_required__input_image.png",
+                           "test_kept_n_largest_area_contours_image__with_invert__input_image.png",
                            cv2.CV_LOAD_IMAGE_GRAYSCALE)
         kept_contour_number = 2
+        invert_flag = True
         keep_n_largest_area_contours = KeepNLargestAreaContours(image=image,
-                                                                kept_contour_number=kept_contour_number)
+                                                                kept_contour_number=kept_contour_number,
+                                                                invert_flag=invert_flag)
 
         expected_image = \
             cv2.imread("./images/KeepNLargestAreaContours/"
-                       "test_keep_n_largest_area_contours_where_invert_is_required__output_image.png",
+                       "test_kept_n_largest_area_contours_image__with_invert__output_image.png",
                        cv2.CV_LOAD_IMAGE_GRAYSCALE)
 
         # when
-        keep_n_largest_area_contours.invert_image()
-        keep_n_largest_area_contours.delete_contours()
-        keep_n_largest_area_contours.invert_image()
-        actual_image = keep_n_largest_area_contours.image
+        actual_image = keep_n_largest_area_contours.kept_n_largest_area_contours_image
 
         # that
         self.assertEqual(np.array_equal(actual_image, expected_image), True)

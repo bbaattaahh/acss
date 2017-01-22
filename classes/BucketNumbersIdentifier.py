@@ -5,6 +5,7 @@ import numpy as np
 from PIL import Image
 
 from RGBImageSlicer import RGBImageSlicer
+from KeepNLargestAreaContours import KeepNLargestAreaContours
 
 
 class BucketNumbersIdentifier(RGBImageSlicer):
@@ -66,7 +67,11 @@ class BucketNumbersIdentifier(RGBImageSlicer):
         blured_image = BucketNumbersIdentifier.blur_image(image_150_pixel_height)
         thresholded_and_binarized_image = BucketNumbersIdentifier.threshold_and_binarize_image(blured_image)
         closed_image = BucketNumbersIdentifier.closed_image(thresholded_and_binarized_image)
-        final_image = BucketNumbersIdentifier.vanish_black_contours_beside_edges(closed_image)
+        vanish_black_contours_beside_edges_image =\
+            BucketNumbersIdentifier.vanish_black_contours_beside_edges(closed_image)
+        final_image = KeepNLargestAreaContours(image=vanish_black_contours_beside_edges_image,
+                                               kept_contour_number=3,
+                                               invert_flag=True).kept_n_largest_area_contours_image
         return final_image
 
     @staticmethod
@@ -100,10 +105,10 @@ class BucketNumbersIdentifier(RGBImageSlicer):
         scale_factor = target_height / original_height
 
         image_150_pixel_height = cv2.resize(image,
-                                                   None,
-                                                   fx=scale_factor,
-                                                   fy=scale_factor,
-                                                   interpolation=cv2.INTER_CUBIC)
+                                            None,
+                                            fx=scale_factor,
+                                            fy=scale_factor,
+                                            interpolation=cv2.INTER_CUBIC)
         return image_150_pixel_height
 
     @staticmethod
@@ -113,7 +118,12 @@ class BucketNumbersIdentifier(RGBImageSlicer):
 
     @staticmethod
     def threshold_and_binarize_image(image):
-        _, thresholded_and_binarized_image = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        thresholded_and_binarized_image = cv2.adaptiveThreshold(image,
+                                                                255,
+                                                                cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                                                cv2.THRESH_BINARY,
+                                                                37,
+                                                                2)
         return thresholded_and_binarized_image
 
     @staticmethod

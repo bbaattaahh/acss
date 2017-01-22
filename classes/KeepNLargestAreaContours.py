@@ -5,10 +5,24 @@ import cv2
 class KeepNLargestAreaContours:
     def __init__(self,
                  image,
-                 kept_contour_number):
+                 kept_contour_number,
+                 invert_flag=False):
 
         self.image = image
         self.kept_contour_number = kept_contour_number
+        self.invert_flag = invert_flag
+
+    @property
+    def kept_n_largest_area_contours_image(self):
+        if self.invert_flag:
+            self.invert_image()
+
+        self.delete_contours()
+
+        if self.invert_flag:
+            self.invert_image()
+
+        return self.image
 
     def invert_image(self):
         self.image = 255 - self.image
