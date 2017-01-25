@@ -1,5 +1,6 @@
 import unittest
 import cv2
+import numpy as np
 
 from DetectAsparaguses import DetectAsparaguses
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
@@ -16,18 +17,18 @@ class TestDetectAsparaguses(unittest.TestCase):
         swing_angle = 45
 
         expected_image = \
-            cv2.imread("./images/DetectAsparaguses/test_data_to_analysis_one_asparagus_images_one_asparagus_output.jpg")
-        detection_rectangle = Rectangle(top_left_x=40.513580676,
-                                        top_left_y=285.822663912,
-                                        width=560.0,
-                                        high=100.0,
-                                        angle=-12)
+            cv2.imread("./images/DetectAsparaguses/test_data_to_analysis_one_asparagus_images_one_asparagus_output.png")
+        expected_detection_rectangle = Rectangle(top_left_x=40.51358067602706,
+                                                 top_left_y=285.82266391169105,
+                                                 width=560.0,
+                                                 high=100.0,
+                                                 angle=-12)
 
-        detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
-                                                                image=expected_image,
-                                                                rectangle_on_original_image=detection_rectangle)
+        expected_detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
+                                                            image=expected_image,
+                                                            rectangle_on_original_image=expected_detection_rectangle)
 
-        expected_data_to_analysis = [detection_to_one_asparagus_analysis]
+        expected_data_to_analysis = [expected_detection_to_one_asparagus_analysis]
 
         # when
         detect_asparaguses = DetectAsparaguses(image=image,
@@ -36,15 +37,8 @@ class TestDetectAsparaguses(unittest.TestCase):
                                                swing_angle=swing_angle)
         actual_data_to_analysis = detect_asparaguses.data_to_analysis_one_asparagus_images
 
-
         # that
-        difference_because_of_jpg_compressing = \
-            sum(sum(sum(actual_data_to_analysis[0].image - expected_data_to_analysis[0].image)))
-
-        self.assertLess(difference_because_of_jpg_compressing, 300)
-        self.assertEqual(actual_data_to_analysis[0].rectangle_on_original_image.angle,
-                         expected_data_to_analysis[0].rectangle_on_original_image.angle)
-
+        self.assertEqual(actual_data_to_analysis, expected_data_to_analysis)
 
     def test_image_detection_on(self):
         # given
@@ -64,7 +58,7 @@ class TestDetectAsparaguses(unittest.TestCase):
         difference_because_of_jpg_compression = sum(sum(expected_output_image - detect_asparaguses.image_detection_on))
         self.assertLess(difference_because_of_jpg_compression, 22000)
 
-    def test_get_asparagus_candidates_2_candidates(self):
+    def test_asparagus_candidates_2_candidates(self):
         # given
         image = cv2.imread("./images/DetectAsparaguses/test_asparagus_detection_candidates_input.jpg")
         cascade_file = "./cascade_files/cascade.xml"
@@ -82,28 +76,25 @@ class TestDetectAsparaguses(unittest.TestCase):
                                                detection_scale=detection_scale,
                                                swing_angle=swing_angle)
 
-        actual_candidates = detect_asparaguses.get_asparagus_candidates()
+        actual_candidates = detect_asparaguses.asparagus_candidates
 
         # that
-        self.assertEqual(actual_candidates[0].angle, expected_candidates[0].angle)
-        self.assertEqual(actual_candidates[1].angle, expected_candidates[1].angle)
-        # TODO: It is wail i dont knpw why....
-        #self.assertEqual(actual_candidates[0], expected_candidates[0])
+        self.assertEqual(actual_candidates, expected_candidates)
 
     def test_rotate_about_center(self):
         # given
         image = cv2.imread("./images/DetectAsparaguses/test_rotate_about_center_input.jpg")
         cascade_file = "./cascade_files/cascade.xml"
-        expected_rotated_image = cv2.imread("./images/DetectAsparaguses/test_rotate_about_center_output.jpg")
-
-        # when
         detect_asparaguses = DetectAsparaguses(image=image,
                                                cascade_file=cascade_file)
+
+        expected_rotated_image = cv2.imread("./images/DetectAsparaguses/test_rotate_about_center_output.png")
+
+        # when
         actual_rotated_image = detect_asparaguses.rotate_about_center(image, 25)
 
         # that
-        difference_because_of_jpg_compression = sum(sum(sum(actual_rotated_image - expected_rotated_image)))
-        self.assertLess(difference_because_of_jpg_compression, 500)
+        self.assertEqual(np.array_equal(actual_rotated_image, expected_rotated_image), True)
 
 
 if __name__ == '__main__':

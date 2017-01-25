@@ -19,6 +19,9 @@ class Rectangle:
                          self.bottom_right_corner(),
                          self.bottom_left_corner()]
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
     def top_left_corner(self):
         return [self.top_left_x, self.top_left_y]
 

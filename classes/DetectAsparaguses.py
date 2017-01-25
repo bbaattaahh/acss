@@ -21,10 +21,8 @@ class DetectAsparaguses(object):
         self.cascade_file = cascade_file
         self.detection_scale = detection_scale
         self.swing_angle = swing_angle
-        self.image_detection_on = self.image_detection_on()
-        self.asparagus_candidates = self.get_asparagus_candidates()
-        self.data_to_analysis_one_asparagus_images = self.data_to_analysis_one_asparagus_images()
 
+    @property
     def data_to_analysis_one_asparagus_images(self):
         to_asparagus_analysis = []
         for candidate in self.asparagus_candidates:
@@ -61,6 +59,7 @@ class DetectAsparaguses(object):
 
         return to_asparagus_analysis
 
+    @property
     def image_detection_on(self):
         grey_image = cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
         rescaled_image = cv2.resize(grey_image,
@@ -70,7 +69,8 @@ class DetectAsparaguses(object):
                                     interpolation=cv2.INTER_CUBIC)
         return rescaled_image
 
-    def get_asparagus_candidates(self):
+    @property
+    def asparagus_candidates(self):
         detections = []
 
         for angle in range(-self.swing_angle, self.swing_angle+1):
@@ -134,31 +134,30 @@ class DetectAsparaguses(object):
         h_original = image.shape[0]
 
         # now calculate new image width and height
-        rangle = np.deg2rad(angle)  # angle in radians
-        w_rotated = abs(np.sin(rangle) * h_original) + abs(np.cos(rangle) * w_original)
-        h_rotated = abs(np.cos(rangle) * h_original) + abs(np.sin(rangle) * w_original)
+        radian_angle = np.deg2rad(angle)  # angle in radians
+        w_rotated = abs(np.sin(radian_angle) * h_original) + abs(np.cos(radian_angle) * w_original)
+        h_rotated = abs(np.cos(radian_angle) * h_original) + abs(np.sin(radian_angle) * w_original)
 
-
-        # From top left coorner to centrum of image
+        # From top left corner to central of image
         central_vector = np.array([[-w_rotated / 2], [-h_rotated / 2]])
 
-        point_relative_to_centrum = point_numpy + central_vector
+        point_relative_to_central = point_numpy + central_vector
 
         # Rotation back
         theta = np.deg2rad(angle)
-        rotMatrix = np.array([[np.cos(theta), -np.sin(theta)],
-                              [np.sin(theta), np.cos(theta)]])
-        rotated_point_relative_to_centrum = np.dot(rotMatrix, point_relative_to_centrum)
+        rotation_matrix = np.array([[np.cos(theta), -np.sin(theta)],
+                                    [np.sin(theta), np.cos(theta)]])
+        rotated_point_relative_to_central = np.dot(rotation_matrix, point_relative_to_central)
 
-        # Centrum to top left coorner
-        top_left_centrum_point = rotated_point_relative_to_centrum - central_vector
+        # Central to top left corner
+        top_left_central_point = rotated_point_relative_to_central - central_vector
 
-        # Compenyation with picture growth
+        # Compensation with picture growth
         w_growth_on_one_side = (w_rotated - w_original) / 2
         h_growth_on_one_side = (h_rotated - h_original) / 2
         compensation_vector = np.array([[w_growth_on_one_side], [h_growth_on_one_side]])
 
-        original_point = top_left_centrum_point - compensation_vector
+        original_point = top_left_central_point - compensation_vector
         original_point_list = original_point.tolist()
         original_point_list_single_level = original_point_list[0] + original_point_list[1]
 
