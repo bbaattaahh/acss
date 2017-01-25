@@ -8,9 +8,9 @@ class AsparagusClassification:
         self.asparagus = asparagus
         self.millimeter_pixel_ratio = millimeter_pixel_ratio
         self.classification_specification = classification_specification
-        self.classification_result = self.classify_asparagus()
 
-    def classify_asparagus(self):
+    @property
+    def classification_result(self):
         for actual_class in self.classification_specification:
             if self.is_asparagus_fit_to_class(actual_class):
                 return actual_class

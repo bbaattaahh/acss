@@ -14,14 +14,13 @@ class TestAsparagusClassification(unittest.TestCase):
         millimeter_pixel_ratio = 1
         with open("./json_files/test_asparagus_classification_solo_I.json") as json_data:
             classification_specification = json.load(json_data)
-
-        expected_classification_result = "Solo I"
-
-        # when
         asparagus_classification = AsparagusClassification(asparagus=asparagus,
                                                            millimeter_pixel_ratio=millimeter_pixel_ratio,
                                                            classification_specification=classification_specification)
 
+        expected_classification_result = "Solo I"
+
+        # when
         actual_classification_result = asparagus_classification.classification_result
 
         # that
@@ -36,14 +35,13 @@ class TestAsparagusClassification(unittest.TestCase):
         millimeter_pixel_ratio = 1
         with open("./json_files/test_asparagus_classification_no_head_no_class.json") as json_data:
             classification_specification = json.load(json_data)
-
-        expected_classification_result = "no class"
-
-        # when
         asparagus_classification = AsparagusClassification(asparagus=asparagus,
                                                            millimeter_pixel_ratio=millimeter_pixel_ratio,
                                                            classification_specification=classification_specification)
 
+        expected_classification_result = "no class"
+
+        # when
         actual_classification_result = asparagus_classification.classification_result
 
         # that
@@ -57,14 +55,13 @@ class TestAsparagusClassification(unittest.TestCase):
         millimeter_pixel_ratio = 1
         with open("./json_files/test_asparagus_classification_minimum_condition_open_head.json") as json_data:
             classification_specification = json.load(json_data)
-
-        expected_classification_result = "open head"
-
-        # when
         asparagus_classification = AsparagusClassification(asparagus=asparagus,
                                                            millimeter_pixel_ratio=millimeter_pixel_ratio,
                                                            classification_specification=classification_specification)
 
+        expected_classification_result = "open head"
+
+        # when
         actual_classification_result = asparagus_classification.classification_result
 
         # that
@@ -80,14 +77,13 @@ class TestAsparagusClassification(unittest.TestCase):
         millimeter_pixel_ratio = 0.5
         with open("./json_files/test_asparagus_classification_purple_I.json") as json_data:
             classification_specification = json.load(json_data)
-
-        expected_classification_result = "Purple I"
-
-        # when
         asparagus_classification = AsparagusClassification(asparagus=asparagus,
                                                            millimeter_pixel_ratio=millimeter_pixel_ratio,
                                                            classification_specification=classification_specification)
 
+        expected_classification_result = "Purple I"
+
+        # when
         actual_classification_result = asparagus_classification.classification_result
 
         # that
