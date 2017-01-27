@@ -13,7 +13,7 @@ class TestDetectAsparaguses(unittest.TestCase):
         image = \
             cv2.imread("./images/DetectAsparaguses/test_data_to_analysis_one_asparagus_images_one_asparagus_input.jpg")
         cascade_file = "./cascade_files/cascade.xml"
-        detection_scale = 0.25
+        detection_resolution = 120, 160
         swing_angle = 45
 
         expected_image = \
@@ -33,7 +33,7 @@ class TestDetectAsparaguses(unittest.TestCase):
         # when
         detect_asparaguses = DetectAsparaguses(image=image,
                                                cascade_file=cascade_file,
-                                               detection_scale=detection_scale,
+                                               detection_resolution=detection_resolution,
                                                swing_angle=swing_angle)
         actual_data_to_analysis = detect_asparaguses.data_to_analysis_one_asparagus_images
 
@@ -44,7 +44,7 @@ class TestDetectAsparaguses(unittest.TestCase):
         # given
         image = cv2.imread("./images/DetectAsparaguses/test_image_detection_on_input.jpg")
         cascade_file = "./cascade_files/cascade.xml"
-        detection_scale = 0.25
+        detection_resolution = 120, 160
 
         expected_output_image = cv2.imread("./images/DetectAsparaguses/test_image_detection_on_output.jpg",
                                            cv2.CV_LOAD_IMAGE_GRAYSCALE)
@@ -52,7 +52,7 @@ class TestDetectAsparaguses(unittest.TestCase):
         # when
         detect_asparaguses = DetectAsparaguses(image=image,
                                                cascade_file=cascade_file,
-                                               detection_scale=detection_scale)
+                                               detection_resolution=detection_resolution)
 
         # that
         difference_because_of_jpg_compression = sum(sum(expected_output_image - detect_asparaguses.image_detection_on))
@@ -62,7 +62,7 @@ class TestDetectAsparaguses(unittest.TestCase):
         # given
         image = cv2.imread("./images/DetectAsparaguses/test_asparagus_detection_candidates_input.jpg")
         cascade_file = "./cascade_files/cascade.xml"
-        detection_scale = 0.25
+        detection_resolution = 120, 160
         swing_angle = 8
 
         asparagus_candidate_1 = Rectangle(16, 40, 140, 25, -7)
@@ -73,7 +73,7 @@ class TestDetectAsparaguses(unittest.TestCase):
         # when
         detect_asparaguses = DetectAsparaguses(image=image,
                                                cascade_file=cascade_file,
-                                               detection_scale=detection_scale,
+                                               detection_resolution=detection_resolution,
                                                swing_angle=swing_angle)
 
         actual_candidates = detect_asparaguses.asparagus_candidates

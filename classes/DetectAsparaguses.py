@@ -7,6 +7,8 @@ from IsRectangleOnOriginalImage import IsRectangleOnOriginalImage
 from ChooseFinalCandidates import ChooseFinalCandidates
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
 from SnipFromImage import SnipFromImage
+from ImageResizer import ImageResizer
+from PositionConverter import PositionConverter
 
 
 class DetectAsparaguses(object):
@@ -14,12 +16,12 @@ class DetectAsparaguses(object):
     def __init__(self,
                  image,
                  cascade_file,
-                 detection_scale=0.25,
+                 detection_resolution=(480, 640),
                  swing_angle=45):
 
         self.image = image
         self.cascade_file = cascade_file
-        self.detection_scale = detection_scale
+        self.detection_resolution = detection_resolution
         self.swing_angle = swing_angle
 
     @property
@@ -29,10 +31,14 @@ class DetectAsparaguses(object):
             original_rotated_image = self.rotate_about_center(self.image,
                                                               angle=candidate.angle)
 
-            scale_back_x = candidate.top_left_x / self.detection_scale
-            scale_back_y = candidate.top_left_y / self.detection_scale
-            scale_back_w = candidate.width / self.detection_scale
-            scale_back_h = candidate.high / self.detection_scale
+            scale_back_x, scale_back_y = PositionConverter(original_position=[candidate.top_left_x, candidate.top_left_y],
+                                                           original_resolution=self.image_detection_on.shape[0:2],
+                                                           target_resolution=self.image.shape[0:2]).get_target_position
+
+            scale_back_w, scale_back_h = PositionConverter(original_position=[candidate.width, candidate.high],
+                                                           original_resolution=self.image_detection_on.shape[0:2],
+                                                           target_resolution=self.image.shape[0:2]).get_target_position
+
 
             image_one_asparagus = SnipFromImage(image=original_rotated_image,
                                                 x=scale_back_x,
@@ -61,12 +67,8 @@ class DetectAsparaguses(object):
 
     @property
     def image_detection_on(self):
-        grey_image = cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
-        rescaled_image = cv2.resize(grey_image,
-                                    None,
-                                    fx=self.detection_scale,
-                                    fy=self.detection_scale,
-                                    interpolation=cv2.INTER_CUBIC)
+        gray_image = cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
+        rescaled_image = ImageResizer(gray_image, target_resolution=self.detection_resolution).resized_image
         return rescaled_image
 
     @property
