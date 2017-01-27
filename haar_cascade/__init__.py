@@ -1,1 +1,0 @@
-import haar_cascade
