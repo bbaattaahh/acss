@@ -12,7 +12,6 @@ from PositionConverter import PositionConverter
 
 
 class DetectAsparaguses(object):
-
     def __init__(self,
                  image,
                  cascade_file,
@@ -31,14 +30,14 @@ class DetectAsparaguses(object):
             original_rotated_image = self.rotate_about_center(self.image,
                                                               angle=candidate.angle)
 
-            scale_back_x, scale_back_y = PositionConverter(original_position=[candidate.top_left_x, candidate.top_left_y],
-                                                           original_resolution=self.image_detection_on.shape[0:2],
-                                                           target_resolution=self.image.shape[0:2]).get_target_position
+            scale_back_x, scale_back_y = PositionConverter(
+                original_position=[candidate.top_left_x, candidate.top_left_y],
+                original_resolution=self.image_detection_on.shape[0:2],
+                target_resolution=self.image.shape[0:2]).target_position
 
             scale_back_w, scale_back_h = PositionConverter(original_position=[candidate.width, candidate.high],
                                                            original_resolution=self.image_detection_on.shape[0:2],
-                                                           target_resolution=self.image.shape[0:2]).get_target_position
-
+                                                           target_resolution=self.image.shape[0:2]).target_position
 
             image_one_asparagus = SnipFromImage(image=original_rotated_image,
                                                 x=scale_back_x,
@@ -47,9 +46,9 @@ class DetectAsparaguses(object):
                                                 h=scale_back_h).snipped_image
 
             original_top_left_corner = self.calculate_original_coordinate_before_rotation(
-                                                                        image=self.image,
-                                                                        angle=candidate.angle,
-                                                                        vertex=[scale_back_x, scale_back_y])
+                image=self.image,
+                angle=candidate.angle,
+                vertex=[scale_back_x, scale_back_y])
 
             rectangle_on_original_image = Rectangle(top_left_x=original_top_left_corner[0],
                                                     top_left_y=original_top_left_corner[1],
@@ -58,8 +57,8 @@ class DetectAsparaguses(object):
                                                     angle=candidate.angle)
 
             actual_detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
-                                                            image=image_one_asparagus,
-                                                            rectangle_on_original_image=rectangle_on_original_image)
+                image=image_one_asparagus,
+                rectangle_on_original_image=rectangle_on_original_image)
 
             to_asparagus_analysis.append(actual_detection_to_one_asparagus_analysis)
 
@@ -75,7 +74,7 @@ class DetectAsparaguses(object):
     def asparagus_candidates(self):
         detections = []
 
-        for angle in range(-self.swing_angle, self.swing_angle+1):
+        for angle in range(-self.swing_angle, self.swing_angle + 1):
             rotated_image_detection_on = self.rotate_about_center(self.image_detection_on, angle)
             asparagus_cascade = cv2.CascadeClassifier(self.cascade_file)
             actual_asparagus_candidates = asparagus_cascade.detectMultiScale(rotated_image_detection_on, 4, 31)
@@ -92,11 +91,11 @@ class DetectAsparaguses(object):
 
                     if is_rectangle_on_original_image.is_it:
                         actual_asparagus_candidate = Rectangle(
-                                                top_left_x=actual_asparagus_candidate[0].tolist(),
-                                                top_left_y=actual_asparagus_candidate[1].tolist(),
-                                                width=actual_asparagus_candidate[2].tolist(),
-                                                high=actual_asparagus_candidate[3].tolist(),
-                                                angle=angle)
+                            top_left_x=actual_asparagus_candidate[0].tolist(),
+                            top_left_y=actual_asparagus_candidate[1].tolist(),
+                            width=actual_asparagus_candidate[2].tolist(),
+                            high=actual_asparagus_candidate[3].tolist(),
+                            angle=angle)
 
                         detections.append(actual_asparagus_candidate)
 
@@ -162,5 +161,4 @@ class DetectAsparaguses(object):
         original_point = top_left_central_point - compensation_vector
         original_point_list = original_point.tolist()
         original_point_list_single_level = original_point_list[0] + original_point_list[1]
-
         return original_point_list_single_level

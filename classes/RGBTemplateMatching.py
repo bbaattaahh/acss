@@ -49,7 +49,6 @@ class RGBTemplateMatching:
 
         return locations
 
-
     def get_x_coordinates(self):
         x_coordinates_to_one_match = []
 

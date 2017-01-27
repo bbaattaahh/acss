@@ -25,11 +25,11 @@ class DetectBuckets:
         for bucket_on_smaller_image in self.buckets_on_smaller_image:
             start_on_image = PositionConverter(original_position=[bucket_on_smaller_image.start, 0],
                                                original_resolution=self.image_to_detect_bucket_markers.shape[0:2],
-                                               target_resolution=self.image.shape[0:2]).get_target_position[0]
+                                               target_resolution=self.image.shape[0:2]).target_position[0]
 
             end_on_image = PositionConverter(original_position=[bucket_on_smaller_image.end, 0],
                                              original_resolution=self.image_to_detect_bucket_markers.shape[0:2],
-                                             target_resolution=self.image.shape[0:2]).get_target_position[0]
+                                             target_resolution=self.image.shape[0:2]).target_position[0]
 
             actual_bucket = Bucket(start=start_on_image,
                                    end=end_on_image,

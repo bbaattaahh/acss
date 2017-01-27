@@ -10,7 +10,7 @@ class PositionConverter:
         self.target_resolution = target_resolution
 
     @property
-    def get_target_position(self):
+    def target_position(self):
         scale_factor_height = float(self.target_resolution[0]) / float(self.original_resolution[0])
         scale_factor_width = float(self.target_resolution[1]) / float(self.original_resolution[1])
 

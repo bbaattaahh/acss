@@ -13,7 +13,7 @@ class TestPositionConverter(unittest.TestCase):
         expected_target_position = (2, 6)
 
         # when
-        actual_target_position = position_converter.get_target_position
+        actual_target_position = position_converter.target_position
 
         # that
         self.assertEqual(actual_target_position, expected_target_position)
@@ -29,7 +29,7 @@ class TestPositionConverter(unittest.TestCase):
         expected_target_position = (2, 6)
 
         # when
-        actual_target_position = position_converter.get_target_position
+        actual_target_position = position_converter.target_position
 
         # that
         self.assertEqual(actual_target_position, expected_target_position)

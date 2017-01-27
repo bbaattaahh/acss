@@ -9,9 +9,9 @@ class OneAsparagusAnalysis:
                  detection_to_one_asparagus_analysis):
 
         self.detection_to_one_asparagus_analysis = detection_to_one_asparagus_analysis
-        self.asparagus_contour = self.get_asparagus_contour()
 
-    def get_asparagus_contour(self):
+    @property
+    def asparagus_contour(self):
 
         gray_image = cv2.cvtColor(self.detection_to_one_asparagus_analysis.image, cv2.COLOR_BGR2GRAY)
 
@@ -20,8 +20,8 @@ class OneAsparagusAnalysis:
                                 255,
                                 cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-        th_to_find_conours = th.copy()
-        contours, hierarchy = cv2.findContours(th_to_find_conours, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        th_to_find_contours = th.copy()
+        contours, hierarchy = cv2.findContours(th_to_find_contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         largest_contour = self.largest_contour(contours)
         x, y, w, h = cv2.boundingRect(largest_contour)
