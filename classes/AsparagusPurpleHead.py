@@ -7,7 +7,7 @@ from KeepNLargestAreaContours import KeepNLargestAreaContours
 class AsparagusPurpleHead:
     def __init__(self,
                  image,
-                 bounder=([200, 127, 200], [255, 200, 255])):
+                 bounder=([130, 0, 130], [255, 230, 255])):
         self.image = image
         self.bounder = bounder
 
