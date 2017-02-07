@@ -4,6 +4,7 @@ import json
 
 from DetectAsparaguses import DetectAsparaguses
 from OneAsparagusAnalysis import OneAsparagusAnalysis
+from AsparagusHeadImage import AsparagusHeadImage
 
 # PARAMS
 with open('config/config-local.json') as json_data:
@@ -42,12 +43,15 @@ for x in clip.iter_frames():
                                            swing_angle=15)
 
     if len(detect_asparaguses.data_to_analysis_one_asparagus_images) <> 0:
-        act_detection = detect_asparaguses.data_to_analysis_one_asparagus_images[0].image
-        one_asparagus_analysis = OneAsparagusAnalysis(detect_asparaguses.data_to_analysis_one_asparagus_images[0])
-        act_asparagus_enclosing_box_image = one_asparagus_analysis.asparagus_in_smallest_enclosing_box
+
+        act_detection = OneAsparagusAnalysis(detect_asparaguses.data_to_analysis_one_asparagus_images[0]).asparagus_in_smallest_enclosing_box
+        act_top_part = AsparagusHeadImage(act_detection,
+                                          top_part_to_keep_ratio=0.15,
+                                          output_resolution=(50, 50)).resized_top_part
+
         i += 1
         file_name = RESULT_IMAGE_FOLDER + str(i) + ".jpg"
-        cv2.imwrite(file_name, act_asparagus_enclosing_box_image)
+        cv2.imwrite(file_name, act_top_part)
 
         # cv2.imshow('img', act_detection)
         # k = cv2.waitKey(30) & 0xff
