@@ -1,13 +1,9 @@
 from moviepy.editor import *
 import cv2
-import numpy as np
 import json
-import math
 
-from Rectangle import Rectangle
-from IsRectangleOnOriginalImage import IsRectangleOnOriginalImage
-from ImageResizer import ImageResizer
-
+from DetectAsparaguses import DetectAsparaguses
+from OneAsparagusAnalysis import OneAsparagusAnalysis
 
 # PARAMS
 with open('config/config-local.json') as json_data:
@@ -20,7 +16,7 @@ MIN_AREA = 1
 
 CASCADE_FILE = config["dropbox_folder_path"] + '/haar_cascade/data_whole_rotate/cascade.xml'
 VIDEO_FILE = config["dropbox_folder_path"] + '/videos/live_test_2.avi'
-RESULT_IMAGE_FOLDER = config["dropbox_folder_path"] + '/haar_cascade/detected_asparaguses/'
+RESULT_IMAGE_FOLDER = config["dropbox_folder_path"] + '/head_sample_collector/'
 
 
 def is_asparagus(w, h, min_area):
@@ -35,35 +31,25 @@ asparagus_cascade = cv2.CascadeClassifier(CASCADE_FILE)
 
 clip = VideoFileClip(VIDEO_FILE)
 
-t = np.arange(30, 60, 0.2)
+i = 0
+for x in clip.iter_frames():
 
+    act_frame_rgb = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
 
-i = 1
+    detect_asparaguses = DetectAsparaguses(image = act_frame_rgb,
+                                           cascade_file = CASCADE_FILE,
+                                           detection_resolution=(120, 160),
+                                           swing_angle=15)
 
-for x in t:
-    act_str = '00:00:' + str(x)
+    if len(detect_asparaguses.data_to_analysis_one_asparagus_images) <> 0:
+        act_detection = detect_asparaguses.data_to_analysis_one_asparagus_images[0].image
+        one_asparagus_analysis = OneAsparagusAnalysis(detect_asparaguses.data_to_analysis_one_asparagus_images[0])
+        act_asparagus_enclosing_box_image = one_asparagus_analysis.asparagus_in_smallest_enclosing_box
+        i += 1
+        file_name = RESULT_IMAGE_FOLDER + str(i) + ".jpg"
+        cv2.imwrite(file_name, act_asparagus_enclosing_box_image)
 
-    act_frame_brg = clip.get_frame(act_str)
-
-    act_frame_brg = cv2.resize(act_frame_brg,
-                               None,
-                               fx=STRECH_PARAMETER,
-                               fy=STRECH_PARAMETER,
-                               interpolation=cv2.INTER_CUBIC)
-
-    act_frame_rgb = cv2.cvtColor(act_frame_brg, cv2.COLOR_BGR2RGB)
-    act_frame_grey = cv2.cvtColor(act_frame_rgb, cv2.COLOR_RGB2GRAY)
-
-        #     if isRectangleOnOriginalImage.is_it:
-        #         cv2.imwrite(RESULT_IMAGE_FOLDER + str(i) + ".jpg", ratated_act_frame_rgb[y:y + h, x:x + w, :])
-        #         cv2.rectangle(ratated_act_frame_rgb, (x, y), (x + w, y + h), (255, 255, 0), 2)
-        #         act_rectangle = Rectangle(x, y, w, h)
-        #         i += 1
-        #
-        #         print "get one"
-        #
-        #
-        # cv2.imshow('img', ratated_act_frame_rgb)
+        # cv2.imshow('img', act_detection)
         # k = cv2.waitKey(30) & 0xff
         # if k == 27:
         #     break

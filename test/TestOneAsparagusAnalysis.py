@@ -1,5 +1,6 @@
 import unittest
 import cv2
+import numpy as np
 
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
 from Rectangle import Rectangle
@@ -23,7 +24,26 @@ class TestOneAsparagusAnalysis(unittest.TestCase):
         actual_contour = one_asparagus_analysis.asparagus_contour
 
         # that
-        self.assertEqual((actual_contour == expected_contour).all(), True)
+        self.assertEqual(np.array_equal(actual_contour, expected_contour), True)
+
+    def test_asparagus_in_smallest_enclosing_box_working(self):
+        # given
+        image = cv2.imread(
+            "./images/OneAsparagusAnalysis/test_asparagus_in_smallest_enclosing_box_working_input.jpg")
+        non_used_rectangle = Rectangle(0, 0, 0, 0, 0)
+        detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(image, non_used_rectangle)
+        one_asparagus_analysis = OneAsparagusAnalysis(detection_to_one_asparagus_analysis)
+
+        expected_asparagus_in_smallest_enclosing_box = \
+            cv2.imread("./images/OneAsparagusAnalysis/test_asparagus_in_smallest_enclosing_box_working_output.png")
+
+        # when
+        actual_asparagus_in_smallest_enclosing_box = one_asparagus_analysis.asparagus_in_smallest_enclosing_box
+
+        # that
+        self.assertEqual(np.array_equal(actual_asparagus_in_smallest_enclosing_box,
+                                        expected_asparagus_in_smallest_enclosing_box),
+                         True)
 
     def test_asparagus_thickness_working(self):
         # given

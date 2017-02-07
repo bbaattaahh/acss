@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 
 from SnipFromImage import SnipFromImage
+from KeepNLargestAreaContours import KeepNLargestAreaContours
 
 
 class OneAsparagusAnalysis:
@@ -32,6 +33,29 @@ class OneAsparagusAnalysis:
         opened_asparagus_contour = cv2.morphologyEx(asparagus_contour, cv2.MORPH_OPEN, kernel)
 
         return opened_asparagus_contour
+
+    @property
+    def asparagus_in_smallest_enclosing_box(self):
+
+        gray_image = cv2.cvtColor(self.detection_to_one_asparagus_analysis.image, cv2.COLOR_BGR2GRAY)
+
+        ret, th = cv2.threshold(gray_image,
+                                0,
+                                255,
+                                cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+        th_to_find_contours = th.copy()
+        contours, hierarchy = cv2.findContours(th_to_find_contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+        largest_contour = self.largest_contour(contours)
+        x, y, w, h = cv2.boundingRect(largest_contour)
+        asparagus_in_smallest_enclosing_box = SnipFromImage(image=self.detection_to_one_asparagus_analysis.image,
+                                                            x=x,
+                                                            y=y,
+                                                            w=w,
+                                                            h=h).snipped_image
+
+        return asparagus_in_smallest_enclosing_box
 
     def asparagus_length(self):
         return self.asparagus_contour.shape[1]
