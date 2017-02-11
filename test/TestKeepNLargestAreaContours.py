@@ -28,6 +28,26 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
         # that
         self.assertEqual(np.array_equal(actual_image, expected_image), True)
 
+    def test_kept_n_largest_area_contours_image__no_contours(self):
+        # given
+        image = cv2.imread("./images/KeepNLargestAreaContours/"
+                           "test_kept_n_largest_area_contours_image__no_contours__input_image.png",
+                           cv2.CV_LOAD_IMAGE_GRAYSCALE)
+        kept_contour_number = 2
+        keep_n_largest_area_contours = KeepNLargestAreaContours(image=image,
+                                                                kept_contour_number=kept_contour_number)
+
+        expected_image = \
+            cv2.imread("./images/KeepNLargestAreaContours/"
+                       "test_kept_n_largest_area_contours_image__no_contours__output_image.png",
+                       cv2.CV_LOAD_IMAGE_GRAYSCALE)
+
+        # when
+        actual_image = keep_n_largest_area_contours.kept_n_largest_area_contours_image
+
+        # that
+        self.assertEqual(np.array_equal(actual_image, expected_image), True)
+
     def test_invert_image_working(self):
         # given
         image = cv2.imread("./images/KeepNLargestAreaContours/test_invert_image_working__input_image.png",

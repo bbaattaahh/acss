@@ -59,7 +59,8 @@ class KeepNLargestAreaContours:
         contours, hierarchy = cv2.findContours(copy_to_detect_contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         actual_contour_index = 0
-        while actual_contour_index != -1:
+
+        while actual_contour_index != -1 and contours:
             first_level_contours.append(contours[actual_contour_index])
             actual_contour_index = hierarchy[0][actual_contour_index][0]
 
