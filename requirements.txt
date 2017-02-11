@@ -8,6 +8,7 @@ re
 more_itertools
 moviepy
 pygame
+os
 
 # Other programs
 tesseract 3.02
