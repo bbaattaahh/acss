@@ -17,7 +17,6 @@ class TestAsparagusPurpleHead(unittest.TestCase):
 
         # when
         actual_color_filtered_image = asparagus_purple_head.color_filtered_image
-        cv2.imwrite("./images/AsparagusPurpleHead/test_color_filtered_image_working_output.png", actual_color_filtered_image)
 
         # that
         self.assertEqual(np.array_equal(actual_color_filtered_image, expected_color_filtered_image), True)
@@ -64,8 +63,6 @@ class TestAsparagusPurpleHead(unittest.TestCase):
 
         # when
         actual_asparagus_contour = asparagus_purple_head.asparagus_mask
-        cv2.imwrite("./images/AsparagusPurpleHead/test_asparagus_mask_output_working.png",
-                    actual_asparagus_contour)
 
         # that
         self.assertEqual(np.array_equal(actual_asparagus_contour, expected_asparagus_contour), True)
