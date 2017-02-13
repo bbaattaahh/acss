@@ -1,5 +1,6 @@
 import unittest
 import cv2
+import numpy as np
 
 from CameraCalibration import CameraCalibration
 
@@ -16,9 +17,9 @@ class TestCameraCalibration(unittest.TestCase):
                                                chessboard_row_number=chessboard_row_number,
                                                chessboard_column_number=chessboard_column_number)
 
-        expected_pixel_millimeter_ratio = 3.5917144775390626
-        expected_millimeter_pixel_ratio = 0.27841856758201189
-        expected_variance_square_page_length = 1.8350505
+        expected_pixel_millimeter_ratio = 3.5965961456298827
+        expected_millimeter_pixel_ratio = 0.27804066942991928
+        expected_variance_square_page_length = np.float32(1.4898456)
 
         # when
         actual_pixel_millimeter_ratio = camera_calibration.pixel_millimeter_ratio
@@ -28,7 +29,7 @@ class TestCameraCalibration(unittest.TestCase):
         # that
         self.assertEqual(actual_pixel_millimeter_ratio, expected_pixel_millimeter_ratio)
         self.assertEqual(actual_millimeter_pixel_ratio, expected_millimeter_pixel_ratio)
-        self.assertLess(abs(actual_variance_square_page_length - expected_variance_square_page_length), 0.0001)
+        self.assertEqual(actual_variance_square_page_length, expected_variance_square_page_length)
 
 
 if __name__ == '__main__':

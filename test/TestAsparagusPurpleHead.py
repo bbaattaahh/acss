@@ -29,7 +29,7 @@ class TestAsparagusPurpleHead(unittest.TestCase):
 
         expected_green_layer \
             = cv2.imread("./images/AsparagusPurpleHead/test_green_layer_working_output.png",
-                         cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                         cv2.IMREAD_GRAYSCALE)
 
         # when
         actual_green_layer = asparagus_purple_head.green_layer

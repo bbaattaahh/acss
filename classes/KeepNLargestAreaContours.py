@@ -34,29 +34,33 @@ class KeepNLargestAreaContours:
     @property
     def contours_to_delete(self):
         contours_to_delete = []
-        decreasing_area_order = np.argsort(-np.array(self.contour_areas))
 
-        for index in range(0, len(self.first_level_contours)):
-            if decreasing_area_order[index] >= self.kept_contour_number:
-                contours_to_delete.append(self.first_level_contours[index])
+        if len(self.first_level_contours) <= self.kept_contour_number:
+            return contours_to_delete
+
+        for contour in self.first_level_contours:
+            if cv2.contourArea(contour) < self.area_limit:
+                contours_to_delete.append(contour)
 
         return contours_to_delete
 
     @property
-    def contour_areas(self):
+    def area_limit(self):
         contour_areas = []
 
         for actual_contour in self.first_level_contours:
             actual_area = cv2.contourArea(actual_contour)
             contour_areas.append(actual_area)
 
-        return np.array(contour_areas)
+        area_limit = np.sort(contour_areas)[-1*self.kept_contour_number]
+
+        return area_limit
 
     @property
     def first_level_contours(self):
         first_level_contours = []
         copy_to_detect_contours = self.image.copy()
-        contours, hierarchy = cv2.findContours(copy_to_detect_contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        _, contours, hierarchy = cv2.findContours(copy_to_detect_contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         actual_contour_index = 0
 

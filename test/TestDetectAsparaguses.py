@@ -18,8 +18,8 @@ class TestDetectAsparaguses(unittest.TestCase):
 
         expected_image = \
             cv2.imread("./images/DetectAsparaguses/test_data_to_analysis_one_asparagus_images_one_asparagus_output.png")
-        expected_detection_rectangle = Rectangle(top_left_x=40.51358067602706,
-                                                 top_left_y=285.82266391169105,
+        expected_detection_rectangle = Rectangle(top_left_x=44.426171078962284,
+                                                 top_left_y=284.99101714842004,
                                                  width=560.0,
                                                  high=100.0,
                                                  angle=-12)
@@ -45,18 +45,18 @@ class TestDetectAsparaguses(unittest.TestCase):
         image = cv2.imread("./images/DetectAsparaguses/test_image_detection_on_input.jpg")
         cascade_file = "./cascade_files/cascade.xml"
         detection_resolution = 120, 160
-
-        expected_output_image = cv2.imread("./images/DetectAsparaguses/test_image_detection_on_output.jpg",
-                                           cv2.CV_LOAD_IMAGE_GRAYSCALE)
-
-        # when
         detect_asparaguses = DetectAsparaguses(image=image,
                                                cascade_file=cascade_file,
                                                detection_resolution=detection_resolution)
 
+        expected_image_detection_on = cv2.imread("./images/DetectAsparaguses/test_image_detection_on_output.png",
+                                                 cv2.IMREAD_GRAYSCALE)
+
+        # when
+        actual_image_detection_on = detect_asparaguses.image_detection_on
+
         # that
-        difference_because_of_jpg_compression = sum(sum(expected_output_image - detect_asparaguses.image_detection_on))
-        self.assertLess(difference_because_of_jpg_compression, 22000)
+        self.assertEqual(np.array_equal(actual_image_detection_on, expected_image_detection_on), True)
 
     def test_asparagus_candidates_2_candidates(self):
         # given
@@ -65,8 +65,8 @@ class TestDetectAsparaguses(unittest.TestCase):
         detection_resolution = 120, 160
         swing_angle = 8
 
-        asparagus_candidate_1 = Rectangle(16, 40, 140, 25, -7)
-        asparagus_candidate_2 = Rectangle(11, 56, 140, 25, -1)
+        asparagus_candidate_1 = Rectangle(11, 56, 140, 25, -1)
+        asparagus_candidate_2 = Rectangle(16, 39, 140, 25, -6)
 
         expected_candidates = [asparagus_candidate_1, asparagus_candidate_2]
 

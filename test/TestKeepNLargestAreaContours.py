@@ -10,7 +10,7 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
         # given
         image = cv2.imread("./images/KeepNLargestAreaContours/"
                            "test_kept_n_largest_area_contours_image__with_invert__input_image.png",
-                           cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                           cv2.IMREAD_GRAYSCALE)
         kept_contour_number = 2
         invert_flag = True
         keep_n_largest_area_contours = KeepNLargestAreaContours(image=image,
@@ -20,7 +20,7 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
         expected_image = \
             cv2.imread("./images/KeepNLargestAreaContours/"
                        "test_kept_n_largest_area_contours_image__with_invert__output_image.png",
-                       cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                       cv2.IMREAD_GRAYSCALE)
 
         # when
         actual_image = keep_n_largest_area_contours.kept_n_largest_area_contours_image
@@ -32,7 +32,7 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
         # given
         image = cv2.imread("./images/KeepNLargestAreaContours/"
                            "test_kept_n_largest_area_contours_image__no_contours__input_image.png",
-                           cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                           cv2.IMREAD_GRAYSCALE)
         kept_contour_number = 2
         keep_n_largest_area_contours = KeepNLargestAreaContours(image=image,
                                                                 kept_contour_number=kept_contour_number)
@@ -40,7 +40,7 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
         expected_image = \
             cv2.imread("./images/KeepNLargestAreaContours/"
                        "test_kept_n_largest_area_contours_image__no_contours__output_image.png",
-                       cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                       cv2.IMREAD_GRAYSCALE)
 
         # when
         actual_image = keep_n_largest_area_contours.kept_n_largest_area_contours_image
@@ -51,13 +51,13 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
     def test_invert_image_working(self):
         # given
         image = cv2.imread("./images/KeepNLargestAreaContours/test_invert_image_working__input_image.png",
-                           cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                           cv2.IMREAD_GRAYSCALE)
         keep_n_largest_area_contours = KeepNLargestAreaContours(image=image,
                                                                 kept_contour_number=None)
 
         expected_inverted_image = \
             cv2.imread("./images/KeepNLargestAreaContours/test_invert_image_working__output_image.png",
-                       cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                       cv2.IMREAD_GRAYSCALE)
 
         # when
         keep_n_largest_area_contours.invert_image()
@@ -69,14 +69,14 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
     def test_delete_contours_working(self):
         # given
         image = cv2.imread("./images/KeepNLargestAreaContours/test_delete_contours_working__input_image.png",
-                           cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                           cv2.IMREAD_GRAYSCALE)
         kept_contour_number = 2
         keep_n_largest_area_contours = KeepNLargestAreaContours(image=image,
                                                                 kept_contour_number=kept_contour_number)
 
         expected_output_image = \
             cv2.imread("./images/KeepNLargestAreaContours/test_delete_contours_working__output_image.png",
-                       cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                       cv2.IMREAD_GRAYSCALE)
 
         # when
         keep_n_largest_area_contours.delete_contours()
@@ -88,7 +88,7 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
     def test_contours_to_delete__2_smaller_upper_rectangles(self):
         # given
         image = cv2.imread("./images/KeepNLargestAreaContours/test_contours_to_delete__2_smaller_upper_rectangles.png",
-                           cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                           cv2.IMREAD_GRAYSCALE)
         kept_contour_number = 2
         keep_n_largest_area_contours = KeepNLargestAreaContours(image=image,
                                                                 kept_contour_number=kept_contour_number)
@@ -102,24 +102,24 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
         # that
         self.assertEqual(np.array_equal(actual_contours_to_delete, expected_contours_to_delete), True)
 
-    def test_contour_areas_working(self):
+    def test_area_limit_working(self):
         # given
-        image = cv2.imread("./images/KeepNLargestAreaContours/test_contour_areas_working.png",
-                           cv2.CV_LOAD_IMAGE_GRAYSCALE)
-        keep_n_largest_area_contours = KeepNLargestAreaContours(image=image, kept_contour_number=None)
+        image = cv2.imread("./images/KeepNLargestAreaContours/test_area_limit_working.png",
+                           cv2.IMREAD_GRAYSCALE)
+        keep_n_largest_area_contours = KeepNLargestAreaContours(image=image, kept_contour_number=1)
 
-        expected_contour_areas = np.array([5246.0, 1032.0])
+        expected_area_limit = 5246
 
         # when
-        actual_contour_areas = keep_n_largest_area_contours.contour_areas
+        actual_area_limit = keep_n_largest_area_contours.area_limit
 
         # that
-        self.assertEqual(np.array_equal(actual_contour_areas, expected_contour_areas), True)
+        self.assertEqual(np.array_equal(actual_area_limit, expected_area_limit), True)
 
     def test_first_level_contours_working(self):
         # given
         image = cv2.imread("./images/KeepNLargestAreaContours/test_first_level_contours_working.png",
-                           cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                           cv2.IMREAD_GRAYSCALE)
         keep_n_largest_area_contours = KeepNLargestAreaContours(image=image, kept_contour_number=None)
 
         expected_first_level_contours = [np.array([[[27, 5]], [[27, 91]], [[88, 91]], [[88, 5]]]),

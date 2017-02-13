@@ -75,4 +75,4 @@ class RGBTemplateMatching:
 
     @staticmethod
     def numerical_derivation_position_correction(series):
-        return map(lambda x: x + 1, series)
+        return list(map(lambda x: x + 1, series))
