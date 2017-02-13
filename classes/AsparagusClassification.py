@@ -17,7 +17,7 @@ class AsparagusClassification:
         return "no class"
 
     def is_asparagus_fit_to_class(self, actual_class):
-        for actual_condition_name, actual_condition in self.classification_specification[actual_class].iteritems():
+        for actual_condition_name, actual_condition in self.classification_specification[actual_class].items():
             if not self.is_condition_full(actual_condition_name, actual_condition):
                 return False
         return True

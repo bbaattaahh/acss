@@ -16,8 +16,8 @@ class TestRGBTemplateMatching(unittest.TestCase):
                                                     rgb_template=rgb_template,
                                                     threshold=threshold)
 
-        expected_rectangle_top_left_vertices =[[ 729, 845],
-                                               [1507, 845]]
+        expected_rectangle_top_left_vertices = [[729, 845],
+                                                [1508, 845]]
 
         # when
         actual_rectangle_top_left_vertices = rgb_template_matching.rectangle_top_left_vertices
@@ -30,12 +30,11 @@ class TestRGBTemplateMatching(unittest.TestCase):
         rgb_image = cv2.imread("./images/RGBTemplateMatching/test_get_x_coordinates_working_rgb_image.jpg")
         rgb_template = cv2.imread("./images/RGBTemplateMatching/test_get_x_coordinates_working_rgb_template.jpg")
         threshold = 2.3
-        cv2_method = cv2.TM_CCOEFF_NORMED
         rgb_template_matching = RGBTemplateMatching(rgb_image=rgb_image,
                                                     rgb_template=rgb_template,
                                                     threshold=threshold)
 
-        expected_x_coordinates = [729, 1507]
+        expected_x_coordinates = [729, 1508]
 
         # when
         actual_x_coordinates = rgb_template_matching.get_x_coordinates()

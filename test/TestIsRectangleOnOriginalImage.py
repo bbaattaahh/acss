@@ -46,7 +46,7 @@ class TestIsRectangleOnOriginalImage(unittest.TestCase):
         rectangle_on_rotated_image = Rectangle(20, 20, 20, 30, 0)
         angle = 45
         vertex = [0, 0]
-        expected_original_vertex = [159.99999999999997, -160.0]
+        expected_original_vertex = [160, -160.00000000000006]
 
         # when
         is_rectangle_on_original_image = IsRectangleOnOriginalImage(original_image,
