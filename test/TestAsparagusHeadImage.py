@@ -38,6 +38,7 @@ class TestAsparagusHeadImage(unittest.TestCase):
 
         # when
         actual_top_part = asparagus_head_image.top_part
+        cv2.imwrite("./images/AsparagusHeadImage/test_top_part_working_output.png", actual_top_part)
 
         # that
         self.assertEqual(np.array_equal(actual_top_part, expected_top_part), True)
