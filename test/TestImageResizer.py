@@ -49,7 +49,7 @@ class TestImageResizer(unittest.TestCase):
                                      target_resolution=target_resolution,
                                      parent_image_resolution=parent_image_resolution)
 
-        expected_new_sizes = (92, 93)
+        expected_new_sizes = (93, 92)
 
         # when
         actual_new_sizes = image_resizer.new_sizes
