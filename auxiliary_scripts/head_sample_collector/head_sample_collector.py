@@ -37,12 +37,12 @@ for actual_video_file in video_files:
                                                detection_resolution=(120, 160),
                                                swing_angle=15).data_to_analysis_one_asparagus_images
 
-        if len(data_to_analysis_one_asparagus_images) <> 0:
+        if len(data_to_analysis_one_asparagus_images) != 0:
             for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
                 act_detection = OneAsparagusAnalysis(data_to_analysis_one_asparagus_image).asparagus_in_smallest_enclosing_box
                 act_top_part = AsparagusHeadImage(act_detection,
                                                   top_part_to_keep_ratio=0.15,
-                                                  output_resolution=(50, 50)).top_part
+                                                  output_resolution=(50, 50)).resized_top_part
 
                 i += 1
                 file_name = config["dropbox_folder_path"]\
