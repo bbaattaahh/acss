@@ -97,8 +97,7 @@ for x in t:
                 act_rectangle = Rectangle(x, y, w, h)
                 i += 1
 
-                print "get one"
-
+                print ("get one")
 
         cv2.imshow('img', ratated_act_frame_rgb)
         k = cv2.waitKey(30) & 0xff
