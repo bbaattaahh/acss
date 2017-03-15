@@ -44,14 +44,17 @@ for actual_video_file in video_files:
                                                   top_part_to_keep_ratio=0.15,
                                                   output_resolution=(50, 50)).resized_top_part
 
-                i += 1
-                file_name = config["dropbox_folder_path"]\
-                            + config["head_classification"]["head_pictures_folder"] \
-                            + actual_class_name\
-                            + "_"\
-                            + str(i)\
-                            + ".jpg"
-                cv2.imwrite(file_name, act_top_part)
+                if act_top_part.shape == (50, 50, 3):
+                    i += 1
+                    file_name = config["dropbox_folder_path"]\
+                                + config["head_classification"]["head_pictures_folder"] \
+                                + actual_class_name\
+                                + "_"\
+                                + str(i)\
+                                + ".jpg"
+                    cv2.imwrite(file_name, act_top_part)
+                else:
+                    print("Gebasz van")
 
                 # cv2.imshow('img', act_detection)
                 # k = cv2.waitKey(30) & 0xff
