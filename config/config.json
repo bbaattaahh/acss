@@ -5,6 +5,7 @@
     "head_classification": {
         "videos" : ["videos/live_test_2.avi",
                     "videos/live_test_3.avi"],
+        "class_labels":["class1", "class2"],
         "head_pictures_folder" : "images/heads/",
         "top_part_to_keep_ratio": 0.15,
         "head_classification_resolution": [

@@ -1,7 +1,6 @@
 from moviepy.editor import *
 import cv2
 import json
-import os
 
 from DetectAsparaguses import DetectAsparaguses
 from OneAsparagusAnalysis import OneAsparagusAnalysis
@@ -23,10 +22,11 @@ def get_video_file_names(config):
 i = 0
 
 video_files = get_video_file_names(config)
-for actual_video_file in video_files:
-    clip = VideoFileClip(actual_video_file)
-    actual_basename = os.path.basename(actual_video_file)
-    actual_class_name = os.path.splitext(actual_basename)[0]
+class_labels = config["head_classification"]["class_labels"]
+
+for j in range(0, len(video_files)):
+    clip = VideoFileClip(video_files[j])
+    actual_class_name = class_labels[j]
 
     for x in clip.iter_frames():
 
@@ -56,7 +56,7 @@ for actual_video_file in video_files:
                                 + ".jpg"
                     cv2.imwrite(file_name, act_top_part)
                 else:
-                    print("Gebasz van")
+                    print("The image size is not correct!")
 
                     # cv2.imshow('img', act_detection)
                     # k = cv2.waitKey(30) & 0xff
