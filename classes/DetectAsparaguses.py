@@ -67,7 +67,7 @@ class DetectAsparaguses(object):
     @property
     def image_detection_on(self):
         gray_image = cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
-        rescaled_image = ImageResizer(gray_image, target_resolution=self.detection_resolution).resized_image
+        rescaled_image = ImageResizer(gray_image, target_resolution=self.detection_resolution).resized_snipped_image
         return rescaled_image
 
     @property

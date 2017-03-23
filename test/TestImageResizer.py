@@ -17,7 +17,7 @@ class TestImageResizer(unittest.TestCase):
             cv2.imread("./images/ImageResizer/test_image_resizer_no_parent_image_resolution_output.png")
 
         # when
-        actual_resized_image = image_resizer.resized_image
+        actual_resized_image = image_resizer.resized_snipped_image
 
         # that
         self.assertEqual(np.array_equal(actual_resized_image, expected_resized_image), True)
@@ -35,7 +35,7 @@ class TestImageResizer(unittest.TestCase):
             cv2.imread("./images/ImageResizer/test_image_resizer_with_parent_image_resolution_output.png")
 
         # when
-        actual_resized_image = image_resizer.resized_image
+        actual_resized_image = image_resizer.resized_snipped_image
 
         # that
         self.assertEqual(np.array_equal(actual_resized_image, expected_resized_image), True)

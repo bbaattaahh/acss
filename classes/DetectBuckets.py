@@ -67,7 +67,7 @@ class DetectBuckets:
     def image_to_detect_bucket_markers(self):
         image_resizer = ImageResizer(image=self.image,
                                      target_resolution=self.template_matching_resolution)
-        image_to_detect_bucket_markers = image_resizer.resized_image
+        image_to_detect_bucket_markers = image_resizer.resized_snipped_image
         return image_to_detect_bucket_markers
 
     @property
@@ -75,5 +75,5 @@ class DetectBuckets:
         image_resizer = ImageResizer(image=self.bucket_marker_template,
                                      target_resolution=self.template_matching_resolution,
                                      parent_image_resolution=self.bucket_marker_template_original_resolution)
-        template_to_detect_bucket_markers = image_resizer.resized_image
+        template_to_detect_bucket_markers = image_resizer.resized_snipped_image
         return template_to_detect_bucket_markers
