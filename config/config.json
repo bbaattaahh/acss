@@ -10,6 +10,10 @@
         "head_classification_resolution": [
             50,
             50
-        ]
+        ],
+        "classification_model": {
+            "neural_network_hierarchy": "my_model.json",
+            "neural_network_weights": "my_model.h5"
+        }
     }
 }
