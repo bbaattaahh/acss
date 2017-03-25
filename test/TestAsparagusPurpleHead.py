@@ -54,7 +54,7 @@ class TestAsparagusPurpleHead(unittest.TestCase):
 
     def test_asparagus_mask_working(self):
         # given
-        image = cv2.imread("./images/AsparagusPurpleHead/test_asparagus_mask_working_input.png")
+        image = cv2.imread("./images/AsparagusPurpleHead/test_predict_working_input.png")
         asparagus_purple_head = AsparagusPurpleHead(image=image)
 
         expected_asparagus_contour \

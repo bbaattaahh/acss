@@ -9,6 +9,7 @@ more_itertools
 moviepy
 pygame
 os
+keras
 
 # Other programs
 tesseract 3.02
