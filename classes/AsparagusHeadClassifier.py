@@ -1,6 +1,5 @@
 import numpy as np
 from keras.models import model_from_json
-from keras import backend as K
 
 from AsparagusHeadImage import AsparagusHeadImage
 
@@ -36,7 +35,6 @@ class AsparagusHeadClassifier:
 
     @staticmethod
     def process_image(image):
-        K.set_image_dim_ordering('th')
         float_image = image.astype('float32')
         normalized_image = float_image / 255.0
         return normalized_image
