@@ -16,10 +16,11 @@ RESIZE_FACTOR = 0.5
 t = np.arange(0, 30, 0.015)
 i = 1
 
+rot_90_factor = 1
 
 clip = VideoFileClip(VIDEO_FILE)
 
-with open(BACKGROUND_DESCRIPTION_FILE, "wb") as text_file:
+with open(BACKGROUND_DESCRIPTION_FILE, "w") as text_file:
     for x in t:
         act_str = '00:00:' + str(x)
         act_frame_brg = clip.get_frame(act_str)
@@ -34,10 +35,11 @@ with open(BACKGROUND_DESCRIPTION_FILE, "wb") as text_file:
                                             interpolation=cv2.INTER_CUBIC)
 
         filename = BACKGROUND_IMAGE_FOLDER + str(i) + ".jpg"
-        cv2.imwrite(filename, act_frame_grey_resized)
+        rotated_image = np.rot90(act_frame_grey_resized)
+        cv2.imwrite(filename, rotated_image)
 
         file_name_to_description_file = "neg/" + str(i) + ".jpg\n"
-        text_file.write(file_name_to_description_file + str(i) + ".jpg\n")
+        text_file.write(file_name_to_description_file)
 
         i += 1
 
