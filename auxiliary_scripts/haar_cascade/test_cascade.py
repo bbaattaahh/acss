@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import json
 import math
+import numpy as np
 
 from Rectangle import Rectangle
 from IsRectangleOnOriginalImage import IsRectangleOnOriginalImage
@@ -16,8 +17,10 @@ with open('config/config-local.json') as json_data:
 STRECH_PARAMETER = 0.25
 ROTATION_ANGLE = 15
 MIN_AREA = 1
+ROTATION_FACTOR = 1
 
 CASCADE_FILE = config["dropbox_folder_path"] + '/haar_cascade/data_whole_rotate/cascade.xml'
+CASCADE_FILE = config["dropbox_folder_path"] + '/haar_cascade/data_vertical/cascade.xml'
 VIDEO_FILE = config["dropbox_folder_path"] + '/videos/live_test_2.avi'
 RESULT_IMAGE_FOLDER = config["dropbox_folder_path"] + '/haar_cascade/detected_asparaguses/'
 
@@ -63,6 +66,8 @@ for x in t:
 
     act_frame_brg = clip.get_frame(act_str)
 
+    act_frame_brg = np.rot90(act_frame_brg, ROTATION_FACTOR)
+
     act_frame_brg = cv2.resize(act_frame_brg,
                                None,
                                fx=STRECH_PARAMETER,
@@ -87,10 +92,7 @@ for x in t:
             isRectangleOnOriginalImage = IsRectangleOnOriginalImage(act_frame_grey,
                                                                     act_rectangle,
                                                                     angle)
-            # if (is_asparagus(w, h, MIN_AREA) and is_rectangle_on_original_image(rectangle=act_rectangle,
-            #                                                                    original_image=act_frame_grey,
-            #                                                                    rotated_image=rotated_act_frame_grey,
-            #                                                                    angle=angle)):
+
             if isRectangleOnOriginalImage.is_it:
                 cv2.imwrite(RESULT_IMAGE_FOLDER + str(i) + ".jpg", ratated_act_frame_rgb[y:y + h, x:x + w, :])
                 cv2.rectangle(ratated_act_frame_rgb, (x, y), (x + w, y + h), (255, 255, 0), 2)

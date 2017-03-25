@@ -19,6 +19,6 @@ class AsparagusHeadImage:
 
     @property
     def top_part(self):
-        _, w, _ = self.image.shape
-        top_part = self.image[:, int((1-self.top_part_to_keep_ratio)*w):w, :]
+        h, _, _ = self.image.shape
+        top_part = self.image[ :int(self.top_part_to_keep_ratio*h), :, :]
         return top_part

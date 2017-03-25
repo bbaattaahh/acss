@@ -1,6 +1,7 @@
 from moviepy.editor import *
 import cv2
 import json
+import numpy as np
 
 from DetectAsparaguses import DetectAsparaguses
 from OneAsparagusAnalysis import OneAsparagusAnalysis
@@ -23,6 +24,7 @@ i = 0
 
 video_files = get_video_file_names(config)
 class_labels = config["head_classification"]["class_labels"]
+rotation_factor = 1
 
 for j in range(0, len(video_files)):
     clip = VideoFileClip(video_files[j])
@@ -31,11 +33,12 @@ for j in range(0, len(video_files)):
     for x in clip.iter_frames():
 
         act_frame_rgb = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
+        act_frame_rgb = np.rot90(act_frame_rgb, rotation_factor)
 
         data_to_analysis_one_asparagus_images = DetectAsparaguses(
             image=act_frame_rgb,
             cascade_file=config["dropbox_folder_path"] + config["haar_cascade_file"],
-            detection_resolution=(120, 160),
+            detection_resolution=(160, 120),
             swing_angle=15).data_to_analysis_one_asparagus_images
 
         if len(data_to_analysis_one_asparagus_images) != 0:
@@ -58,9 +61,9 @@ for j in range(0, len(video_files)):
                 else:
                     print("The image size is not correct!")
 
-                    # cv2.imshow('img', act_detection)
-                    # k = cv2.waitKey(30) & 0xff
-                    # if k == 27:
-                    #     break
+        cv2.imshow('img', act_frame_rgb)
+        k = cv2.waitKey(30) & 0xff
+        if k == 27:
+            break
 
 cv2.destroyAllWindows()
