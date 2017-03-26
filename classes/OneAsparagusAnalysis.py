@@ -15,8 +15,8 @@ class OneAsparagusAnalysis:
 
     @property
     def asparagus(self):
-        asparagus = Asparagus(length=self.asparagus_length(),
-                              thickness=self.asparagus_thickness(),
+        asparagus = Asparagus(length=self.asparagus_length,
+                              thickness=self.asparagus_thickness,
                               white_head=False,
                               no_head=False,
                               purple_head=False,
@@ -86,9 +86,11 @@ class OneAsparagusAnalysis:
 
         return asparagus_in_smallest_enclosing_box
 
+    @property
     def asparagus_length(self):
         return self.asparagus_contour.shape[0]
 
+    @property
     def asparagus_thickness(self):
         thicknesses = (self.asparagus_contour != 0).sum(1)
         thicknesses_sorted = np.sort(thicknesses)

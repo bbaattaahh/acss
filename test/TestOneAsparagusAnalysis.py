@@ -111,7 +111,7 @@ class TestOneAsparagusAnalysis(unittest.TestCase):
         expected_asparagus_thickness = 22
 
         # when
-        actual_asparagus_thickness = one_asparagus_analysis.asparagus_thickness()
+        actual_asparagus_thickness = one_asparagus_analysis.asparagus_thickness
 
         # that
         self.assertEqual(actual_asparagus_thickness, expected_asparagus_thickness)
@@ -126,7 +126,7 @@ class TestOneAsparagusAnalysis(unittest.TestCase):
         expected_asparagus_length = 431
 
         # when
-        actual_asparagus_length = one_asparagus_analysis.asparagus_length()
+        actual_asparagus_length = one_asparagus_analysis.asparagus_length
 
         # that
         self.assertEqual(actual_asparagus_length, expected_asparagus_length)
