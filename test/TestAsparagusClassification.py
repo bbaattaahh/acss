@@ -30,7 +30,7 @@ class TestAsparagusClassification(unittest.TestCase):
         # given
         asparagus = Asparagus(length=225,
                               thickness=25,
-                              head=False,
+                              white_head=False,
                               purple_head=False)
         millimeter_pixel_ratio = 1
         with open("./json_files/test_asparagus_classification_no_head_no_class.json") as json_data:
@@ -71,7 +71,7 @@ class TestAsparagusClassification(unittest.TestCase):
         # given
         asparagus = Asparagus(length=450,
                               thickness=50,
-                              head=True,
+                              white_head=True,
                               purple_head=True,
                               open_head=False)
         millimeter_pixel_ratio = 0.5

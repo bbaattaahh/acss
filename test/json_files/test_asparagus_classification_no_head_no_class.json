@@ -8,7 +8,7 @@
 			"lower_limit": 220,
 			"upper_limit": 230
 		},
-		"head": true,
+		"white_head": true,
 		"purple_head": false,
 		"open_head": false,
 		"piper": false

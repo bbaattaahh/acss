@@ -27,8 +27,10 @@ class AsparagusClassification:
             return self.is_length_appropriate(condition)
         if condition_name == "thickness":
             return self.is_thickness_appropriate(condition)
-        if condition_name == "head":
-            return self.is_head_appropriate(condition)
+        if condition_name == "white_head":
+            return self.is_white_head_appropriate(condition)
+        if condition_name == "no_head":
+            return self.is_white_head_appropriate(condition)
         if condition_name == "purple_head":
             return self.is_purple_head_appropriate(condition)
         if condition_name == "open_head":
@@ -52,8 +54,11 @@ class AsparagusClassification:
             return False
         return True
 
-    def is_head_appropriate(self, expected_head):
-        return expected_head == self.asparagus.head
+    def is_white_head_appropriate(self, expected_head):
+        return expected_head == self.asparagus.white_head
+
+    def is_no_head_appropriate(self, expected_head):
+        return expected_head == self.asparagus.no_head
 
     def is_purple_head_appropriate(self, expected_purple_head):
         return expected_purple_head == self.asparagus.purple_head

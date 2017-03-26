@@ -38,7 +38,6 @@ class TestAsparagusHeadClassifier(unittest.TestCase):
         # when
         actual_processed_image = AsparagusHeadClassifier.process_image(image)
 
-
         # that
         self.assertEqual(np.array_equal(actual_processed_image, expected_processed_image), True)
 
