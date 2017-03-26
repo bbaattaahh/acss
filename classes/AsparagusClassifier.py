@@ -1,11 +1,15 @@
+import json
+
+
 class AsparagusClassifier:
 
     def __init__(self,
                  millimeter_pixel_ratio,
-                 classification_specification):
+                 classification_specification_file):
 
         self.millimeter_pixel_ratio = millimeter_pixel_ratio
-        self.classification_specification = classification_specification
+        with open(classification_specification_file) as json_data:
+            self.classification_specification = json.load(json_data)
 
     def classify(self, asparagus):
         for actual_class in self.classification_specification:

@@ -1,5 +1,4 @@
 import unittest
-import json
 
 from Asparagus import Asparagus
 from AsparagusClassifier import AsparagusClassifier
@@ -9,10 +8,8 @@ class TestAsparagusClassifier(unittest.TestCase):
     def test_asparagus_classifier_solo_I(self):
         # given
         millimeter_pixel_ratio = 1
-        with open("./json_files/test_asparagus_classification_solo_I.json") as json_data:
-            classification_specification = json.load(json_data)
-        asparagus_classifier = AsparagusClassifier(millimeter_pixel_ratio=millimeter_pixel_ratio,
-                                                   classification_specification=classification_specification)
+        classification_specification_file = "./json_files/test_asparagus_classification_solo_I.json"
+        asparagus_classifier = AsparagusClassifier(millimeter_pixel_ratio, classification_specification_file)
 
         asparagus = Asparagus(length=225,
                               thickness=25,
@@ -29,10 +26,8 @@ class TestAsparagusClassifier(unittest.TestCase):
     def test_asparagus_classifier_no_head_no_class(self):
         # given
         millimeter_pixel_ratio = 1
-        with open("./json_files/test_asparagus_classification_no_head_no_class.json") as json_data:
-            classification_specification = json.load(json_data)
-        asparagus_classifier = AsparagusClassifier(millimeter_pixel_ratio=millimeter_pixel_ratio,
-                                                   classification_specification=classification_specification)
+        classification_specification_file = "./json_files/test_asparagus_classification_no_head_no_class.json"
+        asparagus_classifier = AsparagusClassifier(millimeter_pixel_ratio, classification_specification_file)
 
         asparagus = Asparagus(length=225,
                               thickness=25,
@@ -50,10 +45,9 @@ class TestAsparagusClassifier(unittest.TestCase):
     def test_asparagus_classifier_minimum_condition_open_head(self):
         # given
         millimeter_pixel_ratio = 1
-        with open("./json_files/test_asparagus_classification_minimum_condition_open_head.json") as json_data:
-            classification_specification = json.load(json_data)
-        asparagus_classifier = AsparagusClassifier(millimeter_pixel_ratio=millimeter_pixel_ratio,
-                                                   classification_specification=classification_specification)
+        classification_specification_file = \
+            "./json_files/test_asparagus_classification_minimum_condition_open_head.json"
+        asparagus_classifier = AsparagusClassifier(millimeter_pixel_ratio, classification_specification_file)
 
         asparagus = Asparagus(length=225,
                               thickness=25,
@@ -70,10 +64,8 @@ class TestAsparagusClassifier(unittest.TestCase):
     def test_asparagus_classifier_purple_I(self):
         # given
         millimeter_pixel_ratio = 0.5
-        with open("./json_files/test_asparagus_classification_purple_I.json") as json_data:
-            classification_specification = json.load(json_data)
-        asparagus_classifier = AsparagusClassifier(millimeter_pixel_ratio=millimeter_pixel_ratio,
-                                                   classification_specification=classification_specification)
+        classification_specification_file = "./json_files/test_asparagus_classification_purple_I.json"
+        asparagus_classifier = AsparagusClassifier(millimeter_pixel_ratio, classification_specification_file)
 
         asparagus = Asparagus(length=450,
                               thickness=50,
