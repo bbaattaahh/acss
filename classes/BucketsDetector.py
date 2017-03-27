@@ -4,32 +4,36 @@ from Bucket import Bucket
 from PositionConverter import PositionConverter
 
 
-class DetectBuckets:
+class BucketsDetector:
     def __init__(self,
-                 image,
                  bucket_marker_template,
                  bucket_marker_template_original_resolution,
                  template_matching_resolution,
                  max_bucket_number):
-        self.image = image
+
         self.bucket_marker_template = bucket_marker_template
         self.bucket_marker_template_original_resolution = bucket_marker_template_original_resolution
         self.template_matching_resolution = template_matching_resolution
         self.max_bucket_number = max_bucket_number
 
-    @property
-    def buckets_on_image(self):
+        image_resizer = ImageResizer(image=bucket_marker_template,
+                                     target_resolution=template_matching_resolution,
+                                     parent_image_resolution=bucket_marker_template_original_resolution)
+        self.template_to_detect_bucket_markers = image_resizer.resized_snipped_image
+
+    def buckets_on_image(self, image):
 
         buckets_on_image = []
 
-        for bucket_on_smaller_image in self.buckets_on_smaller_image:
-            start_on_image = PositionConverter(original_position=[bucket_on_smaller_image.start, 0],
-                                               original_resolution=self.image_to_detect_bucket_markers.shape[0:2],
-                                               target_resolution=self.image.shape[0:2]).target_position[0]
+        for bucket_on_smaller_image in self.buckets_on_smaller_image(image):
+            start_on_image = PositionConverter(
+                original_position=[bucket_on_smaller_image.start, 0],
+                original_resolution=self.image_to_detect_bucket_markers(image).shape[0:2],
+                target_resolution=image.shape[0:2]).target_position[0]
 
             end_on_image = PositionConverter(original_position=[bucket_on_smaller_image.end, 0],
-                                             original_resolution=self.image_to_detect_bucket_markers.shape[0:2],
-                                             target_resolution=self.image.shape[0:2]).target_position[0]
+                                             original_resolution=self.image_to_detect_bucket_markers(image).shape[0:2],
+                                             target_resolution=image.shape[0:2]).target_position[0]
 
             actual_bucket = Bucket(start=start_on_image,
                                    end=end_on_image,
@@ -39,17 +43,16 @@ class DetectBuckets:
 
         return buckets_on_image
 
-    @property
-    def buckets_on_smaller_image(self):
+    def buckets_on_smaller_image(self, image):
         buckets = []
 
-        detected_bucket_markers = DetectBucketMarkers(image=self.image_to_detect_bucket_markers,
+        detected_bucket_markers = DetectBucketMarkers(image=self.image_to_detect_bucket_markers(image),
                                                       bucket_marker_template=self.template_to_detect_bucket_markers,
                                                       max_bucket_number=self.max_bucket_number)
 
         bucket_x_borders = [0] + \
                            detected_bucket_markers.bucket_marker_middle_x_positions + \
-                           [self.image_to_detect_bucket_markers.shape[1]]
+                           [self.image_to_detect_bucket_markers(image).shape[1]]
 
         bucket_numbers_to_feed_for_loop = [[None, detected_bucket_markers.bucket_numbers[0][0]]] + \
                                           detected_bucket_markers.bucket_numbers + \
@@ -63,17 +66,8 @@ class DetectBuckets:
 
         return buckets
 
-    @property
-    def image_to_detect_bucket_markers(self):
-        image_resizer = ImageResizer(image=self.image,
+    def image_to_detect_bucket_markers(self, image):
+        image_resizer = ImageResizer(image=image,
                                      target_resolution=self.template_matching_resolution)
         image_to_detect_bucket_markers = image_resizer.resized_snipped_image
         return image_to_detect_bucket_markers
-
-    @property
-    def template_to_detect_bucket_markers(self):
-        image_resizer = ImageResizer(image=self.bucket_marker_template,
-                                     target_resolution=self.template_matching_resolution,
-                                     parent_image_resolution=self.bucket_marker_template_original_resolution)
-        template_to_detect_bucket_markers = image_resizer.resized_snipped_image
-        return template_to_detect_bucket_markers
