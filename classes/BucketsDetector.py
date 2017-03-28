@@ -50,6 +50,9 @@ class BucketsDetector:
                                                       bucket_marker_template=self.template_to_detect_bucket_markers,
                                                       max_bucket_number=self.max_bucket_number)
 
+        if len(detected_bucket_markers.bucket_marker_middle_x_positions) == 0:
+            return []
+
         bucket_x_borders = [0] + \
                            detected_bucket_markers.bucket_marker_middle_x_positions + \
                            [self.image_to_detect_bucket_markers(image).shape[1]]

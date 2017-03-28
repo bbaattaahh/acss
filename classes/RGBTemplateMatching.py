@@ -18,6 +18,8 @@ class RGBTemplateMatching:
 
     @property
     def rectangle_top_left_vertices(self):
+        if self.locations[0].size == 0:
+            return []
 
         top_left_corners = []
 

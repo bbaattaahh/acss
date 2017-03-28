@@ -1,4 +1,7 @@
 import more_itertools
+import numpy as np
+import operator
+import functools
 
 
 class BucketNumbersCorrector:
@@ -12,9 +15,20 @@ class BucketNumbersCorrector:
 
     @property
     def corrected_bucket_numbers(self):
+        if self.are_bucket_numbers_empty:
+            return self.bucket_numbers
+
         best_matching_bucket_numbers = self.best_matching_bucket_numbers
         corrected_bucket_numbers = self.convert_int_bucket_numbers_to_original_format(best_matching_bucket_numbers)
         return corrected_bucket_numbers
+
+    @property
+    def are_bucket_numbers_empty(self):
+        unique_data = np.unique(functools.reduce(operator.add, self.bucket_numbers)).tolist()
+        if unique_data == [""]:
+            return True
+
+        return False
 
     @property
     def best_matching_bucket_numbers(self):

@@ -10,7 +10,8 @@ class TestBucketsDetector(unittest.TestCase):
 
     def test_buckets_on_image_working(self):
         # given
-        bucket_marker_template = cv2.imread("./images/BucketsDetector/test_buckets_on_image__bucket_marker_template.jpg")
+        bucket_marker_template = \
+            cv2.imread("./images/BucketsDetector/test_buckets_on_image__bucket_marker_template.jpg")
         bucket_marker_template_original_resolution = 960, 1280
         template_matching_resolution = 480, 640
         max_bucket_number = 100
@@ -29,6 +30,54 @@ class TestBucketsDetector(unittest.TestCase):
 
         # when
         actual_buckets_on_image = buckets_detector.buckets_on_image(image)
+
+        # that
+        self.assertEqual(actual_buckets_on_image == expected_buckets_on_image, True)
+
+    def test_buckets_on_image__one_bucket_marker(self):
+        # given
+        bucket_marker_template = \
+            cv2.imread("./images/BucketsDetector/test_buckets_on_image__one_bucket_marker__bucket_marker_template.jpg")
+        bucket_marker_template_original_resolution = 960, 1280
+        template_matching_resolution = 480, 640
+        max_bucket_number = 110
+        buckets_detector = BucketsDetector(
+                bucket_marker_template=bucket_marker_template,
+                bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
+                template_matching_resolution=template_matching_resolution,
+                max_bucket_number=max_bucket_number)
+
+        image = cv2.imread("./images/BucketsDetector/test_buckets_on_image__one_bucket_marker__image.jpg")
+
+        bucket_1 = Bucket(start=0, end=806, bucket_number="002")
+        bucket_2 = Bucket(start=806, end=1280, bucket_number="003")
+        expected_buckets_on_image = [bucket_1, bucket_2]
+
+        # when
+        actual_buckets_on_image = buckets_detector.buckets_on_image(image)
+
+        # that
+        self.assertEqual(actual_buckets_on_image == expected_buckets_on_image, True)
+
+    def test_buckets_on_image__no_bucket(self):
+        # given
+        bucket_marker_template = \
+            cv2.imread("./images/BucketsDetector/test_buckets_on_image__no_bucket__bucket_marker_template.jpg")
+        bucket_marker_template_original_resolution = 960, 1280
+        template_matching_resolution = 480, 640
+        max_bucket_number = 100
+        buckets_detector = BucketsDetector(
+                bucket_marker_template=bucket_marker_template,
+                bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
+                template_matching_resolution=template_matching_resolution,
+                max_bucket_number=max_bucket_number)
+
+        black_image = np.zeros((960, 1280, 3), dtype=np.uint8)
+
+        expected_buckets_on_image = []
+
+        # when
+        actual_buckets_on_image = buckets_detector.buckets_on_image(black_image)
 
         # that
         self.assertEqual(actual_buckets_on_image == expected_buckets_on_image, True)
