@@ -1,5 +1,5 @@
 from ImageResizer import ImageResizer
-from DetectBucketMarkers import DetectBucketMarkers
+from BucketMarkersDetector import BucketMarkersDetector
 from Bucket import Bucket
 from PositionConverter import PositionConverter
 
@@ -46,20 +46,19 @@ class BucketsDetector:
     def buckets_on_smaller_image(self, image):
         buckets = []
 
-        detected_bucket_markers = DetectBucketMarkers(image=self.image_to_detect_bucket_markers(image),
-                                                      bucket_marker_template=self.template_to_detect_bucket_markers,
-                                                      max_bucket_number=self.max_bucket_number)
+        detected_bucket_markers = BucketMarkersDetector(bucket_marker_template=self.template_to_detect_bucket_markers,
+                                                        max_bucket_number=self.max_bucket_number)
 
-        if len(detected_bucket_markers.bucket_marker_middle_x_positions) == 0:
+        if len(detected_bucket_markers.bucket_marker_middle_x_positions(self.image_to_detect_bucket_markers(image))) == 0:
             return []
 
         bucket_x_borders = [0] + \
-                           detected_bucket_markers.bucket_marker_middle_x_positions + \
+                           detected_bucket_markers.bucket_marker_middle_x_positions(self.image_to_detect_bucket_markers(image)) + \
                            [self.image_to_detect_bucket_markers(image).shape[1]]
 
-        bucket_numbers_to_feed_for_loop = [[None, detected_bucket_markers.bucket_numbers[0][0]]] + \
-                                          detected_bucket_markers.bucket_numbers + \
-                                          [[detected_bucket_markers.bucket_numbers[-1][1], None]]
+        bucket_numbers_to_feed_for_loop = [[None, detected_bucket_markers.bucket_numbers(self.image_to_detect_bucket_markers(image))[0][0]]] + \
+                                          detected_bucket_markers.bucket_numbers(self.image_to_detect_bucket_markers(image)) + \
+                                          [[detected_bucket_markers.bucket_numbers(self.image_to_detect_bucket_markers(image))[-1][1], None]]
 
         for i in range(0, len(bucket_x_borders) - 1):
             actual_bucket = Bucket(start=bucket_x_borders[i],
