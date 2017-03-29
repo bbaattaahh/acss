@@ -1,3 +1,5 @@
+import numpy as np
+
 from SnipFromImage import SnipFromImage
 from BucketNumbersIdentifier import BucketNumbersIdentifier
 
@@ -20,7 +22,13 @@ class BucketMarker:
         self.right_bucket_number=bucket_number_identifier.right_bucket_number
 
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        if not np.array_equal(self.image, other.image):
+            return False
+
+        if self.bounding_rectangle_on_original_image != other.bounding_rectangle_on_original_image:
+            return False
+
+        return True
 
     @property
     def middle_x(self):

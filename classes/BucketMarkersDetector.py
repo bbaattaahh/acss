@@ -51,7 +51,6 @@ class BucketMarkersDetector:
 
         return bucket_markers
 
-    # Not ready
     def get_bucket_markers(self, image):
         bucket_markers = []
 

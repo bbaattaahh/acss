@@ -4,9 +4,10 @@ import cv2
 
 from BucketMarkersDetector import BucketMarkersDetector
 from Rectangle import Rectangle
+from BucketMarker import BucketMarker
 
 
-class TestDetectBucketMarkers(unittest.TestCase):
+class TestBucketMarkersDetector(unittest.TestCase):
 
     def test_bucket_numbers_working(self):
         # given
@@ -46,6 +47,29 @@ class TestDetectBucketMarkers(unittest.TestCase):
 
         # that
         self.assertEqual(actual_numbers, expected_numbers)
+
+    def test_get_bucket_markers_working(self):
+        # given
+        bucket_marker_template = \
+            cv2.imread("./images/BucketMarkersDetector/test_get_bucket_markers_working__bucket_marker_template.jpg")
+        max_bucket_number = 110
+        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
+                                                        max_bucket_number=max_bucket_number)
+
+        image = \
+            cv2.imread("./images/BucketMarkersDetector/test_get_bucket_markers_working__image.jpg")
+
+        bounding_rectangle_1 = Rectangle(top_left_x=727, top_left_y=843, width=374, high=368)
+        bucket_marker_1 = BucketMarker(image, bounding_rectangle_1)
+        bounding_rectangle_2 = Rectangle(top_left_x=1500, top_left_y=843, width=374, high=368)
+        bucket_marker_2 = BucketMarker(image, bounding_rectangle_2)
+        expected_bucket_markers = [bucket_marker_1, bucket_marker_2]
+
+        # when
+        actual_bucket_markers = bucket_markers_detector.get_bucket_markers(image)
+
+        # that
+        self.assertEqual(actual_bucket_markers, expected_bucket_markers)
 
     def test_get_bounding_rectangles_working(self):
         # given
