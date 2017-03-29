@@ -51,6 +51,16 @@ class BucketMarkersDetector:
 
         return bucket_markers
 
+    # Not ready
+    def get_bucket_markers(self, image):
+        bucket_markers = []
+
+        for bounding_rectangle in self.get_bounding_rectangles(image):
+            actual_bucket_marker = BucketMarker(image, bounding_rectangle)
+            bucket_markers.append(actual_bucket_marker)
+
+        return bucket_markers
+
     def get_bounding_rectangles(self, image):
         bounding_rectangles = []
 
