@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 
 from BucketMarkersDetector import BucketMarkersDetector
+from Rectangle import Rectangle
 
 
 class TestDetectBucketMarkers(unittest.TestCase):
@@ -45,6 +46,27 @@ class TestDetectBucketMarkers(unittest.TestCase):
 
         # that
         self.assertEqual(actual_numbers, expected_numbers)
+
+    def test_get_bounding_rectangles_working(self):
+        # given
+        bucket_marker_template = \
+            cv2.imread("./images/BucketMarkersDetector/test_get_bounding_rectangle_working__bucket_marker_template.jpg")
+        max_bucket_number = 110
+        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
+                                                        max_bucket_number=max_bucket_number)
+
+        image = \
+            cv2.imread("./images/BucketMarkersDetector/test_get_bounding_rectangles_working__image.jpg")
+
+        bounding_rectangle_1 = Rectangle(top_left_x=727, top_left_y=843, width=374, high=368)
+        bounding_rectangle_2 = Rectangle(top_left_x=1500, top_left_y=843, width=374, high=368)
+        expected_bounding_rectangles = [bounding_rectangle_1, bounding_rectangle_2]
+
+        # when
+        actual_bounding_rectangles = bucket_markers_detector.get_bounding_rectangles(image)
+
+        # that
+        self.assertEqual(actual_bounding_rectangles, expected_bounding_rectangles)
 
     def test_bucket_markers_working(self):
         # given

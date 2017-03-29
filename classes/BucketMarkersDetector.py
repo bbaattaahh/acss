@@ -3,6 +3,7 @@ from SnipFromImage import SnipFromImage
 from BucketNumbersIdentifier import BucketNumbersIdentifier
 from BucketNumbersCorrector import BucketNumbersCorrector
 from BucketMarker import BucketMarker
+from Rectangle import Rectangle
 
 
 class BucketMarkersDetector:
@@ -49,6 +50,19 @@ class BucketMarkersDetector:
             bucket_markers.append(actual_bucket_marker)
 
         return bucket_markers
+
+    def get_bounding_rectangles(self, image):
+        bounding_rectangles = []
+
+        for bucket_marker_top_left_corner in self.bucket_marker_top_left_corners(image):
+            actual_bounding_rectangle = Rectangle(top_left_x=bucket_marker_top_left_corner[0],
+                                                  top_left_y=bucket_marker_top_left_corner[1],
+                                                  width=self.bucket_marker_template.shape[1],
+                                                  high=self.bucket_marker_template.shape[0])
+
+            bounding_rectangles.append(actual_bounding_rectangle)
+
+        return bounding_rectangles
 
     def bucket_marker_top_left_corners(self, image):
         always_seen_middle_template_half_width = int(self.always_seen_middle_template.shape[1] / 2)

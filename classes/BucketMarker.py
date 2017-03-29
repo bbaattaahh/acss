@@ -1,14 +1,23 @@
+from SnipFromImage import SnipFromImage
+from BucketNumbersIdentifier import BucketNumbersIdentifier
+
+
 class BucketMarker:
     def __init__(self,
-                 marker_image,
-                 bounding_rectangle_on_original_image,
-                 right_bucket_number,
-                 left_bucket_number):
+                 image,
+                 bounding_rectangle_on_original_image):
 
-        self.marker_image = marker_image
+        self.image = image
         self.bounding_rectangle_on_original_image = bounding_rectangle_on_original_image
-        self.right_bucket_number = right_bucket_number
-        self.left_bucket_number = left_bucket_number
+
+        self.bucket_marker_image = SnipFromImage(self.image,
+                                            x=self.bounding_rectangle_on_original_image.top_left_x,
+                                            y=self.bounding_rectangle_on_original_image.top_left_y,
+                                            w=self.bounding_rectangle_on_original_image.width,
+                                            h=self.bounding_rectangle_on_original_image.high).snipped_image
+        bucket_number_identifier = BucketNumbersIdentifier(self.bucket_marker_image)
+        self.left_bucket_number=bucket_number_identifier.left_bucket_number
+        self.right_bucket_number=bucket_number_identifier.right_bucket_number
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
@@ -18,4 +27,3 @@ class BucketMarker:
         middle_x = int(self.bounding_rectangle_on_original_image.top_left_x +
                        self.bounding_rectangle_on_original_image.width/2)
         return middle_x
-
