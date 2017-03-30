@@ -75,3 +75,7 @@ class Rectangle:
     @staticmethod
     def vector_to_list(vector):
         return vector[0].tolist() + vector[1].tolist()
+
+    @property
+    def middle_x(self):
+        return int(self.top_left_x + self.width/2)

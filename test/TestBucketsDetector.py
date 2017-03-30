@@ -3,7 +3,9 @@ import numpy as np
 import cv2
 
 from BucketsDetector import BucketsDetector
+from BucketMarker import BucketMarker
 from Bucket import Bucket
+from Rectangle import Rectangle
 
 
 class TestBucketsDetector(unittest.TestCase):
@@ -82,31 +84,139 @@ class TestBucketsDetector(unittest.TestCase):
         # that
         self.assertEqual(actual_buckets_on_image == expected_buckets_on_image, True)
 
-    def test_buckets_on_smaller_image_working(self):
+    def test_corrected_bucket_numbers_working(self):
         # given
         bucket_marker_template = \
-            cv2.imread("./images/BucketsDetector/test_buckets_on_smaller_image__bucket_marker_template.jpg")
+            cv2.imread("./images/BucketsDetector/test_corrected_bucket_numbers_working__bucket_marker_template.jpg")
         bucket_marker_template_original_resolution = 960, 1280
         template_matching_resolution = 480, 640
-        max_bucket_number = 100
+        max_bucket_number = 110
         buckets_detector = BucketsDetector(
                 bucket_marker_template=bucket_marker_template,
                 bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
                 template_matching_resolution=template_matching_resolution,
                 max_bucket_number=max_bucket_number)
 
-        image = cv2.imread("./images/BucketsDetector/test_buckets_on_smaller_image__image.jpg")
+        image_1 = cv2.imread("./images/BucketsDetector/test_corrected_bucket_numbers_working__image_1.png")
+        bounding_rectangle_1 = Rectangle(top_left_x=90, top_left_y=105, width=46, high=46)
+        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1)
+        image_2 = cv2.imread("./images/BucketsDetector/test_corrected_bucket_numbers_working__image_2.png")
+        bounding_rectangle_2 = Rectangle(top_left_x=187, top_left_y=105, width=46, high=46)
+        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2)
 
-        bucket_1 = Bucket(start=0, end=210, bucket_number="001")
-        bucket_2 = Bucket(start=210, end=403, bucket_number="002")
-        bucket_3 = Bucket(start=403, end=640, bucket_number="003")
-        expected_buckets_on_smaller_image = [bucket_1, bucket_2, bucket_3]
+        bucket_markers = [bucket_marker_1, bucket_marker_2]
+
+        expected_corrected_bucket_numbers = [["001", "002"], ["002", "003"]]
 
         # when
-        actual_buckets_on_smaller_image = buckets_detector.buckets_on_smaller_image(image)
+        actual_corrected_bucket_numbers = buckets_detector.corrected_bucket_numbers(bucket_markers)
 
         # that
-        self.assertEqual(actual_buckets_on_smaller_image == expected_buckets_on_smaller_image, True)
+        self.assertEqual(actual_corrected_bucket_numbers, expected_corrected_bucket_numbers)
+
+    def test_bucket_borders_working(self):
+        # given
+        bucket_marker_template = \
+            cv2.imread("./images/BucketsDetector/test_bucket_borders_working__bucket_marker_template.jpg")
+        bucket_marker_template_original_resolution = 960, 1280
+        template_matching_resolution = (240, 320)
+        buckets_detector = BucketsDetector(
+                            bucket_marker_template=bucket_marker_template,
+                            bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
+                            template_matching_resolution=template_matching_resolution,
+                            max_bucket_number=110)
+
+        image = cv2.imread("./images/BucketsDetector/"
+                           "test_bucket_borders_working__image.jpg")
+
+        image_1 = cv2.imread("./images/BucketsDetector/"
+                             "test_bucket_borders_working__image_1.png")
+        bounding_rectangle_1 = Rectangle(top_left_x=90, top_left_y=105, width=46, high=46)
+        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1)
+        image_2 = cv2.imread("./images/BucketsDetector/"
+                             "test_bucket_borders_working__image_2.png")
+        bounding_rectangle_2 = Rectangle(top_left_x=187, top_left_y=105, width=46, high=46)
+        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2)
+        bucket_markers = [bucket_marker_1, bucket_marker_2]
+
+        expected_bucket_borders = [0, 452, 840, 1280]
+
+        # when
+        actual_bucket_borders = buckets_detector.bucket_borders(bucket_markers_on_smaller_image=bucket_markers,
+                                                                image=image)
+
+        # that
+        self.assertEqual(actual_bucket_borders, expected_bucket_borders)
+
+    def test_bucket_marker_bounding_rectangles_on_original_image_working(self):
+        # given
+        bucket_marker_template = \
+            cv2.imread("./images/BucketsDetector/"
+                       "test_bucket_marker_bounding_rectangles_on_original_image_working__bucket_marker_template.jpg")
+        bucket_marker_template_original_resolution = 960, 1280
+        template_matching_resolution = (240, 320)
+        buckets_detector = BucketsDetector(
+                            bucket_marker_template=bucket_marker_template,
+                            bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
+                            template_matching_resolution=template_matching_resolution,
+                            max_bucket_number=110)
+
+        image = cv2.imread("./images/BucketsDetector/"
+                           "test_bucket_marker_bounding_rectangles_on_original_image_working__image.jpg")
+
+        image_1 = cv2.imread("./images/BucketsDetector/"
+                             "test_bucket_marker_bounding_rectangles_on_original_image_working__image_1.png")
+        bounding_rectangle_1 = Rectangle(top_left_x=90, top_left_y=105, width=46, high=46)
+        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1)
+        image_2 = cv2.imread("./images/BucketsDetector/"
+                             "test_bucket_marker_bounding_rectangles_on_original_image_working__image_2.png")
+        bounding_rectangle_2 = Rectangle(top_left_x=187, top_left_y=105, width=46, high=46)
+        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2)
+        bucket_markers = [bucket_marker_1, bucket_marker_2]
+
+        bounding_rectangle_1 = Rectangle(top_left_x=360, top_left_y=420, width=184, high=184)
+        bounding_rectangle_2 = Rectangle(top_left_x=748, top_left_y=420, width=184, high=184)
+        expected_bounding_rectangles = [bounding_rectangle_1, bounding_rectangle_2]
+
+        # when
+        actual_bounding_rectangles = buckets_detector.bucket_marker_bounding_rectangles_on_original_image(
+            bucket_markers_on_smaller_image=bucket_markers,
+            image=image)
+
+        # that
+        self.assertEqual(actual_bounding_rectangles, expected_bounding_rectangles)
+
+    def test_bucket_markers_on_smaller_image_working(self):
+        # given
+        bucket_marker_template = \
+            cv2.imread("./images/BucketsDetector/"
+                       "test_bucket_markers_on_smaller_image_working__bucket_marker_template.jpg")
+        bucket_marker_template_original_resolution = 960, 1280
+        template_matching_resolution = (240, 320)
+        buckets_detector = BucketsDetector(
+                            bucket_marker_template=bucket_marker_template,
+                            bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
+                            template_matching_resolution=template_matching_resolution,
+                            max_bucket_number=110)
+
+        image = cv2.imread("./images/BucketsDetector/test_bucket_markers_on_smaller_image_working__image.jpg")
+
+        image_1 = cv2.imread("./images/BucketsDetector/test_bucket_markers_on_smaller_image_working__image_1.png")
+        bounding_rectangle_1 = Rectangle(top_left_x=90, top_left_y=105, width=46, high=46)
+        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1)
+        image_2 = cv2.imread("./images/BucketsDetector/test_bucket_markers_on_smaller_image_working__image_2.png")
+        bounding_rectangle_2 = Rectangle(top_left_x=187, top_left_y=105, width=46, high=46)
+        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2)
+
+        expected_bucket_markers_on_smaller_image = [bucket_marker_1, bucket_marker_2]
+
+        # when
+        actual_bucket_markers_on_smaller_image = buckets_detector.bucket_markers_on_smaller_image(image)
+
+        # that
+        self.assertEqual(np.array_equal(actual_bucket_markers_on_smaller_image,
+                                        expected_bucket_markers_on_smaller_image),
+                         True)
 
     def test_image_to_detect_bucket_markers_working(self):
         # given

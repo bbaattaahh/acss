@@ -6,7 +6,7 @@ template = cv2.imread("template.jpg")
 
 bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=template,
                                                 max_bucket_number=110,
-                                                expected_template_matching_threshold=1.5)
+                                                expected_template_matching_threshold=2)
 
 
 cap = cv2.VideoCapture(0)
@@ -19,7 +19,7 @@ while True:
     bucket_markers = bucket_markers_detector.get_bucket_markers(frame)
 
     if len(bucket_markers) > 0:
-        rectangle = bucket_markers[0].bounding_rectangle_on_original_image
+        rectangle = bucket_markers[0].bounding_rectangle
         top_left_corner = rectangle.top_left_x, rectangle.top_left_y
         botton_right_corner = rectangle.top_left_x + rectangle.width, rectangle.top_left_y+rectangle.high
         cv2.rectangle(frame, top_left_corner, botton_right_corner, (255, 0, 0), 2)

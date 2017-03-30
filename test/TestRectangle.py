@@ -96,6 +96,22 @@ class TestRectangle(unittest.TestCase):
         # that
         self.assertEqual(actual_list , expected_list)
 
+    def test_middle_x_working(self):
+        # given
+        x_top_left = 10
+        y_top_left = 0
+        width = 11
+        high = 20
+        rectangle = Rectangle(x_top_left, y_top_left, width, high)
+
+        expected_middle_x = 15
+
+        # when
+        actual_middle_x = rectangle.middle_x
+
+        # that
+        self.assertEqual(actual_middle_x, expected_middle_x)
+
 
 if __name__ == '__main__':
     unittest.main()
