@@ -18,12 +18,13 @@ class RGBTemplateMatching:
 
     @property
     def rectangle_top_left_vertices(self):
-        if self.locations[0].size == 0:
+        locations = self.locations[0]
+        if locations.size == 0:
             return []
 
         top_left_corners = []
 
-        y_coordinate = int(np.mean(self.locations[0]))
+        y_coordinate = int(np.mean(locations))
         x_coordinates = self.get_x_coordinates()
 
         for x_coordinate in x_coordinates:
