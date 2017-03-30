@@ -12,10 +12,12 @@ class BucketMarkersDetector:
 
     def __init__(self,
                  bucket_marker_template,
-                 max_bucket_number):
+                 max_bucket_number,
+                 expected_template_matching_threshold=2.3):
 
         self.bucket_marker_template = bucket_marker_template
         self.max_bucket_number = max_bucket_number
+        self.expected_template_matching_threshold = expected_template_matching_threshold
 
         width_from = int(bucket_marker_template.shape[1]*(0.5 - BucketMarkersDetector.always_seen_middle_part_rate/2))
         width_to = int(bucket_marker_template.shape[1]*(0.5 + BucketMarkersDetector.always_seen_middle_part_rate/2))
@@ -99,5 +101,5 @@ class BucketMarkersDetector:
     def matching_middle_templates_positions(self, image):
         rgb_template_matching = RGBTemplateMatching(rgb_image=image,
                                                     rgb_template=self.always_seen_middle_template,
-                                                    threshold=2.3)
+                                                    threshold=self.expected_template_matching_threshold)
         return rgb_template_matching.rectangle_top_left_vertices
