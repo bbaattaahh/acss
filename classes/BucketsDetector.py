@@ -32,14 +32,14 @@ class BucketsDetector:
             return []
 
         corrected_bucket_numbers = self.corrected_bucket_numbers(bucket_markers_on_smaller_image)
-        unique_corrected_bucket_numbers = list(set(x for l in corrected_bucket_numbers for x in l))
+        unique_bucket_numbers = self.unique_bucket_numbers(corrected_bucket_numbers)
         bucket_borders = self.bucket_borders(bucket_markers_on_smaller_image, image)
         buckets_on_image = []
 
-        for i in range(1, len(bucket_borders)):
-            actual_bucket = Bucket(start=bucket_borders[i-1],
-                                   end=bucket_borders[i],
-                                   bucket_number=unique_corrected_bucket_numbers[i-1])
+        for i in range(0, len(bucket_borders)-1):
+            actual_bucket = Bucket(start=bucket_borders[i],
+                                   end=bucket_borders[i+1],
+                                   bucket_number=unique_bucket_numbers[i])
 
             buckets_on_image.append(actual_bucket)
 
@@ -56,6 +56,17 @@ class BucketsDetector:
             BucketNumbersCorrector(bucket_numbers, self.max_bucket_number).corrected_bucket_numbers
 
         return corrected_bucket_number
+
+    @staticmethod
+    def unique_bucket_numbers(corrected_bucket_numbers):
+        unique_bucket_numbers = []
+        for bucket_number_pair in corrected_bucket_numbers:
+            if bucket_number_pair[0] not in unique_bucket_numbers:
+                unique_bucket_numbers.append(bucket_number_pair[0])
+            if bucket_number_pair[1] not in unique_bucket_numbers:
+                unique_bucket_numbers.append(bucket_number_pair[1])
+
+        return unique_bucket_numbers
 
     def bucket_borders(self, bucket_markers_on_smaller_image, image):
         bucket_borders=[0, image.shape[1]]

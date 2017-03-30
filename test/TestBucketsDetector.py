@@ -25,9 +25,9 @@ class TestBucketsDetector(unittest.TestCase):
 
         image = cv2.imread("./images/BucketsDetector/test_buckets_on_image__image.jpg")
 
-        bucket_1 = Bucket(start=0, end=420, bucket_number="001")
-        bucket_2 = Bucket(start=420, end=806, bucket_number="002")
-        bucket_3 = Bucket(start=806, end=1280, bucket_number="003")
+        bucket_1 = Bucket(start=0, end=457, bucket_number="001")
+        bucket_2 = Bucket(start=457, end=843, bucket_number="002")
+        bucket_3 = Bucket(start=843, end=1280, bucket_number="003")
         expected_buckets_on_image = [bucket_1, bucket_2, bucket_3]
 
         # when
@@ -51,8 +51,8 @@ class TestBucketsDetector(unittest.TestCase):
 
         image = cv2.imread("./images/BucketsDetector/test_buckets_on_image__one_bucket_marker__image.jpg")
 
-        bucket_1 = Bucket(start=0, end=806, bucket_number="002")
-        bucket_2 = Bucket(start=806, end=1280, bucket_number="003")
+        bucket_1 = Bucket(start=0, end=843, bucket_number="002")
+        bucket_2 = Bucket(start=843, end=1280, bucket_number="003")
         expected_buckets_on_image = [bucket_1, bucket_2]
 
         # when
@@ -113,6 +113,18 @@ class TestBucketsDetector(unittest.TestCase):
 
         # that
         self.assertEqual(actual_corrected_bucket_numbers, expected_corrected_bucket_numbers)
+
+    def test_unique_bucket_numbers_working(self):
+        # given
+        corrected_bucket_numbers = [["001", "002"], ["002", "003"], ["003", "004"], ["004", "005"]]
+
+        expected_unique_bucket_numbers = ["001", "002", "003", "004", "005"]
+
+        # when
+        actual_bucket_borders = BucketsDetector.unique_bucket_numbers(corrected_bucket_numbers)
+
+        # that
+        self.assertEqual(actual_bucket_borders, expected_unique_bucket_numbers)
 
     def test_bucket_borders_working(self):
         # given
