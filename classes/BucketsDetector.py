@@ -21,10 +21,10 @@ class BucketsDetector:
                                      target_resolution=template_matching_resolution,
                                      parent_image_resolution=bucket_marker_template_original_resolution)
         self.template_to_detect_bucket_markers = image_resizer.resized_snipped_image
-        self.bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=self.template_to_detect_bucket_markers,
-                                                             max_bucket_number=self.max_bucket_number)
+        self.bucket_markers_detector = \
+            BucketMarkersDetector(bucket_marker_template=self.template_to_detect_bucket_markers,
+                                  max_bucket_number=self.max_bucket_number)
 
-    # not ready
     def buckets_on_image(self, image):
 
         bucket_markers_on_smaller_image = self.bucket_markers_on_smaller_image(image)
@@ -45,7 +45,17 @@ class BucketsDetector:
 
         return buckets_on_image
 
-    # not ready
+    def bucket_markers_on_smaller_image(self, image):
+        bucket_markers_on_smaller_image = self.bucket_markers_detector.get_bucket_markers(
+                                                                            self.image_to_detect_bucket_markers(image))
+        return bucket_markers_on_smaller_image
+
+    def image_to_detect_bucket_markers(self, image):
+        image_resizer = ImageResizer(image=image,
+                                     target_resolution=self.template_matching_resolution)
+        image_to_detect_bucket_markers = image_resizer.resized_snipped_image
+        return image_to_detect_bucket_markers
+
     def corrected_bucket_numbers(self, bucket_markers_on_smaller_image):
         bucket_numbers = []
         for bucket_marker_on_smaller in bucket_markers_on_smaller_image:
@@ -69,7 +79,7 @@ class BucketsDetector:
         return unique_bucket_numbers
 
     def bucket_borders(self, bucket_markers_on_smaller_image, image):
-        bucket_borders=[0, image.shape[1]]
+        bucket_borders = [0, image.shape[1]]
 
         bucket_marker_bounding_rectangles_on_image = \
             self.bucket_marker_bounding_rectangles_on_original_image(bucket_markers_on_smaller_image, image)
@@ -91,14 +101,3 @@ class BucketsDetector:
             bucket_marker_bounding_rectangles_on_image.append(bucket_marker_bounding_rectangle_on_image)
 
         return bucket_marker_bounding_rectangles_on_image
-
-    def bucket_markers_on_smaller_image(self, image):
-        bucket_markers_on_smaller_image = self.bucket_markers_detector.get_bucket_markers(
-                                                                            self.image_to_detect_bucket_markers(image))
-        return bucket_markers_on_smaller_image
-
-    def image_to_detect_bucket_markers(self, image):
-        image_resizer = ImageResizer(image=image,
-                                     target_resolution=self.template_matching_resolution)
-        image_to_detect_bucket_markers = image_resizer.resized_snipped_image
-        return image_to_detect_bucket_markers
