@@ -2,49 +2,45 @@ import cv2
 import numpy as np
 
 
-class RGBTemplateMatching:
+class RGBTemplateMatcher:
 
     cv2_matching_method = cv2.TM_CCOEFF_NORMED
 
     def __init__(self,
-                 rgb_image,
                  rgb_template,
                  threshold=2.3):
 
-        self.rgb_image = rgb_image
         self.rgb_template = rgb_template
         self.threshold = threshold
         _, self.width, _ = self.rgb_template.shape
 
-    @property
-    def rectangle_top_left_vertices(self):
-        locations = self.locations[0]
-        if locations.size == 0:
+    def rectangle_top_left_vertices(self, rgb_image):
+        locations = self.get_locations(rgb_image)
+        if locations[0].size == 0:
             return []
 
         top_left_corners = []
 
-        y_coordinate = int(np.mean(locations))
-        x_coordinates = self.get_x_coordinates()
+        y_coordinate = int(np.mean(locations[0]))
+        x_coordinates = self.get_x_coordinates(locations)
 
         for x_coordinate in x_coordinates:
             top_left_corners.append([x_coordinate, y_coordinate])
 
         return top_left_corners
 
-    @property
-    def locations(self):
-        match_red = cv2.matchTemplate(self.rgb_image[:, :, 0],
+    def get_locations(self, rgb_image):
+        match_red = cv2.matchTemplate(rgb_image[:, :, 0],
                                       self.rgb_template[:, :, 0],
-                                      RGBTemplateMatching.cv2_matching_method)
+                                      RGBTemplateMatcher.cv2_matching_method)
 
-        match_green = cv2.matchTemplate(self.rgb_image[:, :, 1],
+        match_green = cv2.matchTemplate(rgb_image[:, :, 1],
                                         self.rgb_template[:, :, 1],
-                                        RGBTemplateMatching.cv2_matching_method)
+                                        RGBTemplateMatcher.cv2_matching_method)
 
-        match_blue = cv2.matchTemplate(self.rgb_image[:, :, 2],
+        match_blue = cv2.matchTemplate(rgb_image[:, :, 2],
                                        self.rgb_template[:, :, 2],
-                                       RGBTemplateMatching.cv2_matching_method)
+                                       RGBTemplateMatcher.cv2_matching_method)
 
         match_rgb = match_red + match_green + match_blue
 
@@ -52,10 +48,10 @@ class RGBTemplateMatching:
 
         return locations
 
-    def get_x_coordinates(self):
+    def get_x_coordinates(self, locations):
         x_coordinates_to_one_match = []
 
-        sorted_x_coordinates = np.sort(self.locations[1])
+        sorted_x_coordinates = np.sort(locations[1])
         numeric_derivation_of_sorted_x_coordinates = np.diff(sorted_x_coordinates)
         fractures = np.where(numeric_derivation_of_sorted_x_coordinates >= self.width)
         fractures = self.tuple_numpy_array_to_list(fractures)
