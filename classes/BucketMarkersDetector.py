@@ -4,6 +4,7 @@ from BucketNumbersIdentifier import BucketNumbersIdentifier
 from BucketNumbersCorrector import BucketNumbersCorrector
 from BucketMarker import BucketMarker
 from Rectangle import Rectangle
+from multiprocessing import Pool
 
 
 class BucketMarkersDetector:
@@ -28,9 +29,14 @@ class BucketMarkersDetector:
     def bucket_numbers(self, image):
         bucket_numbers = []
 
+        pool = Pool()
+
         for bucket_marker in self.bucket_markers(image):
-            bucket_numbers.append([self.bucket_number_identifier.left_bucket_number(bucket_marker),
-                                   self.bucket_number_identifier.right_bucket_number(bucket_marker)])
+            result1 = pool.apply_async(self.bucket_number_identifier.left_bucket_number, [bucket_marker])  # evaluate "solve1(A)" asynchronously
+            result2 = pool.apply_async(self.bucket_number_identifier.right_bucket_number, [bucket_marker])  # evaluate "solve2(B)" asynchronously
+            answer1 = result1.get(timeout=1000)
+            answer2 = result2.get(timeout=1000)
+            bucket_numbers.append([answer1, answer2])
 
         corrected_bucket_numbers = BucketNumbersCorrector(
                                         bucket_numbers=bucket_numbers,

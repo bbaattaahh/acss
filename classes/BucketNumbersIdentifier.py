@@ -8,7 +8,7 @@ from RGBImageSlicer import RGBImageSlicer
 from KeepNLargestAreaContours import KeepNLargestAreaContours
 
 
-class BucketNumbersIdentifier():
+class BucketNumbersIdentifier:
 
     def left_bucket_number(self, bucket_marker_image):
         rgb_image_slicer = RGBImageSlicer(bucket_marker_image)
