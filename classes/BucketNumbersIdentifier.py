@@ -8,17 +8,15 @@ from RGBImageSlicer import RGBImageSlicer
 from KeepNLargestAreaContours import KeepNLargestAreaContours
 
 
-class BucketNumbersIdentifier(RGBImageSlicer):
-    def __init__(self,
-                 bucket_marker_image):
-        RGBImageSlicer.__init__(self, bucket_marker_image)
+class BucketNumbersIdentifier():
 
-    @property
-    def left_bucket_number(self):
-        upper_number_image = self.first_quarter
+    def left_bucket_number(self, bucket_marker_image):
+        rgb_image_slicer = RGBImageSlicer(bucket_marker_image)
+
+        upper_number_image = rgb_image_slicer.first_quarter
         identified_upper_numbers = self.number_identification(upper_number_image)
 
-        lower_number_image = self.third_quarter
+        lower_number_image = rgb_image_slicer.third_quarter
         identified_lower_numbers = self.number_identification(lower_number_image)
 
         evaluated_identifications = self.evaluate_identifications(identified_upper_numbers,
@@ -26,12 +24,13 @@ class BucketNumbersIdentifier(RGBImageSlicer):
 
         return evaluated_identifications
 
-    @property
-    def right_bucket_number(self):
-        upper_number_image = self.second_quarter
+    def right_bucket_number(self, bucket_marker_image):
+        rgb_image_slicer = RGBImageSlicer(bucket_marker_image)
+
+        upper_number_image = rgb_image_slicer.second_quarter
         identified_upper_numbers = self.number_identification(upper_number_image)
 
-        lower_number_image = self.fourth_quarter
+        lower_number_image = rgb_image_slicer.fourth_quarter
         identified_lower_numbers = self.number_identification(lower_number_image)
 
         evaluated_identifications = self.evaluate_identifications(identified_upper_numbers,

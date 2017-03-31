@@ -20,11 +20,11 @@ class TestBucketNumbersIdentifier(unittest.TestCase):
     def test_left_bucket_number_working(self):
         # given
         image = cv2.imread("./images/BucketNumbersIdentifier/test_left_bucket_number_working.png")
-        bucket_number_identifier = BucketNumbersIdentifier(image)
+        bucket_number_identifier = BucketNumbersIdentifier()
         expected_left_bucket_number = "001"
 
         # when
-        actual_left_bucket_number = bucket_number_identifier.left_bucket_number
+        actual_left_bucket_number = bucket_number_identifier.left_bucket_number(image)
 
         # that
         self.assertEqual(actual_left_bucket_number, expected_left_bucket_number)
@@ -32,11 +32,11 @@ class TestBucketNumbersIdentifier(unittest.TestCase):
     def test_right_bucket_number_working(self):
         # given
         image = cv2.imread("./images/BucketNumbersIdentifier/test_right_bucket_number_working.png")
-        bucket_number_identifier = BucketNumbersIdentifier(image)
+        bucket_number_identifier = BucketNumbersIdentifier()
         expected_right_bucket_number = "002"
 
         # when
-        actual_right_bucket_number = bucket_number_identifier.right_bucket_number
+        actual_right_bucket_number = bucket_number_identifier.right_bucket_number(image)
 
         # that
         self.assertEqual(actual_right_bucket_number, expected_right_bucket_number)

@@ -1,5 +1,6 @@
 import cv2
 
+from time import gmtime, strftime
 from BucketMarkersDetector import BucketMarkersDetector
 
 template = cv2.imread("template.jpg")
@@ -27,7 +28,7 @@ while True:
         print(bucket_markers[0].right_bucket_number)
 
     cv2.imshow('frame', frame)
-
+    print(strftime("%Y-%m-%d %H:%M:%S", gmtime()))
 
     k = cv2.waitKey(5) & 0xFF
     if k == 27:

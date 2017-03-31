@@ -23,14 +23,14 @@ class BucketMarkersDetector:
         self.always_seen_middle_template = bucket_marker_template[:, width_from:width_to, :]
         self.rgb_template_matcher = RGBTemplateMatcher(rgb_template=self.always_seen_middle_template,
                                                        threshold=expected_template_matching_threshold)
+        self.bucket_number_identifier = BucketNumbersIdentifier()
 
     def bucket_numbers(self, image):
         bucket_numbers = []
 
         for bucket_marker in self.bucket_markers(image):
-            bucket_number_identifier = BucketNumbersIdentifier(bucket_marker)
-            bucket_numbers.append([bucket_number_identifier.left_bucket_number,
-                                   bucket_number_identifier.right_bucket_number])
+            bucket_numbers.append([self.bucket_number_identifier.left_bucket_number(bucket_marker),
+                                   self.bucket_number_identifier.right_bucket_number(bucket_marker)])
 
         corrected_bucket_numbers = BucketNumbersCorrector(
                                         bucket_numbers=bucket_numbers,

@@ -17,9 +17,9 @@ class BucketMarker:
                                                  y=self.bounding_rectangle.top_left_y,
                                                  w=self.bounding_rectangle.width,
                                                  h=self.bounding_rectangle.high).snipped_image
-        bucket_number_identifier = BucketNumbersIdentifier(self.bucket_marker_image)
-        self.left_bucket_number=bucket_number_identifier.left_bucket_number
-        self.right_bucket_number=bucket_number_identifier.right_bucket_number
+        bucket_number_identifier = BucketNumbersIdentifier()
+        self.left_bucket_number=bucket_number_identifier.left_bucket_number(self.bucket_marker_image)
+        self.right_bucket_number=bucket_number_identifier.right_bucket_number(self.bucket_marker_image)
 
     def __eq__(self, other):
         if not np.array_equal(self.image, other.image):
