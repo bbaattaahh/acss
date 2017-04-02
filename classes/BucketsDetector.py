@@ -69,6 +69,10 @@ class BucketsDetector:
 
     @staticmethod
     def unique_bucket_numbers(corrected_bucket_numbers):
+        if corrected_bucket_numbers[0] == ["", ""]:
+            no_valid_bucket_number_detected = [""] * (len(corrected_bucket_numbers) + 1)
+            return no_valid_bucket_number_detected
+
         unique_bucket_numbers = []
         for bucket_number_pair in corrected_bucket_numbers:
             if bucket_number_pair[0] not in unique_bucket_numbers:
