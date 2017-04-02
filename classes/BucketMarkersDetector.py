@@ -30,13 +30,12 @@ class BucketMarkersDetector:
         bucket_numbers = []
 
         pool = Pool()
+        bucket_markers = self.bucket_markers(image)
+        results_left_buckets = pool.map(self.bucket_number_identifier.left_bucket_number, bucket_markers)
+        results_right_buckets = pool.map(self.bucket_number_identifier.right_bucket_number, bucket_markers)
 
-        for bucket_marker in self.bucket_markers(image):
-            result1 = pool.apply_async(self.bucket_number_identifier.left_bucket_number, [bucket_marker])  # evaluate "solve1(A)" asynchronously
-            result2 = pool.apply_async(self.bucket_number_identifier.right_bucket_number, [bucket_marker])  # evaluate "solve2(B)" asynchronously
-            answer1 = result1.get(timeout=1000)
-            answer2 = result2.get(timeout=1000)
-            bucket_numbers.append([answer1, answer2])
+        for i in range(0, len(results_left_buckets)):
+            bucket_numbers.append([results_left_buckets[i], results_right_buckets[i]])
 
         corrected_bucket_numbers = BucketNumbersCorrector(
                                         bucket_numbers=bucket_numbers,

@@ -77,6 +77,7 @@ class BucketNumbersIdentifier:
     def do_number_recognition(image):
         pil_image = Image.fromarray(image)
         recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7 -outputbase digits')
+        # recognized_numbers = ""
         return recognized_numbers
 
     @staticmethod
