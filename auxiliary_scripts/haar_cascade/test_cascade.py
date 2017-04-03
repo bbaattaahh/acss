@@ -79,7 +79,7 @@ for x in t:
 
     # add this
     # image, reject levels level weights.
-    for angle in range(-45, 45):
+    for angle in range(-30, 30):
 
         rotated_act_frame_grey = rotate_about_center(act_frame_grey, angle)
         ratated_act_frame_rgb = rotate_about_center(act_frame_rgb, angle)
