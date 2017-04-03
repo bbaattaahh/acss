@@ -3,7 +3,7 @@ import cv2
 import json
 import numpy as np
 
-from DetectAsparaguses import DetectAsparaguses
+from DetectAsparaguses import AsparagusesDetector
 from OneAsparagusAnalysis import OneAsparagusAnalysis
 from AsparagusHeadImage import AsparagusHeadImage
 
@@ -35,7 +35,7 @@ for j in range(0, len(video_files)):
         act_frame_rgb = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
         act_frame_rgb = np.rot90(act_frame_rgb, rotation_factor)
 
-        data_to_analysis_one_asparagus_images = DetectAsparaguses(
+        data_to_analysis_one_asparagus_images = AsparagusesDetector(
             image=act_frame_rgb,
             cascade_file=config["dropbox_folder_path"] + config["haar_cascade_file"],
             detection_resolution=(160, 120),

@@ -22,6 +22,9 @@ class Rectangle:
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
+    def __lt__(self, other):
+        return self.top_left_x < other.top_left_x
+
     def top_left_corner(self):
         return [self.top_left_x, self.top_left_y]
 
