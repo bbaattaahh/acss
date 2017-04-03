@@ -4,15 +4,16 @@ from time import gmtime, strftime
 from BucketsDetector import BucketsDetector
 from BucketMarkersDetector import BucketMarkersDetector
 
-template = cv2.imread("template.jpg")
-bucket_marker_template_original_resolution = 960, 1280
+template = cv2.imread("template.png")
+bucket_marker_template_original_resolution = 480, 640
 template_matching_resolution = 480, 640
-max_bucket_number = 100
+max_bucket_number = 110
 
 buckets_detector = BucketsDetector(template,
                                    bucket_marker_template_original_resolution,
                                    template_matching_resolution,
-                                   max_bucket_number)
+                                   max_bucket_number,
+                                   expected_template_matching_threshold=1.5)
 
 bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=template,
                                                 max_bucket_number=110,
@@ -38,6 +39,7 @@ while True:
         top_left_corner = rectangle.top_left_x, rectangle.top_left_y
         button_right_corner = rectangle.top_left_x + rectangle.width, rectangle.top_left_y + rectangle.high
         cv2.rectangle(frame, top_left_corner, button_right_corner, (255, 0, 0), 2)
+        #cv2.imwrite("temp_template_src.png", frame)
         #print(bucket_markers[0].left_bucket_number)
         #print(bucket_markers[0].right_bucket_number)
 
