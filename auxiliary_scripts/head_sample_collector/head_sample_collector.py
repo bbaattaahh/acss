@@ -4,7 +4,7 @@ import json
 import numpy as np
 
 from DetectAsparaguses import AsparagusesDetector
-from OneAsparagusAnalysis import OneAsparagusAnalysis
+from OneAsparagusAnalysis import OneAsparagusAnalyzer
 from AsparagusHeadImage import AsparagusHeadImage
 
 with open('config/config-local.json') as json_data:
@@ -43,7 +43,7 @@ for j in range(0, len(video_files)):
 
         if len(data_to_analysis_one_asparagus_images) != 0:
             for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
-                act_detection = OneAsparagusAnalysis(
+                act_detection = OneAsparagusAnalyzer(
                     data_to_analysis_one_asparagus_image).asparagus_in_smallest_enclosing_box
                 act_top_part = AsparagusHeadImage(act_detection,
                                                   top_part_to_keep_ratio=0.15,
