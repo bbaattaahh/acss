@@ -3,8 +3,8 @@ import cv2
 import json
 import numpy as np
 
-from DetectAsparaguses import AsparagusesDetector
-from OneAsparagusAnalysis import OneAsparagusAnalyzer
+from AsparagusesDetector import AsparagusesDetector
+from OneAsparagusAnalyzer import OneAsparagusAnalyzer
 from AsparagusHeadImage import AsparagusHeadImage
 
 with open('config/config-local.json') as json_data:
@@ -25,6 +25,10 @@ i = 0
 video_files = get_video_file_names(config)
 class_labels = config["head_classification"]["class_labels"]
 rotation_factor = 1
+asparaguses_detector = AsparagusesDetector(cascade_file=config["dropbox_folder_path"] + config["haar_cascade_file"],
+                                           detection_resolution=(160, 120),
+                                           swing_angle=15).data_to_analysis_one_asparagus_images
+
 
 for j in range(0, len(video_files)):
     clip = VideoFileClip(video_files[j])
@@ -35,16 +39,13 @@ for j in range(0, len(video_files)):
         act_frame_rgb = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
         act_frame_rgb = np.rot90(act_frame_rgb, rotation_factor)
 
-        data_to_analysis_one_asparagus_images = AsparagusesDetector(
-            image=act_frame_rgb,
-            cascade_file=config["dropbox_folder_path"] + config["haar_cascade_file"],
-            detection_resolution=(160, 120),
-            swing_angle=15).data_to_analysis_one_asparagus_images
+        data_to_analysis_one_asparagus_images = \
+            asparaguses_detector.data_to_analysis_one_asparagus_images(act_frame_rgb)
 
         if len(data_to_analysis_one_asparagus_images) != 0:
             for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
                 act_detection = OneAsparagusAnalyzer(
-                    data_to_analysis_one_asparagus_image).asparagus_in_smallest_enclosing_box
+                    data_to_analysis_one_asparagus_image.image).asparagus_in_smallest_enclosing_box
                 act_top_part = AsparagusHeadImage(act_detection,
                                                   top_part_to_keep_ratio=0.15,
                                                   output_resolution=(50, 50)).resized_top_part
