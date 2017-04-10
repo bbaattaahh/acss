@@ -23,11 +23,14 @@ def get_video_file_names(config):
 i = 0
 
 video_files = get_video_file_names(config)
+# video_files = "/Users/h.bata/Videos/acss/two_lamps/Video 1.mp4"
 class_labels = config["head_classification"]["class_labels"]
+
 rotation_factor = 1
 asparaguses_detector = AsparagusesDetector(cascade_file=config["dropbox_folder_path"] + config["haar_cascade_file"],
                                            detection_resolution=(160, 120),
-                                           swing_angle=15).data_to_analysis_one_asparagus_images
+                                           swing_angle=15)
+
 
 
 for j in range(0, len(video_files)):
@@ -44,8 +47,7 @@ for j in range(0, len(video_files)):
 
         if len(data_to_analysis_one_asparagus_images) != 0:
             for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
-                act_detection = OneAsparagusAnalyzer(
-                    data_to_analysis_one_asparagus_image.image).asparagus_in_smallest_enclosing_box
+                act_detection = OneAsparagusAnalyzer(None).asparagus_in_smallest_enclosing_box(data_to_analysis_one_asparagus_image.image)
                 act_top_part = AsparagusHeadImage(act_detection,
                                                   top_part_to_keep_ratio=0.15,
                                                   output_resolution=(50, 50)).resized_top_part
