@@ -54,15 +54,18 @@ while True:
         continue
 
     actual_asparaguses_bounding_rectangle = []
-    actual_asparagus_classes = []
+    actual_shape = []
     for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
         actual_asparaguses_bounding_rectangle.append(data_to_analysis_one_asparagus_image.rectangle_on_original_image)
         asparagus = one_asparagus_analyzer.asparagus(data_to_analysis_one_asparagus_image.image)
-        actual_asparagus_classes.append(asparagus_classifier.classify(asparagus))
+        thickness = one_asparagus_analyzer.asparagus_thickness(data_to_analysis_one_asparagus_image.image)
+        length = one_asparagus_analyzer.asparagus_length(data_to_analysis_one_asparagus_image.image)
+
+        actual_shape.append(str(thickness) + "___" + str(length))
 
     buckets = buckets_detector.buckets_on_image(frame)
 
-    bucket_asparagus_pairs = MergeBucketsAndAsparagusPositions(buckets, actual_asparaguses_bounding_rectangle, actual_asparagus_classes).bucket_asparagus_pairs
+    bucket_asparagus_pairs = MergeBucketsAndAsparagusPositions(buckets, actual_asparaguses_bounding_rectangle, actual_shape).bucket_asparagus_pairs
 
     for bucket_asparagus_pair in bucket_asparagus_pairs:
         displayer.add_new_result(bucket_asparagus_pair[0], bucket_asparagus_pair[1])
