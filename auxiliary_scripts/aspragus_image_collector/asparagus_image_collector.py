@@ -29,7 +29,7 @@ class_labels = config["head_classification"]["class_labels"]
 rotation_factor = 1
 asparaguses_detector = AsparagusesDetector(cascade_file=config["dropbox_folder_path"] + config["haar_cascade_file"],
                                            detection_resolution=(160, 120),
-                                           swing_angle=15)
+                                           swing_angle=45)
 
 
 
