@@ -1,5 +1,7 @@
+from moviepy.editor import *
 import cv2
 import json
+import numpy as np
 
 from BucketsDetector import BucketsDetector
 from AsparagusesDetector import AsparagusesDetector
@@ -26,38 +28,42 @@ asparaguses_detector = AsparagusesDetector(config["asparaguses_detector"]["casca
                                            config["asparaguses_detector"]["swing_angle"])
 
 
-asparagus_classifier = AsparagusClassifier(config["asparagus_classifier"]["millimeter_pixel_ratio"],
-                                           config["asparagus_classifier"]["classification_specification_file"])
 
-asparagus_head_classifier = \
-    AsparagusHeadClassifier(config["asparagus_head_classifier"]["neural_network_hierarchy_file"],
-                            config["asparagus_head_classifier"]["neural_network_weights_file"],
-                            config["asparagus_head_classifier"]["classification_labels"],
-                            config["asparagus_head_classifier"]["top_part_to_keep_ratio"],
-                            tuple(config["asparagus_head_classifier"]["head_classification_resolution"]))
 
-one_asparagus_analyzer = OneAsparagusAnalyzer(asparagus_head_classifier)
+one_asparagus_analyzer = OneAsparagusAnalyzer(asparagus_head_classifier=None)
 
 displayer = DisplayClassification()
 
-cap = cv2.VideoCapture(0)
-cap.set(3, config["web_camera_distribution"][0])
-cap.set(4, config["web_camera_distribution"][1])
+clip = VideoFileClip("/Users/h.bata/Videos/acss/two_lamps/Video 6.mp4")
+snip = clip.get_frame("00:00:18")
+snip = cv2.cvtColor(snip, cv2.COLOR_BGR2RGB)
+cv2.imwrite("snip.png", snip)
 
-while True:
-    _, frame = cap.read()
+ROTATION_FACTOR = 1
 
+# cap = cv2.VideoCapture(0)
+# cap.set(3, config["web_camera_distribution"][0])
+# cap.set(4, config["web_camera_distribution"][1])
+
+#while True:
+for x in clip.iter_frames():
+
+    #_, frame = cap.read()
+
+
+    frame = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
+    frame = np.rot90(frame, ROTATION_FACTOR)
     cv2.imshow('frame', frame)
     data_to_analysis_one_asparagus_images = asparaguses_detector.data_to_analysis_one_asparagus_images(frame)
 
-    if not data_to_analysis_one_asparagus_images:
-        continue
-
+    # if not data_to_analysis_one_asparagus_images:
+    #     continue
+    #
     actual_asparaguses_bounding_rectangle = []
     actual_shape = []
     for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
         actual_asparaguses_bounding_rectangle.append(data_to_analysis_one_asparagus_image.rectangle_on_original_image)
-        asparagus = one_asparagus_analyzer.asparagus(data_to_analysis_one_asparagus_image.image)
+        # asparagus = one_asparagus_analyzer.asparagus(data_to_analysis_one_asparagus_image.image)
         thickness = one_asparagus_analyzer.asparagus_thickness(data_to_analysis_one_asparagus_image.image)
         length = one_asparagus_analyzer.asparagus_length(data_to_analysis_one_asparagus_image.image)
 
@@ -65,7 +71,9 @@ while True:
 
     buckets = buckets_detector.buckets_on_image(frame)
 
-    bucket_asparagus_pairs = MergeBucketsAndAsparagusPositions(buckets, actual_asparaguses_bounding_rectangle, actual_shape).bucket_asparagus_pairs
+    bucket_asparagus_pairs = MergeBucketsAndAsparagusPositions(buckets,
+                                                               actual_asparaguses_bounding_rectangle,
+                                                               actual_shape).bucket_asparagus_pairs
 
     for bucket_asparagus_pair in bucket_asparagus_pairs:
         displayer.add_new_result(bucket_asparagus_pair[0], bucket_asparagus_pair[1])
@@ -76,4 +84,4 @@ while True:
 
 
 cv2.destroyAllWindows()
-cap.release()
+# cap.release()
