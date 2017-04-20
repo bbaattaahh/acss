@@ -1,0 +1,46 @@
+{
+    "web_camera_distribution" : [1920, 1080],
+    "rotation_factor": 1,
+    "bucket_detector":{
+        "template" : "./auxiliary_scripts/width_high/template.png",
+        "bucket_marker_template_original_resolution": [1920, 1080],
+        "template_matching_resolution": [1920, 1080],
+        "max_bucket_number" : 110,
+        "expected_template_matching_threshold": 1.5
+    },
+    "asparaguses_detector": {
+        "cascade_file" : "./auxiliary_scripts/width_high/cascade.xml",
+        "detection_resolution" : [120, 160],
+        "swing_angle": 45
+    },
+    "asparagus_classifier":{
+        "millimeter_pixel_ratio": 1,
+        "classification_specification_file": "./test/json_files/test_asparagus_classification_solo_I.json"
+    },
+    "asparagus_head_classifier":{
+        "neural_network_hierarchy_file": "./test/neural_network_models/dummy_model.json",
+        "neural_network_weights_file": "./test/neural_network_models/dummy_model.h5",
+        "classification_labels" : ["class1", "class2"],
+        "top_part_to_keep_ratio" : 0.15,
+        "head_classification_resolution" : [10, 10]
+    },
+    "dropbox_folder_path": "/Users/h.bata/Dropbox/acss/",
+    "classification_specification_file" : "your classification specification path",
+    "haar_cascade_file": "haar_cascade/data_vertical/cascade.xml",
+    "head_classification": {
+        "videos" : ["/videos/live_test_2.avi",
+                    "/videos/live_test_3.avi"],
+        "class_labels":["class1", "class2"],
+        "head_pictures_folder" : "images/heads/",
+        "asparagus_pictures_folder" : "images/asparaguses/",
+        "top_part_to_keep_ratio": 0.15,
+        "head_classification_resolution": [
+            50,
+            50
+        ],
+        "classification_model": {
+            "neural_network_hierarchy": "my_model.json",
+            "neural_network_weights": "my_model.h5"
+        }
+    }
+}
