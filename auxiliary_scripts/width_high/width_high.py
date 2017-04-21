@@ -35,7 +35,7 @@ one_asparagus_analyzer = OneAsparagusAnalyzer(asparagus_head_classifier=None)
 
 displayer = DisplayClassification()
 
-clip = VideoFileClip("c:\\Users\\Henrik\\Google Drive\\sparga_videok\\Video 6.mp4")
+clip = VideoFileClip("/Users/h.bata/Videos/acss/two_lamps/Video 6.mp4")
 snip = clip.get_frame("00:00:18")
 snip = cv2.cvtColor(snip, cv2.COLOR_BGR2RGB)
 cv2.imwrite("snip.png", snip)
@@ -91,9 +91,9 @@ for x in clip.iter_frames():
             frame[:, bucket.start, :] = 0
             print(bucket.bucket_number)
 
-    # bucket_markers_on_smaller_image = buckets_detector.bucket_markers_on_smaller_image(frame)
-    # if bucket_markers_on_smaller_image:
-    #     cv2.imshow('bucket_markers_on_smaller_image', bucket_markers_on_smaller_image[0].bucket_marker_image)
+    bucket_markers_on_smaller_image = buckets_detector.bucket_markers_on_smaller_image(frame)
+    if bucket_markers_on_smaller_image:
+        cv2.imshow('bucket_markers_on_smaller_image', bucket_markers_on_smaller_image[0].bucket_marker_image)
 
     bucket_asparagus_pairs = MergeBucketsAndAsparagusPositions(buckets,
                                                                actual_asparaguses_bounding_rectangle,
