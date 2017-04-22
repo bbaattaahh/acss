@@ -14,13 +14,14 @@ class TestBucketsDetector(unittest.TestCase):
         # given
         bucket_marker_image = \
             cv2.imread("./images/BucketsDetector/test_template_to_detect_bucket_markers_working_input.jpg")
-        template_matching_resolution = (1920/2, 2560/2)
-        bucket_marker_template_original_resolution = (1920, 2560)
         buckets_detector = BucketsDetector(
                             bucket_marker_template=bucket_marker_image,
-                            bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                            template_matching_resolution=template_matching_resolution,
-                            max_bucket_number=None)
+                            bucket_marker_template_original_resolution=(1920, 2560),
+                            template_matching_resolution=(1920/2, 2560/2),
+                            max_bucket_number=None,
+                            expected_template_matching_threshold=2.3,
+                            numbers_folder="./images/BucketsDetector/numbers",
+                            number_matching_resolution=(50, 25))
 
         expected_template_to_template_matching = \
             cv2.imread("./images/BucketsDetector/test_template_to_detect_bucket_markers_working_output.png")
@@ -37,14 +38,14 @@ class TestBucketsDetector(unittest.TestCase):
         # given
         bucket_marker_template = \
             cv2.imread("./images/BucketsDetector/test_buckets_on_image__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = 960, 1280
-        template_matching_resolution = 480, 640
-        max_bucket_number = 100
         buckets_detector = BucketsDetector(
                 bucket_marker_template=bucket_marker_template,
-                bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                template_matching_resolution=template_matching_resolution,
-                max_bucket_number=max_bucket_number)
+                bucket_marker_template_original_resolution=(960, 1280),
+                template_matching_resolution=(480, 640),
+                max_bucket_number=110,
+                expected_template_matching_threshold=2.3,
+                numbers_folder="./images/BucketsDetector/numbers",
+                number_matching_resolution=(50, 25))
 
         image = cv2.imread("./images/BucketsDetector/test_buckets_on_image__image.jpg")
 
@@ -63,14 +64,14 @@ class TestBucketsDetector(unittest.TestCase):
         # given
         bucket_marker_template = \
             cv2.imread("./images/BucketsDetector/test_buckets_on_image__one_bucket_marker__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = 960, 1280
-        template_matching_resolution = 480, 640
-        max_bucket_number = 110
         buckets_detector = BucketsDetector(
                 bucket_marker_template=bucket_marker_template,
-                bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                template_matching_resolution=template_matching_resolution,
-                max_bucket_number=max_bucket_number)
+                bucket_marker_template_original_resolution=(960, 1280),
+                template_matching_resolution=(480, 640),
+                max_bucket_number=110,
+                expected_template_matching_threshold=2.3,
+                numbers_folder="./images/BucketsDetector/numbers",
+                number_matching_resolution=(50, 25))
 
         image = cv2.imread("./images/BucketsDetector/test_buckets_on_image__one_bucket_marker__image.jpg")
 
@@ -88,14 +89,14 @@ class TestBucketsDetector(unittest.TestCase):
         # given
         bucket_marker_template = \
             cv2.imread("./images/BucketsDetector/test_buckets_on_image__no_bucket__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = 960, 1280
-        template_matching_resolution = 480, 640
-        max_bucket_number = 100
         buckets_detector = BucketsDetector(
                 bucket_marker_template=bucket_marker_template,
-                bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                template_matching_resolution=template_matching_resolution,
-                max_bucket_number=max_bucket_number)
+                bucket_marker_template_original_resolution=(960, 1280),
+                template_matching_resolution=(480, 640),
+                max_bucket_number=110,
+                expected_template_matching_threshold=2.3,
+                numbers_folder="./images/BucketsDetector/numbers",
+                number_matching_resolution=(50, 25))
 
         black_image = np.zeros((960, 1280, 3), dtype=np.uint8)
 
@@ -112,13 +113,14 @@ class TestBucketsDetector(unittest.TestCase):
         bucket_marker_template = \
             cv2.imread("./images/BucketsDetector/"
                        "test_bucket_markers_on_smaller_image_working__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = 960, 1280
-        template_matching_resolution = (240, 320)
         buckets_detector = BucketsDetector(
                             bucket_marker_template=bucket_marker_template,
-                            bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                            template_matching_resolution=template_matching_resolution,
-                            max_bucket_number=110)
+                            bucket_marker_template_original_resolution=(960, 1280),
+                            template_matching_resolution=(240, 320),
+                            max_bucket_number=110,
+                            expected_template_matching_threshold=2.3,
+                            numbers_folder="./images/BucketsDetector/numbers",
+                            number_matching_resolution=(50, 25))
 
         image = cv2.imread("./images/BucketsDetector/test_bucket_markers_on_smaller_image_working__image.jpg")
 
@@ -144,14 +146,14 @@ class TestBucketsDetector(unittest.TestCase):
         bucket_marker_template = \
             cv2.imread("./images/BucketsDetector/"
                        "test_image_to_detect_bucket_markers_working__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = 960, 1280
-
-        template_matching_resolution = (240, 320)
         buckets_detector = BucketsDetector(
                             bucket_marker_template=bucket_marker_template,
-                            bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                            template_matching_resolution=template_matching_resolution,
-                            max_bucket_number=None)
+                            bucket_marker_template_original_resolution=(960, 1280),
+                            template_matching_resolution=(240, 320),
+                            max_bucket_number=None,
+                            expected_template_matching_threshold=2.3,
+                            numbers_folder="./images/BucketsDetector/numbers",
+                            number_matching_resolution=(50, 25))
 
         image = cv2.imread("./images/BucketsDetector/test_image_to_detect_bucket_markers_working_input.jpg")
 
@@ -169,14 +171,14 @@ class TestBucketsDetector(unittest.TestCase):
         # given
         bucket_marker_template = \
             cv2.imread("./images/BucketsDetector/test_corrected_bucket_numbers_working__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = 960, 1280
-        template_matching_resolution = 480, 640
-        max_bucket_number = 110
         buckets_detector = BucketsDetector(
                 bucket_marker_template=bucket_marker_template,
-                bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                template_matching_resolution=template_matching_resolution,
-                max_bucket_number=max_bucket_number)
+                bucket_marker_template_original_resolution=(960, 1280),
+                template_matching_resolution=(480, 640),
+                max_bucket_number=110,
+                expected_template_matching_threshold=2.3,
+                numbers_folder="./images/BucketsDetector/numbers",
+                number_matching_resolution=(50, 25))
 
         image_1 = cv2.imread("./images/BucketsDetector/test_corrected_bucket_numbers_working__image_1.png")
         bounding_rectangle_1 = Rectangle(top_left_x=90, top_left_y=105, width=46, high=46)
@@ -211,13 +213,14 @@ class TestBucketsDetector(unittest.TestCase):
         # given
         bucket_marker_template = \
             cv2.imread("./images/BucketsDetector/test_bucket_borders_working__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = 960, 1280
-        template_matching_resolution = (240, 320)
         buckets_detector = BucketsDetector(
                             bucket_marker_template=bucket_marker_template,
-                            bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                            template_matching_resolution=template_matching_resolution,
-                            max_bucket_number=110)
+                            bucket_marker_template_original_resolution=(960, 1280),
+                            template_matching_resolution=(240, 320),
+                            max_bucket_number=110,
+                            expected_template_matching_threshold=2.3,
+                            numbers_folder="./images/BucketsDetector/numbers",
+                            number_matching_resolution=(50, 25))
 
         image = cv2.imread("./images/BucketsDetector/"
                            "test_bucket_borders_working__image.jpg")
@@ -246,13 +249,14 @@ class TestBucketsDetector(unittest.TestCase):
         bucket_marker_template = \
             cv2.imread("./images/BucketsDetector/"
                        "test_bucket_marker_bounding_rectangles_on_original_image_working__bucket_marker_template.jpg")
-        bucket_marker_template_original_resolution = 960, 1280
-        template_matching_resolution = (240, 320)
         buckets_detector = BucketsDetector(
                             bucket_marker_template=bucket_marker_template,
-                            bucket_marker_template_original_resolution=bucket_marker_template_original_resolution,
-                            template_matching_resolution=template_matching_resolution,
-                            max_bucket_number=110)
+                            bucket_marker_template_original_resolution=(960, 1280),
+                            template_matching_resolution=(240, 320),
+                            max_bucket_number=110,
+                            expected_template_matching_threshold=2.3,
+                            numbers_folder="./images/BucketsDetector/numbers",
+                            number_matching_resolution=(50, 25))
 
         image = cv2.imread("./images/BucketsDetector/"
                            "test_bucket_marker_bounding_rectangles_on_original_image_working__image.jpg")

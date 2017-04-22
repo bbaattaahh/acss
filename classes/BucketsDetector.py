@@ -3,6 +3,7 @@ from RectangleResizer import RectangleResizer
 from BucketMarkersDetector import BucketMarkersDetector
 from Bucket import Bucket
 from BucketNumbersCorrector import BucketNumbersCorrector
+from BucketNumbersIdentifier2 import BucketNumbersIdentifier2
 
 
 class BucketsDetector:
@@ -11,7 +12,9 @@ class BucketsDetector:
                  bucket_marker_template_original_resolution,
                  template_matching_resolution,
                  max_bucket_number,
-                 expected_template_matching_threshold=2.3):
+                 expected_template_matching_threshold,
+                 numbers_folder,
+                 number_matching_resolution):
 
         self.bucket_marker_template = bucket_marker_template
         self.bucket_marker_template_original_resolution = bucket_marker_template_original_resolution
@@ -22,10 +25,16 @@ class BucketsDetector:
                                      target_resolution=template_matching_resolution,
                                      parent_image_resolution=bucket_marker_template_original_resolution)
         self.template_to_detect_bucket_markers = image_resizer.resized_snipped_image
+
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder,
+                                                            number_matching_resolution,
+                                                            max_bucket_number)
+
         self.bucket_markers_detector = \
             BucketMarkersDetector(bucket_marker_template=self.template_to_detect_bucket_markers,
                                   max_bucket_number=self.max_bucket_number,
-                                  expected_template_matching_threshold=expected_template_matching_threshold)
+                                  expected_template_matching_threshold=expected_template_matching_threshold,
+                                  bucket_number_identifier=bucket_number_identifier)
 
     def buckets_on_image(self, image):
 
