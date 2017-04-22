@@ -6,6 +6,7 @@ from BucketsDetector import BucketsDetector
 from BucketMarker import BucketMarker
 from Bucket import Bucket
 from Rectangle import Rectangle
+from BucketNumbersIdentifier2 import BucketNumbersIdentifier2
 
 
 class TestBucketsDetector(unittest.TestCase):
@@ -45,7 +46,7 @@ class TestBucketsDetector(unittest.TestCase):
                 max_bucket_number=110,
                 expected_template_matching_threshold=2.3,
                 numbers_folder="./images/BucketsDetector/numbers",
-                number_matching_resolution=(50, 25))
+                number_matching_resolution=(25, 13))
 
         image = cv2.imread("./images/BucketsDetector/test_buckets_on_image__image.jpg")
 
@@ -71,7 +72,7 @@ class TestBucketsDetector(unittest.TestCase):
                 max_bucket_number=110,
                 expected_template_matching_threshold=2.3,
                 numbers_folder="./images/BucketsDetector/numbers",
-                number_matching_resolution=(50, 25))
+                number_matching_resolution=(25, 13))
 
         image = cv2.imread("./images/BucketsDetector/test_buckets_on_image__one_bucket_marker__image.jpg")
 
@@ -124,12 +125,15 @@ class TestBucketsDetector(unittest.TestCase):
 
         image = cv2.imread("./images/BucketsDetector/test_bucket_markers_on_smaller_image_working__image.jpg")
 
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketsDetector/numbers",
+                                                            number_matching_resolution= (50, 25),
+                                                            max_bucket_number=110)
         image_1 = cv2.imread("./images/BucketsDetector/test_bucket_markers_on_smaller_image_working__image_1.png")
         bounding_rectangle_1 = Rectangle(top_left_x=90, top_left_y=105, width=46, high=46)
-        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1)
+        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1, bucket_number_identifier)
         image_2 = cv2.imread("./images/BucketsDetector/test_bucket_markers_on_smaller_image_working__image_2.png")
         bounding_rectangle_2 = Rectangle(top_left_x=187, top_left_y=105, width=46, high=46)
-        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2)
+        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2, bucket_number_identifier)
 
         expected_bucket_markers_on_smaller_image = [bucket_marker_1, bucket_marker_2]
 
@@ -180,12 +184,15 @@ class TestBucketsDetector(unittest.TestCase):
                 numbers_folder="./images/BucketsDetector/numbers",
                 number_matching_resolution=(50, 25))
 
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketsDetector/numbers",
+                                                            number_matching_resolution=(25, 12),
+                                                            max_bucket_number=110)
         image_1 = cv2.imread("./images/BucketsDetector/test_corrected_bucket_numbers_working__image_1.png")
         bounding_rectangle_1 = Rectangle(top_left_x=90, top_left_y=105, width=46, high=46)
-        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1)
+        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1, bucket_number_identifier)
         image_2 = cv2.imread("./images/BucketsDetector/test_corrected_bucket_numbers_working__image_2.png")
         bounding_rectangle_2 = Rectangle(top_left_x=187, top_left_y=105, width=46, high=46)
-        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2)
+        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2, bucket_number_identifier)
 
         bucket_markers = [bucket_marker_1, bucket_marker_2]
 
@@ -225,14 +232,17 @@ class TestBucketsDetector(unittest.TestCase):
         image = cv2.imread("./images/BucketsDetector/"
                            "test_bucket_borders_working__image.jpg")
 
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketsDetector/numbers",
+                                                            number_matching_resolution= (50, 25),
+                                                            max_bucket_number=110)
         image_1 = cv2.imread("./images/BucketsDetector/"
                              "test_bucket_borders_working__image_1.png")
         bounding_rectangle_1 = Rectangle(top_left_x=90, top_left_y=105, width=46, high=46)
-        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1)
+        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1, bucket_number_identifier)
         image_2 = cv2.imread("./images/BucketsDetector/"
                              "test_bucket_borders_working__image_2.png")
         bounding_rectangle_2 = Rectangle(top_left_x=187, top_left_y=105, width=46, high=46)
-        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2)
+        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2, bucket_number_identifier)
         bucket_markers = [bucket_marker_1, bucket_marker_2]
 
         expected_bucket_borders = [0, 452, 840, 1280]
@@ -261,14 +271,17 @@ class TestBucketsDetector(unittest.TestCase):
         image = cv2.imread("./images/BucketsDetector/"
                            "test_bucket_marker_bounding_rectangles_on_original_image_working__image.jpg")
 
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketsDetector/numbers",
+                                                            number_matching_resolution= (50, 25),
+                                                            max_bucket_number=110)
         image_1 = cv2.imread("./images/BucketsDetector/"
                              "test_bucket_marker_bounding_rectangles_on_original_image_working__image_1.png")
         bounding_rectangle_1 = Rectangle(top_left_x=90, top_left_y=105, width=46, high=46)
-        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1)
+        bucket_marker_1 = BucketMarker(image_1, bounding_rectangle_1, bucket_number_identifier)
         image_2 = cv2.imread("./images/BucketsDetector/"
                              "test_bucket_marker_bounding_rectangles_on_original_image_working__image_2.png")
         bounding_rectangle_2 = Rectangle(top_left_x=187, top_left_y=105, width=46, high=46)
-        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2)
+        bucket_marker_2 = BucketMarker(image_2, bounding_rectangle_2, bucket_number_identifier)
         bucket_markers = [bucket_marker_1, bucket_marker_2]
 
         bounding_rectangle_1 = Rectangle(top_left_x=360, top_left_y=420, width=184, high=184)

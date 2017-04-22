@@ -60,28 +60,28 @@ class BucketNumbersIdentifier2:
 
     def number_identification(self, image):
         processed_image = self.process_image(image)
-        # cv2.imwrite("processed_image.png", processed_image)
+        #cv2.imwrite("processed_image.png", processed_image)
         number_images = SnipNLargestAreaContours(image=processed_image,
                                                  n=3,
                                                  invert_flag=True).n_largest_area_contours_images
 
-        # cv2.imwrite("0.png", number_images[0])
-        # cv2.imwrite("1.png", number_images[1])
-        # cv2.imwrite("2.png", number_images[2])
+        #cv2.imwrite("0.png", number_images[0])
+        #cv2.imwrite("1.png", number_images[1])
+        #cv2.imwrite("2.png", number_images[2])
 
         identified_number = ""
         for number_image in number_images:
             detected_number = self.do_number_recognition(number_image)
-            # cv2.imwrite("actual.png", number_image)
+            #cv2.imwrite("actual.png", number_image)
             identified_number = identified_number + detected_number
 
         return identified_number
 
     def evaluate_identifications(self, identification_1, identification_2):
-        if int(identification_1) > self.max_bucket_number:
+        if identification_1 != "" and int(identification_1) > self.max_bucket_number:
             identification_1 = ""
 
-        if int(identification_2) > self.max_bucket_number:
+        if identification_2 != "" and int(identification_2) > self.max_bucket_number:
             identification_2 = ""
 
         if len(identification_1) == 3 and len(identification_2) == 3 and identification_1 == identification_2:
@@ -197,6 +197,9 @@ class BucketNumbersIdentifier2:
         return image
 
     def process_number(self, number_image):
-        resized_image = ImageResizer(number_image,
-                                     target_resolution=self.number_matching_resolution).resized_snipped_image
+        # resized_image = ImageResizer(number_image,
+        #                              target_resolution=self.number_matching_resolution).resized_snipped_image
+        resized_image = cv2.resize(number_image,
+                                   dsize=(self.number_matching_resolution[1], self.number_matching_resolution[0]),
+                                   interpolation=cv2.INTER_CUBIC)
         return resized_image

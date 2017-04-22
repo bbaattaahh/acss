@@ -5,6 +5,7 @@ import numpy as np
 
 from BucketMarker import BucketMarker
 from Rectangle import Rectangle
+from BucketNumbersIdentifier2 import BucketNumbersIdentifier2
 
 
 class TestBucketMarker(unittest.TestCase):
@@ -13,8 +14,12 @@ class TestBucketMarker(unittest.TestCase):
         # given
         image = cv2.imread("./images/BucketMarker/test_bucket_marker_image_working__image.jpg")
         bounding_rectangle = Rectangle(top_left_x=727, top_left_y=843, width=374, high=368)
-        bucket_marker = BucketMarker(image=image,
-                                     bounding_rectangle=bounding_rectangle)
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketMarker/numbers",
+                                                            number_matching_resolution=(50, 25),
+                                                            max_bucket_number=110)
+        bucket_marker = BucketMarker(image,
+                                     bounding_rectangle,
+                                     bucket_number_identifier)
 
         expected_bucket_marker_image = \
             cv2.imread("./images/BucketMarker/test_bucket_marker_image_working__bucket_marker_image.png")
@@ -29,8 +34,12 @@ class TestBucketMarker(unittest.TestCase):
         # given
         image = cv2.imread("./images/BucketMarker/test_left_bucket_number_working__image.jpg")
         bounding_rectangle = Rectangle(top_left_x=727, top_left_y=843, width=374, high=368)
-        bucket_marker = BucketMarker(image=image,
-                                     bounding_rectangle=bounding_rectangle)
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketMarker/numbers",
+                                                            number_matching_resolution=(25, 13),
+                                                            max_bucket_number=110)
+        bucket_marker = BucketMarker(image,
+                                     bounding_rectangle,
+                                     bucket_number_identifier)
 
         expected_left_bucket_number = "001"
 
@@ -44,8 +53,12 @@ class TestBucketMarker(unittest.TestCase):
         # given
         image = cv2.imread("./images/BucketMarker/test_right_bucket_number_working__image.jpg")
         bounding_rectangle = Rectangle(top_left_x=727, top_left_y=843, width=374, high=368)
-        bucket_marker = BucketMarker(image=image,
-                                     bounding_rectangle=bounding_rectangle)
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketMarker/numbers",
+                                                            number_matching_resolution=(50, 25),
+                                                            max_bucket_number=110)
+        bucket_marker = BucketMarker(image,
+                                     bounding_rectangle,
+                                     bucket_number_identifier)
 
         expected_right_bucket_number = ""
 
@@ -59,8 +72,12 @@ class TestBucketMarker(unittest.TestCase):
         # given
         any_image = np.zeros((600, 800, 3), dtype=np.uint8)
         bounding_rectangle = Rectangle(top_left_x=10, top_left_y=10, width=30, high=300)
-        bucket_marker = BucketMarker(image=any_image,
-                                     bounding_rectangle=bounding_rectangle)
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketMarker/numbers",
+                                                            number_matching_resolution=(50, 25),
+                                                            max_bucket_number=110)
+        bucket_marker = BucketMarker(any_image,
+                                     bounding_rectangle,
+                                     bucket_number_identifier)
 
         expected_middle_x = 25
 

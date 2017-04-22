@@ -6,7 +6,9 @@
         "bucket_marker_template_original_resolution": [1920, 1080],
         "template_matching_resolution": [960, 540],
         "max_bucket_number" : 110,
-        "expected_template_matching_threshold": 1.5
+        "expected_template_matching_threshold": 1.8,
+        "numbers_folder": "./config/numbers",
+        "number_matching_resolution": [25, 13]
     },
     "asparaguses_detector": {
         "cascade_file" : "./auxiliary_scripts/width_high/cascade.xml",

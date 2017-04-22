@@ -1,7 +1,5 @@
 from RGBTemplateMatcher import RGBTemplateMatcher
 from SnipFromImage import SnipFromImage
-from BucketNumbersIdentifier import BucketNumbersIdentifier
-from BucketNumbersIdentifier2 import BucketNumbersIdentifier2
 from BucketNumbersCorrector import BucketNumbersCorrector
 from BucketMarker import BucketMarker
 from Rectangle import Rectangle
@@ -28,23 +26,6 @@ class BucketMarkersDetector:
                                                        threshold=expected_template_matching_threshold)
         self.bucket_number_identifier = bucket_number_identifier
 
-    def bucket_numbers(self, image):
-        bucket_numbers = []
-
-        pool = Pool()
-        bucket_markers = self.bucket_markers(image)
-        results_left_buckets = pool.map(self.bucket_number_identifier.left_bucket_number, bucket_markers)
-        results_right_buckets = pool.map(self.bucket_number_identifier.right_bucket_number, bucket_markers)
-
-        for i in range(0, len(results_left_buckets)):
-            bucket_numbers.append([results_left_buckets[i], results_right_buckets[i]])
-
-        corrected_bucket_numbers = BucketNumbersCorrector(
-                                        bucket_numbers=bucket_numbers,
-                                        max_bucket_number=self.max_bucket_number).corrected_bucket_numbers
-
-        return corrected_bucket_numbers
-
     def bucket_markers(self, image):
         template_height, template_width, _ = self.bucket_marker_template.shape
 
@@ -65,7 +46,7 @@ class BucketMarkersDetector:
         bucket_markers = []
 
         for bounding_rectangle in self.get_bounding_rectangles(image):
-            actual_bucket_marker = BucketMarker(image, bounding_rectangle)
+            actual_bucket_marker = BucketMarker(image, bounding_rectangle, self.bucket_number_identifier)
             bucket_markers.append(actual_bucket_marker)
 
         return bucket_markers

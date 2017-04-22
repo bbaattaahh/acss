@@ -1,13 +1,13 @@
 import numpy as np
 
 from SnipFromImage import SnipFromImage
-from BucketNumbersIdentifier import BucketNumbersIdentifier
 
 
 class BucketMarker:
     def __init__(self,
                  image,
-                 bounding_rectangle):
+                 bounding_rectangle,
+                 bucket_number_identifier):
 
         self.image = image
         self.bounding_rectangle = bounding_rectangle
@@ -17,7 +17,7 @@ class BucketMarker:
                                                  y=self.bounding_rectangle.top_left_y,
                                                  w=self.bounding_rectangle.width,
                                                  h=self.bounding_rectangle.high).snipped_image
-        bucket_number_identifier = BucketNumbersIdentifier()
+
         self.left_bucket_number=bucket_number_identifier.left_bucket_number(self.bucket_marker_image)
         self.right_bucket_number=bucket_number_identifier.right_bucket_number(self.bucket_marker_image)
 

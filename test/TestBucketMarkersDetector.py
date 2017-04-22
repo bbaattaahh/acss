@@ -9,78 +9,28 @@ from BucketNumbersIdentifier2 import BucketNumbersIdentifier2
 
 
 class TestBucketMarkersDetector(unittest.TestCase):
-
-    def test_bucket_numbers_working(self):
-        # given
-        bucket_marker_template = \
-            cv2.imread("./images/BucketMarkersDetector/test_bucket_numbers_working__bucket_marker_template.png")
-        max_bucket_number = 110
-        expected_template_matching_threshold = 2.3
-        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketMarkersDetector/numbers",
-                                                            number_matching_resolution=(50, 25),
-                                                            max_bucket_number=110)
-
-        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template,
-                                                        max_bucket_number,
-                                                        expected_template_matching_threshold,
-                                                        bucket_number_identifier)
-
-        image = \
-            cv2.imread("./images/BucketMarkersDetector/test_bucket_numbers_working__image.jpg")
-
-        expected_numbers = [['001', '002'], ['002', '003']]
-
-        # when
-        actual_numbers = bucket_markers_detector.bucket_numbers(image)
-
-        # that
-        self.assertEqual(actual_numbers, expected_numbers)
-
-    def test_bucket_numbers_some_deleted_number_from_image(self):
-        # given
-        bucket_marker_template = \
-            cv2.imread("./images/BucketMarkersDetector/"
-                       "test_bucket_numbers_some_deleted_number_from_image__bucket_marker_template.png")
-        max_bucket_number = 110
-        expected_template_matching_threshold=2.3
-        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketMarkersDetector/numbers",
-                                                            number_matching_resolution= (50, 25),
-                                                            max_bucket_number=110)
-        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template,
-                                                        max_bucket_number,
-                                                        expected_template_matching_threshold,
-                                                        bucket_number_identifier)
-
-        image = \
-            cv2.imread("./images/BucketMarkersDetector/test_bucket_numbers_some_deleted_number_from_image__image.jpg")
-
-        expected_numbers = [['001', '002'], ['002', '003']]
-
-        # when
-        actual_numbers = bucket_markers_detector.bucket_numbers(image)
-
-        # that
-        self.assertEqual(actual_numbers, expected_numbers)
-
     def test_get_bucket_markers_working(self):
         # given
         bucket_marker_template = \
             cv2.imread("./images/BucketMarkersDetector/test_get_bucket_markers_working__bucket_marker_template.jpg")
         max_bucket_number = 110
         expected_template_matching_threshold = 2.3
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketMarkersDetector/numbers",
+                                                            number_matching_resolution= (50, 25),
+                                                            max_bucket_number=110)
 
         bucket_markers_detector = BucketMarkersDetector(bucket_marker_template,
                                                         max_bucket_number,
                                                         expected_template_matching_threshold,
-                                                        bucket_number_identifier=None)
+                                                        bucket_number_identifier)
 
         image = \
             cv2.imread("./images/BucketMarkersDetector/test_get_bucket_markers_working__image.jpg")
 
         bounding_rectangle_1 = Rectangle(top_left_x=727, top_left_y=843, width=374, high=368)
-        bucket_marker_1 = BucketMarker(image, bounding_rectangle_1)
         bounding_rectangle_2 = Rectangle(top_left_x=1500, top_left_y=843, width=374, high=368)
-        bucket_marker_2 = BucketMarker(image, bounding_rectangle_2)
+        bucket_marker_1 = BucketMarker(image, bounding_rectangle_1, bucket_number_identifier)
+        bucket_marker_2 = BucketMarker(image, bounding_rectangle_2, bucket_number_identifier)
         expected_bucket_markers = [bucket_marker_1, bucket_marker_2]
 
         # when
