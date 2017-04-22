@@ -1,22 +1,24 @@
 import pytesseract
 import cv2
-import re
 import numpy as np
 from PIL import Image
 import glob
 
 from RGBImageSlicer import RGBImageSlicer
 from KeepNLargestAreaContours import KeepNLargestAreaContours
+from SnipNLargestAreaContours import SnipNLargestAreaContours
 from ImageResizer import ImageResizer
 
 
 class BucketNumbersIdentifier2:
     def __init__(self,
                  numbers_folder,
-                 number_matching_resolution=(50, 25)):
+                 number_matching_resolution=(50, 25),
+                 max_bucket_number=110):
 
         self.number_matching_resolution = number_matching_resolution
         self.number_templates = self.get_number_templates(numbers_folder)
+        self.max_bucket_number = max_bucket_number
 
     def get_number_templates(self, numbers_folder):
         number_images_file_names = glob.glob(numbers_folder + "/*")
@@ -24,7 +26,7 @@ class BucketNumbersIdentifier2:
         number_templates = []
 
         for number_images_file_name in number_images_file_names:
-            actual_number_image = cv2.imread(number_images_file_name)
+            actual_number_image = cv2.imread(number_images_file_name, flags=cv2.IMREAD_GRAYSCALE)
             actual_number_template = self.process_number(actual_number_image)
             number_templates.append(actual_number_template)
 
@@ -60,12 +62,30 @@ class BucketNumbersIdentifier2:
 
     def number_identification(self, image):
         processed_image = self.process_image(image)
-        detected_numbers = self.do_number_recognition(processed_image)
-        filtered_numbers = self.filter_out_not_digit_characters(detected_numbers)
-        return filtered_numbers
+        # cv2.imwrite("processed_image.png", processed_image)
+        number_images = SnipNLargestAreaContours(image=processed_image,
+                                                 n=3,
+                                                 invert_flag=True).n_largest_area_contours_images
 
-    @staticmethod
-    def evaluate_identifications(identification_1, identification_2):
+        # cv2.imwrite("0.png", number_images[0])
+        # cv2.imwrite("1.png", number_images[1])
+        # cv2.imwrite("2.png", number_images[2])
+
+        identified_number = ""
+        for number_image in number_images:
+            detected_number = self.do_number_recognition(number_image)
+            # cv2.imwrite("actual.png", number_image)
+            identified_number = identified_number + detected_number
+
+        return identified_number
+
+    def evaluate_identifications(self, identification_1, identification_2):
+        if int(identification_1) > self.max_bucket_number:
+            identification_1 = ""
+
+        if int(identification_2) > self.max_bucket_number:
+            identification_2 = ""
+
         if len(identification_1) == 3 and len(identification_2) == 3 and identification_1 == identification_2:
             return identification_1
 
@@ -92,17 +112,20 @@ class BucketNumbersIdentifier2:
                                                invert_flag=True).kept_n_largest_area_contours_image
         return final_image
 
-    @staticmethod
-    def do_number_recognition(image):
-        pil_image = Image.fromarray(image)
-        recognized_numbers = pytesseract.image_to_string(pil_image, config='-psm 7 -outputbase digits')
-        # recognized_numbers = ""
-        return recognized_numbers
+    def do_number_recognition(self, number_image):
+        processed_number_image = self.process_number(number_image)
+        max_same_pixel_number = 0
+        max_same_pixel = 0
+        for number in range(0, len(self.number_templates)):
+            actual_same_pixel = sum(sum(self.number_templates[number] == processed_number_image))
 
-    @staticmethod
-    def filter_out_not_digit_characters(identified_numbers):
-        filtered_numbers = re.sub("[^0-9]", "", identified_numbers)
-        return filtered_numbers
+            if actual_same_pixel > max_same_pixel:
+                max_same_pixel = actual_same_pixel
+                max_same_pixel_number = number
+
+        str_max_same_pixel_number = str(max_same_pixel_number)
+
+        return str_max_same_pixel_number
 
     @staticmethod
     def gray_image(image):

@@ -6,25 +6,14 @@ from BucketNumbersIdentifier2 import BucketNumbersIdentifier2
 
 
 class TestBucketNumbersIdentifier2(unittest.TestCase):
-    def test_filter_out_not_digit_characters_working(self):
-        # given
-        identified_numbers = "00_some_false_detection_1"
-        expected_filtered_numbers = "001"
-
-        # when
-        actual_filtered_numbers = BucketNumbersIdentifier2.filter_out_not_digit_characters(identified_numbers)
-
-        # that
-        self.assertEqual(actual_filtered_numbers, expected_filtered_numbers)
-
     def test_left_bucket_number_working(self):
         # given
         image = cv2.imread("./images/BucketNumbersIdentifier2/test_left_bucket_number_working.png")
-        bucket_number_identifier = BucketNumbersIdentifier2("./images/BucketNumbersIdentifier/numbers")
-        expected_left_bucket_number = "001"
+        bucket_number_identifier2 = BucketNumbersIdentifier2("./images/BucketNumbersIdentifier2/numbers")
+        expected_left_bucket_number = "006"
 
         # when
-        actual_left_bucket_number = bucket_number_identifier.left_bucket_number(image)
+        actual_left_bucket_number = bucket_number_identifier2.left_bucket_number(image)
 
         # that
         self.assertEqual(actual_left_bucket_number, expected_left_bucket_number)
@@ -32,7 +21,12 @@ class TestBucketNumbersIdentifier2(unittest.TestCase):
     def test_right_bucket_number_working(self):
         # given
         image = cv2.imread("./images/BucketNumbersIdentifier2/test_right_bucket_number_working.png")
-        bucket_number_identifier = BucketNumbersIdentifier2("./images/BucketNumbersIdentifier2/numbers")
+        numbers_folder = "./images/BucketNumbersIdentifier2/numbers"
+        number_matching_resolution = (50, 25)
+        max_bucket_number = 110
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder,
+                                                            number_matching_resolution,
+                                                            max_bucket_number)
         expected_right_bucket_number = "002"
 
         # when
@@ -43,13 +37,20 @@ class TestBucketNumbersIdentifier2(unittest.TestCase):
 
     def test_evaluate_identifications_double_correct_hit(self):
         # given
+        numbers_folder = "./images/BucketNumbersIdentifier2/numbers"
+        number_matching_resolution = (50, 25)
+        max_bucket_number = 110
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder,
+                                                            number_matching_resolution,
+                                                            max_bucket_number)
+
         identification_1 = "001"
         identification_2 = "001"
 
         expected_evaluated_identification = "001"
 
         # when
-        actual_evaluated_identification = BucketNumbersIdentifier2.evaluate_identifications(identification_1,
+        actual_evaluated_identification = bucket_number_identifier.evaluate_identifications(identification_1,
                                                                                             identification_2)
 
         # that
@@ -57,13 +58,20 @@ class TestBucketNumbersIdentifier2(unittest.TestCase):
 
     def test_evaluate_identifications_one_correct_hit(self):
         # given
+        numbers_folder = "./images/BucketNumbersIdentifier2/numbers"
+        number_matching_resolution = (50, 25)
+        max_bucket_number = 110
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder,
+                                                            number_matching_resolution,
+                                                            max_bucket_number)
+
         identification_1 = "01"
         identification_2 = "001"
 
         expected_evaluated_identification = "001"
 
         # when
-        actual_evaluated_identification = BucketNumbersIdentifier2.evaluate_identifications(identification_1,
+        actual_evaluated_identification = bucket_number_identifier.evaluate_identifications(identification_1,
                                                                                             identification_2)
 
         # that
@@ -71,13 +79,20 @@ class TestBucketNumbersIdentifier2(unittest.TestCase):
 
     def test_evaluate_identifications_contradiction(self):
         # given
+        numbers_folder = "./images/BucketNumbersIdentifier2/numbers"
+        number_matching_resolution = (50, 25)
+        max_bucket_number = 110
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder,
+                                                            number_matching_resolution,
+                                                            max_bucket_number)
+
         identification_1 = "001"
         identification_2 = "002"
 
         expected_evaluated_identification = ""
 
         # when
-        actual_evaluated_identification = BucketNumbersIdentifier2.evaluate_identifications(identification_1,
+        actual_evaluated_identification = bucket_number_identifier.evaluate_identifications(identification_1,
                                                                                             identification_2)
 
         # that
@@ -86,7 +101,7 @@ class TestBucketNumbersIdentifier2(unittest.TestCase):
     def test_number_identification_working(self):
         # given
         image = cv2.imread("./images/BucketNumbersIdentifier2/test_number_identification_working.jpg")
-        bucket_number_identifier2 = BucketNumbersIdentifier2("some_fake_folder")
+        bucket_number_identifier2 = BucketNumbersIdentifier2("./images/BucketNumbersIdentifier2/numbers")
 
         expected_identified_numbers = "002"
 
@@ -193,33 +208,50 @@ class TestBucketNumbersIdentifier2(unittest.TestCase):
         # that
         self.assertEqual(np.array_equal(actual_flood_filled_image, expected_flood_filled_image), True)
 
-    def test_do_number_recognition_working(self):
+    def test_do_number_recognition_paint_written_0(self):
         # given
-        image = cv2.imread("./images/BucketNumbersIdentifier2/test_do_number_recognition_working.png")
+        numbers_folder = "./images/BucketNumbersIdentifier2/numbers"
+        number_matching_resolution = (50, 25)
+        max_bucket_number = 110
+        bucket_number_identifier2 = BucketNumbersIdentifier2(numbers_folder,
+                                                             number_matching_resolution,
+                                                             max_bucket_number)
 
-        expected_recognized_numbers = "100"
+        number_image = cv2.imread("./images/BucketNumbersIdentifier2/test_do_number_recognition_paint_written_0.png",
+                                  flags=cv2.IMREAD_GRAYSCALE)
+
+        expected_recognized_numbers = "0"
 
         # when
-        actual_recognized_numbers = BucketNumbersIdentifier2.do_number_recognition(image=image)
+        actual_recognized_numbers = bucket_number_identifier2.do_number_recognition(number_image)
 
         # that
         self.assertEqual(actual_recognized_numbers, expected_recognized_numbers)
 
-    def test_do_number_recognition_real_sample(self):
+    def test_do_number_recognition_paint_written_2(self):
         # given
-        image = cv2.imread("./images/BucketNumbersIdentifier2/test_do_number_recognition_real_sample.jpg")
+        numbers_folder = "./images/BucketNumbersIdentifier2/numbers"
+        number_matching_resolution = (50, 25)
+        max_bucket_number = 110
+        bucket_number_identifier2 = BucketNumbersIdentifier2(numbers_folder,
+                                                             number_matching_resolution,
+                                                             max_bucket_number)
 
-        expected_recognized_numbers = "001"
+        number_image = cv2.imread("./images/BucketNumbersIdentifier2/test_do_number_recognition_paint_written_2.jpg",
+                                  flags=cv2.IMREAD_GRAYSCALE)
+
+        expected_recognized_numbers = "2"
 
         # when
-        actual_recognized_numbers = BucketNumbersIdentifier2.do_number_recognition(image=image)
+        actual_recognized_numbers = bucket_number_identifier2.do_number_recognition(number_image)
 
         # that
         self.assertEqual(actual_recognized_numbers, expected_recognized_numbers)
 
     def test_process_number_working(self):
         # given
-        number_image = cv2.imread("./images/BucketNumbersIdentifier2/test_process_number_working__number_image.png")
+        number_image = cv2.imread("./images/BucketNumbersIdentifier2/test_process_number_working__number_image.png",
+                                  flags=cv2.IMREAD_GRAYSCALE)
 
         numbers_folder = "./images/BucketNumbersIdentifier2/numbers"
         number_matching_resolution = (50, 25)
@@ -227,7 +259,8 @@ class TestBucketNumbersIdentifier2(unittest.TestCase):
                                                              number_matching_resolution)
 
         expected_processed_number_image = \
-            cv2.imread("./images/BucketNumbersIdentifier2/test_process_number_working__processed_number_image.png")
+            cv2.imread("./images/BucketNumbersIdentifier2/test_process_number_working__processed_number_image.png",
+                       flags=cv2.IMREAD_GRAYSCALE)
 
         # when
         actual_processed_number_image = bucket_number_identifier2.process_number(number_image)
@@ -242,16 +275,26 @@ class TestBucketNumbersIdentifier2(unittest.TestCase):
         bucket_number_identifier2 = BucketNumbersIdentifier2(numbers_folder,
                                                              number_matching_resolution)
 
-        number_0_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/0.png")
-        number_1_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/1.png")
-        number_2_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/2.png")
-        number_3_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/3.png")
-        number_4_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/4.png")
-        number_5_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/5.png")
-        number_6_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/6.png")
-        number_7_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/7.png")
-        number_8_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/8.png")
-        number_9_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/9.png")
+        number_0_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/0.png",
+                                    flags=cv2.IMREAD_GRAYSCALE)
+        number_1_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/1.png",
+                                    flags=cv2.IMREAD_GRAYSCALE)
+        number_2_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/2.png",
+                                    flags=cv2.IMREAD_GRAYSCALE)
+        number_3_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/3.png",
+                                    flags=cv2.IMREAD_GRAYSCALE)
+        number_4_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/4.png",
+                                    flags=cv2.IMREAD_GRAYSCALE)
+        number_5_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/5.png",
+                                    flags=cv2.IMREAD_GRAYSCALE)
+        number_6_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/6.png",
+                                    flags=cv2.IMREAD_GRAYSCALE)
+        number_7_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/7.png",
+                                    flags=cv2.IMREAD_GRAYSCALE)
+        number_8_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/8.png",
+                                    flags=cv2.IMREAD_GRAYSCALE)
+        number_9_image = cv2.imread("./images/BucketNumbersIdentifier2/number_templates_working_output/9.png",
+                                    flags=cv2.IMREAD_GRAYSCALE)
 
         expected_number_templates = [number_0_image,
                                      number_1_image,
@@ -270,6 +313,24 @@ class TestBucketNumbersIdentifier2(unittest.TestCase):
         # that
         self.assertEqual(np.array_equal(actual_number_templates, expected_number_templates), True)
 
+    def test_do_number_recognition_working(self):
+        # given
+        numbers_folder = "./images/BucketNumbersIdentifier2/numbers"
+        number_matching_resolution = (50, 25)
+        bucket_number_identifier2 = BucketNumbersIdentifier2(numbers_folder,
+                                                             number_matching_resolution)
+
+        number_image_to_recognize = \
+            cv2.imread("./images/BucketNumbersIdentifier2/test_do_number_recognition_working__image_to_recognize.png",
+                       flags=cv2.IMREAD_GRAYSCALE)
+
+        expected_recognized_number = "2"
+
+        # when
+        actual_number_templates = bucket_number_identifier2.do_number_recognition(number_image_to_recognize)
+
+        # that
+        self.assertEqual(actual_number_templates, expected_recognized_number)
 
 if __name__ == '__main__':
     unittest.main()
