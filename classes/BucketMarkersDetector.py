@@ -1,6 +1,7 @@
 from RGBTemplateMatcher import RGBTemplateMatcher
 from SnipFromImage import SnipFromImage
 from BucketNumbersIdentifier import BucketNumbersIdentifier
+from BucketNumbersIdentifier2 import BucketNumbersIdentifier2
 from BucketNumbersCorrector import BucketNumbersCorrector
 from BucketMarker import BucketMarker
 from Rectangle import Rectangle
@@ -14,7 +15,8 @@ class BucketMarkersDetector:
     def __init__(self,
                  bucket_marker_template,
                  max_bucket_number,
-                 expected_template_matching_threshold=2.3):
+                 expected_template_matching_threshold,
+                 bucket_number_identifier):
 
         self.bucket_marker_template = bucket_marker_template
         self.max_bucket_number = max_bucket_number
@@ -24,7 +26,7 @@ class BucketMarkersDetector:
         self.always_seen_middle_template = bucket_marker_template[:, width_from:width_to, :]
         self.rgb_template_matcher = RGBTemplateMatcher(rgb_template=self.always_seen_middle_template,
                                                        threshold=expected_template_matching_threshold)
-        self.bucket_number_identifier = BucketNumbersIdentifier()
+        self.bucket_number_identifier = bucket_number_identifier
 
     def bucket_numbers(self, image):
         bucket_numbers = []

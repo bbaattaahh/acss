@@ -5,20 +5,28 @@ import cv2
 from BucketMarkersDetector import BucketMarkersDetector
 from Rectangle import Rectangle
 from BucketMarker import BucketMarker
+from BucketNumbersIdentifier2 import BucketNumbersIdentifier2
 
 
 class TestBucketMarkersDetector(unittest.TestCase):
 
     def test_bucket_numbers_working(self):
         # given
-        image = \
-            cv2.imread("./images/BucketMarkersDetector/test_bucket_numbers_working__image.jpg")
-
         bucket_marker_template = \
             cv2.imread("./images/BucketMarkersDetector/test_bucket_numbers_working__bucket_marker_template.png")
-        max_bucket_number = 100
-        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
-                                                        max_bucket_number=max_bucket_number)
+        max_bucket_number = 110
+        expected_template_matching_threshold = 2.3
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketMarkersDetector/numbers",
+                                                            number_matching_resolution=(50, 25),
+                                                            max_bucket_number=110)
+
+        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template,
+                                                        max_bucket_number,
+                                                        expected_template_matching_threshold,
+                                                        bucket_number_identifier)
+
+        image = \
+            cv2.imread("./images/BucketMarkersDetector/test_bucket_numbers_working__image.jpg")
 
         expected_numbers = [['001', '002'], ['002', '003']]
 
@@ -33,9 +41,15 @@ class TestBucketMarkersDetector(unittest.TestCase):
         bucket_marker_template = \
             cv2.imread("./images/BucketMarkersDetector/"
                        "test_bucket_numbers_some_deleted_number_from_image__bucket_marker_template.png")
-        max_bucket_number = 100
-        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
-                                                        max_bucket_number=max_bucket_number)
+        max_bucket_number = 110
+        expected_template_matching_threshold=2.3
+        bucket_number_identifier = BucketNumbersIdentifier2(numbers_folder="./images/BucketMarkersDetector/numbers",
+                                                            number_matching_resolution= (50, 25),
+                                                            max_bucket_number=110)
+        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template,
+                                                        max_bucket_number,
+                                                        expected_template_matching_threshold,
+                                                        bucket_number_identifier)
 
         image = \
             cv2.imread("./images/BucketMarkersDetector/test_bucket_numbers_some_deleted_number_from_image__image.jpg")
@@ -53,8 +67,12 @@ class TestBucketMarkersDetector(unittest.TestCase):
         bucket_marker_template = \
             cv2.imread("./images/BucketMarkersDetector/test_get_bucket_markers_working__bucket_marker_template.jpg")
         max_bucket_number = 110
-        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
-                                                        max_bucket_number=max_bucket_number)
+        expected_template_matching_threshold = 2.3
+
+        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template,
+                                                        max_bucket_number,
+                                                        expected_template_matching_threshold,
+                                                        bucket_number_identifier=None)
 
         image = \
             cv2.imread("./images/BucketMarkersDetector/test_get_bucket_markers_working__image.jpg")
@@ -76,8 +94,11 @@ class TestBucketMarkersDetector(unittest.TestCase):
         bucket_marker_template = \
             cv2.imread("./images/BucketMarkersDetector/test_get_bounding_rectangle_working__bucket_marker_template.jpg")
         max_bucket_number = 110
-        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
-                                                        max_bucket_number=max_bucket_number)
+        expected_template_matching_threshold=2.3
+        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template,
+                                                        max_bucket_number,
+                                                        expected_template_matching_threshold,
+                                                        bucket_number_identifier=None)
 
         image = \
             cv2.imread("./images/BucketMarkersDetector/test_get_bounding_rectangles_working__image.jpg")
@@ -94,13 +115,17 @@ class TestBucketMarkersDetector(unittest.TestCase):
 
     def test_bucket_markers_working(self):
         # given
-        image = \
-            cv2.imread("./images/BucketMarkersDetector/test_bucket_markers_working__image.jpg")
-
         bucket_marker_template = \
             cv2.imread("./images/BucketMarkersDetector/test_bucket_markers_working__bucket_marker_template.png")
-        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
-                                                        max_bucket_number=None)
+        max_bucket_number = 110
+        expected_template_matching_threshold = 2.3
+        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template,
+                                                        max_bucket_number,
+                                                        expected_template_matching_threshold,
+                                                        bucket_number_identifier=None)
+
+        image = \
+            cv2.imread("./images/BucketMarkersDetector/test_bucket_markers_working__image.jpg")
 
         expected_bucket_marker_1 = \
             cv2.imread("./images/BucketMarkersDetector/test_bucket_markers_working__bucket_marker_1_output.png")
@@ -118,9 +143,12 @@ class TestBucketMarkersDetector(unittest.TestCase):
         # given
         bucket_marker_template = cv2.imread(
             "./images/BucketMarkersDetector/test_bucket_marker_top_left_corners_working__bucket_marker_template.jpg")
-
-        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
-                                                        max_bucket_number=None)
+        max_bucket_number = None
+        expected_template_matching_threshold = 2.3
+        bucket_markers_detector = BucketMarkersDetector(bucket_marker_template,
+                                                        max_bucket_number,
+                                                        expected_template_matching_threshold,
+                                                        bucket_number_identifier=None)
 
         image = cv2.imread("./images/BucketMarkersDetector/test_bucket_marker_top_left_corners_working__image.jpg")
 
@@ -139,7 +167,9 @@ class TestBucketMarkersDetector(unittest.TestCase):
             "./images/BucketMarkersDetector/test_bucket_marker_middle_x_positions_working__bucket_marker_template.jpg")
 
         bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
-                                                        max_bucket_number=None)
+                                                        max_bucket_number=None,
+                                                        expected_template_matching_threshold=2.3,
+                                                        bucket_number_identifier=None)
 
         image = cv2.imread("./images/BucketMarkersDetector/test_bucket_marker_middle_x_positions_working__image.jpg")
 
@@ -156,7 +186,9 @@ class TestBucketMarkersDetector(unittest.TestCase):
         bucket_marker_template = cv2.imread(
             "./images/BucketMarkersDetector/test_matching_middle_templates_positions_working__bucket_marker_template.jpg")
         bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
-                                                        max_bucket_number=None)
+                                                        max_bucket_number=None,
+                                                        expected_template_matching_threshold=2.3,
+                                                        bucket_number_identifier=None)
 
         image = cv2.imread("./images/BucketMarkersDetector/test_matching_middle_templates_positions_working__image.jpg")
 
@@ -174,7 +206,9 @@ class TestBucketMarkersDetector(unittest.TestCase):
         bucket_marker_template = \
             cv2.imread("./images/BucketMarkersDetector/test_always_seen_middle_template_working_input.jpg")
         bucket_markers_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_template,
-                                                        max_bucket_number=None)
+                                                        max_bucket_number=None,
+                                                        expected_template_matching_threshold=2.3,
+                                                        bucket_number_identifier=None)
 
         expected_always_seen_middle_template = \
             cv2.imread("./images/BucketMarkersDetector/test_always_seen_middle_template_working_output.png")
@@ -185,3 +219,6 @@ class TestBucketMarkersDetector(unittest.TestCase):
         # that
         self.assertEqual(np.array_equal(actual_always_seen_middle_template, expected_always_seen_middle_template),
                          True)
+
+if __name__ == '__main__':
+    unittest.main()
