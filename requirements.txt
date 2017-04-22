@@ -10,6 +10,7 @@ moviepy
 pygame
 os
 keras
+operator
 
 # Other programs
 tesseract 3.02
