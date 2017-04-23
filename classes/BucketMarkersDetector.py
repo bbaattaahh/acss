@@ -1,9 +1,7 @@
 from RGBTemplateMatcher import RGBTemplateMatcher
 from SnipFromImage import SnipFromImage
-from BucketNumbersCorrector import BucketNumbersCorrector
 from BucketMarker import BucketMarker
 from Rectangle import Rectangle
-from multiprocessing import Pool
 
 
 class BucketMarkersDetector:

@@ -4,7 +4,7 @@
     "bucket_detector":{
         "template" : "./auxiliary_scripts/width_high/template.png",
         "bucket_marker_template_original_resolution": [1920, 1080],
-        "template_matching_resolution": [960, 540],
+        "template_matching_resolution": [240, 135],
         "max_bucket_number" : 110,
         "expected_template_matching_threshold": 1.8,
         "numbers_folder": "./config/numbers",
