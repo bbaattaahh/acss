@@ -9,6 +9,29 @@ from BucketNumbersIdentifier2 import BucketNumbersIdentifier2
 
 
 class TestBucketMarkersDetector(unittest.TestCase):
+    def test_template_to_detect_bucket_markers_working(self):
+        # given
+        bucket_marker_image = \
+            cv2.imread("./images/BucketMarkersDetector/test_template_to_detect_bucket_markers_working_input.jpg")
+        buckets_detector = BucketMarkersDetector(bucket_marker_template=bucket_marker_image,
+                                                 bucket_marker_template_original_resolution=(1920, 2560),
+                                                 template_matching_resolution=(1920/2, 2560/2),
+                                                 expected_template_matching_threshold=2.3,
+                                                 bucket_number_identifier=None)
+
+        expected_template_to_template_matching = \
+            cv2.imread("./images/BucketMarkersDetector/test_template_to_detect_bucket_markers_working_output.png")
+
+        # when
+        actual_template_to_template_matching = buckets_detector.template_to_detect_bucket_markers
+
+        # that
+        self.assertEqual(np.array_equal(actual_template_to_template_matching,
+                                        expected_template_to_template_matching),
+                         True)
+
+
+
     def test_always_seen_middle_template_working(self):
         # given
         bucket_marker_template = \
@@ -87,7 +110,6 @@ class TestBucketMarkersDetector(unittest.TestCase):
 
         # that
         self.assertEqual(actual_bucket_markers, expected_bucket_markers)
-
 
     def test_image_to_detect_bucket_markers_working(self):
         # given
