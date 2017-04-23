@@ -93,9 +93,10 @@ for x in clip.iter_frames():
             frame[:, bucket.start, :] = 0
             print(bucket.bucket_number)
 
-    bucket_markers_on_smaller_image = buckets_detector.bucket_markers_on_smaller_image(frame)
-    if bucket_markers_on_smaller_image:
-        cv2.imshow('bucket_markers_on_smaller_image', bucket_markers_on_smaller_image[0].bucket_marker_image)
+    bucket_markers = buckets_detector.bucket_markers(frame)
+    if bucket_markers:
+        bucket_marker_image = bucket_markers[0].bucket_marker_image
+        cv2.imshow('bucket_marker', bucket_marker_image)
 
     # bucket_asparagus_pairs = MergeBucketsAndAsparagusPositions(buckets,
     #                                                            actual_asparaguses_bounding_rectangle,
