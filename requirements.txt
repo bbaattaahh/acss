@@ -11,6 +11,8 @@ pygame
 os
 keras
 operator
+pandas
+
 
 # Other programs
 tesseract 3.02

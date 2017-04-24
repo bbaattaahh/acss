@@ -37,7 +37,7 @@ one_asparagus_analyzer = OneAsparagusAnalyzer(asparagus_head_classifier=None)
 
 displayer = DisplayClassification()
 
-clip = VideoFileClip("c:\\Users\\Henrik\\Google Drive\\sparga_videok\\Video 6.mp4")
+clip = VideoFileClip("/Users/h.bata/Videos/acss/two_lamps/Video 6.mp4")
 snip = clip.get_frame("00:00:18")
 snip = cv2.cvtColor(snip, cv2.COLOR_BGR2RGB)
 cv2.imwrite("snip.png", snip)
@@ -50,13 +50,19 @@ cv2.imwrite("snip.png", snip)
 start = datetime.datetime.now()
 
 for x in clip.iter_frames():
-
+    start_1 = datetime.datetime.now()
     #_, frame = cap.read()
 
     frame = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
     frame = np.array(np.rot90(frame, config["rotation_factor"]))
 
+    start_asparagus_detection = datetime.datetime.now()
     data_to_analysis_one_asparagus_images = asparaguses_detector.data_to_analysis_one_asparagus_images(frame)
+    end_asparagus_detection = datetime.datetime.now()
+    print("Asparagus detection:")
+    print(end_asparagus_detection - start_asparagus_detection)
+
+
     #
     # actual_asparaguses_bounding_rectangle = []
     # actual_shape = []
@@ -82,10 +88,11 @@ for x in clip.iter_frames():
     #
     #     actual_shape.append(str(thickness) + "___" + str(length))
 
-    start_1 = datetime.datetime.now()
+    start_bucket_detection = datetime.datetime.now()
     buckets = buckets_detector.buckets_on_image(frame)
-    end_1 = datetime.datetime.now()
-    print(end_1 - start_1)
+    end_bucket_detection = datetime.datetime.now()
+    print("Bucket detection time:")
+    print(end_bucket_detection - start_bucket_detection)
 
 
     if buckets:
@@ -112,6 +119,9 @@ for x in clip.iter_frames():
     if k == 27:
         break
 
+    end_1 = datetime.datetime.now()
+    print("Loop time:")
+    print(end_1 - start_1)
 
 cv2.destroyAllWindows()
 end = datetime.datetime.now()
