@@ -6,8 +6,7 @@ class MeasurementsEvaluatorWidthHigh:
     def __init__(self,
                  minimum_repeated_measurement_number,
                  no_on_screen_frame_number_limit,
-                 survive_time,
-                 test_flag=False):
+                 survive_time):
 
         self.minimum_repeated_measurement_number = minimum_repeated_measurement_number
         self.no_on_screen_frame_number_limit = no_on_screen_frame_number_limit
@@ -40,8 +39,8 @@ class MeasurementsEvaluatorWidthHigh:
             if no_on_screen_condition and repeated_measurement_condition:
 
                 avg_width = actual_bucket_number_measurements.width.mean()
-                avg_length = actual_bucket_number_measurements.length.mean()
-                return [unique_bucket_number, avg_width, avg_length]
+                avg_high = actual_bucket_number_measurements.high.mean()
+                return [unique_bucket_number, avg_width, avg_high]
 
         return None
 
