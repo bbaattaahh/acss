@@ -13,7 +13,7 @@
     "asparaguses_detector": {
         "cascade_file" : "./auxiliary_scripts/width_high/cascade.xml",
         "detection_resolution" : [120, 160],
-        "swing_angle": 45
+        "swing_angle": 1
     },
     "asparagus_classifier":{
         "millimeter_pixel_ratio": 1,
@@ -44,5 +44,10 @@
             "neural_network_hierarchy": "my_model.json",
             "neural_network_weights": "my_model.h5"
         }
+    },
+    "measurements_evaluator_width_high": {
+        "minimum_repeated_measurement_number": 2,
+        "no_on_screen_time_before_display": 2,
+        "survive_time": 5
     }
 }

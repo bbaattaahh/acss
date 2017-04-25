@@ -8,6 +8,7 @@ from BucketsDetector import BucketsDetector
 from AsparagusesDetector import AsparagusesDetector
 from OneAsparagusAnalyzer import OneAsparagusAnalyzer
 from MergeBucketsAndAsparagusesPositions import MergeBucketsAndAsparagusPositions
+from MeasurementsEvaulatorWidthHigh import MeasurementsEvaluatorWidthHigh
 from DisplayClassification import DisplayClassification
 
 
@@ -30,10 +31,12 @@ asparaguses_detector = AsparagusesDetector(config["asparaguses_detector"]["casca
                                            tuple(config["asparaguses_detector"]["detection_resolution"]),
                                            config["asparaguses_detector"]["swing_angle"])
 
-
-
-
 one_asparagus_analyzer = OneAsparagusAnalyzer(asparagus_head_classifier=None)
+
+measurements_evaluator = MeasurementsEvaluatorWidthHigh(
+                                config["measurements_evaluator_width_high"]["minimum_repeated_measurement_number"],
+                                config["measurements_evaluator_width_high"]["no_on_screen_time_before_display"],
+                                config["measurements_evaluator_width_high"]["survive_time"])
 
 displayer = DisplayClassification()
 
