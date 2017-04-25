@@ -5,11 +5,11 @@ import datetime
 class MeasurementsEvaluatorWidthHigh:
     def __init__(self,
                  minimum_repeated_measurement_number,
-                 no_on_screen_frame_number_limit,
+                 no_on_screen_time_before_display,
                  survive_time):
 
         self.minimum_repeated_measurement_number = minimum_repeated_measurement_number
-        self.no_on_screen_frame_number_limit = no_on_screen_frame_number_limit
+        self.no_on_screen_time_before_display = datetime.timedelta(seconds=no_on_screen_time_before_display)
         self.survive_time = datetime.timedelta(seconds=survive_time)
 
         self.frame_id = 0
@@ -30,14 +30,14 @@ class MeasurementsEvaluatorWidthHigh:
             actual_bucket_number_measurements = \
                 self.measurements_feed[self.measurements_feed.bucket_number == unique_bucket_number]
 
-            no_on_screen_condition = \
-                self.frame_id - max(actual_bucket_number_measurements.frame_id) >= self.no_on_screen_frame_number_limit
+            no_on_screen_condition = datetime.datetime.now() - max(actual_bucket_number_measurements.time) >= \
+                                     self.no_on_screen_time_before_display
 
-            repeated_measurement_condition = len(actual_bucket_number_measurements) >=\
+            repeated_measurement_condition = len(actual_bucket_number_measurements) >= \
                                              self.minimum_repeated_measurement_number
 
             if no_on_screen_condition and repeated_measurement_condition:
-
+                self.delete_displayed_item_from_measurement_feed(unique_bucket_number)
                 avg_width = actual_bucket_number_measurements.width.mean()
                 avg_high = actual_bucket_number_measurements.high.mean()
                 return [unique_bucket_number, avg_width, avg_high]

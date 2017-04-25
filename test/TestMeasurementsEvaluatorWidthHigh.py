@@ -13,7 +13,7 @@ class TestMeasurementsEvaluatorWidthHigh(unittest.TestCase):
         # given
         measurement_evaluator_width_high = MeasurementsEvaluatorWidthHigh(
             minimum_repeated_measurement_number=2,
-            no_on_screen_frame_number_limit=2,
+            no_on_screen_time_before_display=2,
             survive_time=1)
 
         expected_measurements_feed = pd.DataFrame(columns=["frame_id", "time", "bucket_number", "width", "high"])
@@ -34,7 +34,7 @@ class TestMeasurementsEvaluatorWidthHigh(unittest.TestCase):
         # given
         measurement_evaluator_width_high = MeasurementsEvaluatorWidthHigh(
             minimum_repeated_measurement_number=2,
-            no_on_screen_frame_number_limit=2,
+            no_on_screen_time_before_display=1,
             survive_time=10)
 
         expected_display_feed = ["001", 6784.0, 6784.0]
@@ -42,22 +42,45 @@ class TestMeasurementsEvaluatorWidthHigh(unittest.TestCase):
         # when
         measurement_evaluator_width_high.add_measurement(bucket_number="001", width=6784, high=6784)
         measurement_evaluator_width_high.add_measurement(bucket_number="001", width=6784, high=6784)
+        time.sleep(1)
         measurement_evaluator_width_high.add_measurement(bucket_number="002", width=6785, high=6785)
         measurement_evaluator_width_high.add_measurement(bucket_number="002", width=6785, high=6785)
 
         actual_display_feed = measurement_evaluator_width_high.get_display_feed()
 
-        # that
-        # assert_frame_equal(actual_display_feed[["frame_id", "bucket_number", "width", "high"]],
-        #                    expected_display_feed[["frame_id", "bucket_number", "width", "high"]])
         self.assertEqual(actual_display_feed, expected_display_feed)
 
+    def test_get_display_feed__measurements_feed_changes(self):
+        # given
+        measurement_evaluator_width_high = MeasurementsEvaluatorWidthHigh(
+            minimum_repeated_measurement_number=2,
+            no_on_screen_time_before_display=1,
+            survive_time=10)
+
+        expected_measurements_feed = pd.DataFrame(columns=["frame_id", "time", "bucket_number", "width", "high"])
+        expected_measurements_feed.loc[2] = [3, datetime.datetime.now(), "002", 6785, 6785]
+        expected_measurements_feed.loc[3] = [4, datetime.datetime.now(), "002", 6785, 6785]
+
+        # when
+        measurement_evaluator_width_high.add_measurement(bucket_number="001", width=6784, high=6784)
+        measurement_evaluator_width_high.add_measurement(bucket_number="001", width=6784, high=6784)
+        time.sleep(1)
+        measurement_evaluator_width_high.add_measurement(bucket_number="002", width=6785, high=6785)
+        measurement_evaluator_width_high.add_measurement(bucket_number="002", width=6785, high=6785)
+
+        measurement_evaluator_width_high.get_display_feed()
+
+        actual_measurements_feed = measurement_evaluator_width_high.measurements_feed
+
+        # that
+        assert_frame_equal(actual_measurements_feed[["frame_id", "bucket_number", "width", "high"]],
+                           expected_measurements_feed[["frame_id", "bucket_number", "width", "high"]])
 
     def test_delete_old_measurements_working(self):
         # given
         measurement_evaluator_width_high = MeasurementsEvaluatorWidthHigh(
             minimum_repeated_measurement_number=2,
-            no_on_screen_frame_number_limit=2,
+            no_on_screen_time_before_display=2,
             survive_time=1)
 
         expected_measurements_feed = pd.DataFrame(columns=["frame_id", "time", "bucket_number", "width", "high"])
@@ -81,7 +104,7 @@ class TestMeasurementsEvaluatorWidthHigh(unittest.TestCase):
         # given
         measurement_evaluator_width_high = MeasurementsEvaluatorWidthHigh(
             minimum_repeated_measurement_number=2,
-            no_on_screen_frame_number_limit=2,
+            no_on_screen_time_before_display=2,
             survive_time=1)
 
         expected_measurements_feed = pd.DataFrame(columns=["frame_id", "time", "bucket_number", "width", "high"])
