@@ -21,7 +21,9 @@ ROTATION_FACTOR = 1
 
 CASCADE_FILE = config["dropbox_folder_path"] + '/haar_cascade/data_whole_rotate/cascade.xml'
 CASCADE_FILE = config["dropbox_folder_path"] + '/haar_cascade/data_vertical/cascade.xml'
+CASCADE_FILE = '/Users/h.bata/opencv_work_space/data/cascade.xml'
 VIDEO_FILE = config["dropbox_folder_path"] + '/videos/live_test_2.avi'
+VIDEO_FILE = "/Users/h.bata/Videos/acss/two_lamps/Video 1.mp4"
 RESULT_IMAGE_FOLDER = config["dropbox_folder_path"] + '/haar_cascade/detected_asparaguses/'
 
 
@@ -69,9 +71,7 @@ for x in t:
     act_frame_brg = np.rot90(act_frame_brg, ROTATION_FACTOR)
 
     act_frame_brg = cv2.resize(act_frame_brg,
-                               None,
-                               fx=STRECH_PARAMETER,
-                               fy=STRECH_PARAMETER,
+                               (90, 160),
                                interpolation=cv2.INTER_CUBIC)
 
     act_frame_rgb = cv2.cvtColor(act_frame_brg, cv2.COLOR_BGR2RGB)

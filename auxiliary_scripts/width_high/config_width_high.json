@@ -13,7 +13,7 @@
     "asparaguses_detector": {
         "cascade_file" : "./auxiliary_scripts/width_high/cascade.xml",
         "detection_resolution" : [120, 160],
-        "swing_angle": 1
+        "swing_angle": 45
     },
     "asparagus_classifier":{
         "millimeter_pixel_ratio": 1,

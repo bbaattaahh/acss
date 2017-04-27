@@ -40,7 +40,7 @@ measurements_evaluator = MeasurementsEvaluatorWidthHigh(
 
 displayer = DisplayClassification()
 
-clip = VideoFileClip("/Users/h.bata/Videos/acss/two_lamps/Video 6.mp4")
+clip = VideoFileClip("/Users/h.bata/Dropbox/acss/videos/live_test_2.avi")
 snip = clip.get_frame("00:00:18")
 snip = cv2.cvtColor(snip, cv2.COLOR_BGR2RGB)
 cv2.imwrite("snip.png", snip)
@@ -66,25 +66,25 @@ for x in clip.iter_frames():
     print(end_asparagus_detection - start_asparagus_detection)
 
 
-    #
-    # actual_asparaguses_bounding_rectangle = []
-    # actual_shape = []
-    #
-    # for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
-    #     actual_asparaguses_bounding_rectangle.append(data_to_analysis_one_asparagus_image.rectangle_on_original_image)
-    #     frame = frame.copy()
-    #
-    #     p1 = (int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_x),
-    #           int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_y))
-    #     p2 = (int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_x + data_to_analysis_one_asparagus_image.rectangle_on_original_image.width),
-    #           int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_y + data_to_analysis_one_asparagus_image.rectangle_on_original_image.high))
-    #
-    #
-    #     cv2.rectangle(frame,
-    #                   p1,
-    #                   p2,
-    #                   (255, 0, 0),
-    #                   2)
+
+    actual_asparaguses_bounding_rectangle = []
+    actual_shape = []
+
+    for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
+        actual_asparaguses_bounding_rectangle.append(data_to_analysis_one_asparagus_image.rectangle_on_original_image)
+        frame = frame.copy()
+
+        p1 = (int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_x),
+              int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_y))
+        p2 = (int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_x + data_to_analysis_one_asparagus_image.rectangle_on_original_image.width),
+              int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_y + data_to_analysis_one_asparagus_image.rectangle_on_original_image.high))
+
+
+        cv2.rectangle(frame,
+                      p1,
+                      p2,
+                      (255, 0, 0),
+                      2)
     #
     #     thickness = one_asparagus_analyzer.asparagus_thickness(data_to_analysis_one_asparagus_image.image)
     #     length = one_asparagus_analyzer.asparagus_length(data_to_analysis_one_asparagus_image.image)
