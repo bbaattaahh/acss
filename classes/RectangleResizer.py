@@ -18,5 +18,6 @@ class RectangleResizer:
         resized_rectangle = Rectangle(top_left_x=new_top_left_x,
                                       top_left_y=new_top_left_y,
                                       width=new_width,
-                                      high=new_high)
+                                      high=new_high,
+                                      angle=rectangle.angle)
         return resized_rectangle
