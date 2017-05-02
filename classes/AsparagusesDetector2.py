@@ -3,8 +3,7 @@ import numpy as np
 import math
 
 from Rectangle import Rectangle
-from IsRectangleOnOriginalImage import IsRectangleOnOriginalImage
-from ChooseFinalCandidates import ChooseFinalCandidates
+from RectangleResizer import RectangleResizer
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
 from SnipFromImage import SnipFromImage
 from ImageResizer import ImageResizer
@@ -28,12 +27,16 @@ class AsparagusesDetector2(object):
         candidate_contours = self.get_candidate_contours(image_detection_on)
         asparagus_contours_bounding_rectangles = self.asparagus_contours_bounding_rectangles(candidate_contours)
 
-
         to_asparagus_analysis = []
 
-        for opencv_rectangles in asparagus_contours_bounding_rectangles:
+        for opencv_rectangle in asparagus_contours_bounding_rectangles:
+
+            rectangle_on_original_image = self.rectangle_on_original_rotated_image(image.shape[:2],
+                                                                                   image_detection_on,
+                                                                                   opencv_rectangle)
+
             original_rotated_image = self.rotate_about_center(image,
-                                                              angle=opencv_rectangles[2])
+                                                              angle=opencv_rectangle[2])
 
             # scale_back_x, scale_back_y = PositionConverter(
             #     original_position=[candidate.top_left_x, candidate.top_left_y],
@@ -75,21 +78,26 @@ class AsparagusesDetector2(object):
         return rescaled_image
 
     def get_candidate_contours(self, image_detection_on):
-        ret, thresholded_image = cv2.threshold(image_detection_on, self.global_threshold, 255, cv2.THRESH_BINARY)
-        # maybe a closing or an oprning here??
-        im2, contours, hierarchy = cv2.findContours(thresholded_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        _, thresholded_image = cv2.threshold(image_detection_on, self.global_threshold, 255, cv2.THRESH_BINARY)
+        kernel = np.ones((5, 5), np.uint8)
+        closed_thresholded_image = cv2.morphologyEx(thresholded_image, cv2.MORPH_CLOSE, kernel)
+        _, contours, _ = cv2.findContours(closed_thresholded_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         return contours
 
     def asparagus_contours_bounding_rectangles(self, candidate_contours):
         asparagus_contours = []
 
-        for cnt in asparagus_contours:
+        for cnt in candidate_contours:
+            x = cv2.contourArea(cnt)
             if cv2.contourArea(cnt) < self.minimum_area:
                 continue
 
             rect = cv2.minAreaRect(cnt)
 
-            if rect[1][1] / rect[0][1] < self.high_width_ratio:
+            if abs(rect[2]) <= 45 and rect[1][1] / rect[1][0] < self.high_width_ratio:
+                continue
+
+            if abs(rect[2]) >= 45 and rect[1][0] / rect[1][1] < self.high_width_ratio:
                 continue
 
             asparagus_contours.append(rect)
@@ -118,6 +126,53 @@ class AsparagusesDetector2(object):
                               rot_mat,
                               (int(math.ceil(nw)), int(math.ceil(nh))),
                               flags=cv2.INTER_LANCZOS4)
+
+    def rectangle_on_original_image(self, image_shape, image_detection_on, opencv_rectangle):
+
+        top_left_x = opencv_rectangle[0][0] - opencv_rectangle[1][1]/2
+        top_left_y = opencv_rectangle[0][1] - opencv_rectangle[1][0]/2
+
+        rectangle = Rectangle(top_left_x=top_left_x,
+                              top_left_y=top_left_y,
+                              width=opencv_rectangle[1][1],
+                              high=opencv_rectangle[1][0],
+                              angle=opencv_rectangle[2])
+
+        rectangle_resizer = RectangleResizer(original_resolution=image_detection_on.shape[:2],
+                                             target_resolution=image_shape)
+
+        rectangle_on_original_image = rectangle_resizer.resize(rectangle)
+
+        return rectangle_on_original_image
+
+
+
+
+    # def rectangle_on_original_rotated_image(self, image_shape, image_detection_on, opencv_rectangle):
+    #     rectangle_center_after_rotation = self.calculate_original_coordinate_before_rotation(
+    #                                                             image=image_detection_on,
+    #                                                             angle=opencv_rectangle[2],
+    #                                                             vertex=opencv_rectangle[0])
+    #
+    #     top_left_x = int(rectangle_center_after_rotation[0] - opencv_rectangle[1][0]/2)
+    #     top_left_y = int(rectangle_center_after_rotation[1] - opencv_rectangle[1][1]/2)
+    #
+    #     rectangle_back_rotated_image = Rectangle(top_left_x=top_left_x,
+    #                                              top_left_y=top_left_y,
+    #                                              width=int(opencv_rectangle[1][0]),
+    #                                              high=int(opencv_rectangle[1][1]))
+    #
+    #     rectangle_resizer = RectangleResizer(original_resolution=image_detection_on.shape[:2],
+    #                                          target_resolution=image_shape)
+    #
+    #
+    #     rectangle_on_back_rotated_original_image = rectangle_resizer.resize(rectangle_back_rotated_image)
+    #
+    #     return rectangle_on_back_rotated_original_image
+
+
+
+
 
     @staticmethod
     def calculate_original_coordinate_before_rotation(image, angle, vertex):
@@ -154,3 +209,4 @@ class AsparagusesDetector2(object):
         original_point_list = original_point.tolist()
         original_point_list_single_level = original_point_list[0] + original_point_list[1]
         return original_point_list_single_level
+

@@ -45,7 +45,7 @@ for act_frame_brg in clip.iter_frames():
     act_frame_brg = np.rot90(act_frame_brg, ROTATION_FACTOR)
 
     act_frame_brg = cv2.resize(act_frame_brg,
-                               (180, 320),
+                               (90, 160),
                                interpolation=cv2.INTER_CUBIC)
 
     act_frame_rgb = cv2.cvtColor(act_frame_brg, cv2.COLOR_BGR2RGB)
