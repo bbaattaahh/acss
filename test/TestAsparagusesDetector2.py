@@ -125,12 +125,11 @@ class TestAsparagusesDetector2(unittest.TestCase):
         # when
         actual_rectangle_on_original_image = \
             asparagus_detector_2.rectangle_on_original_image(image_detection_on=image_detection_on,
-                                                                     image_shape=(160, 90),
-                                                                     opencv_rectangle=asparagus_contours_bounding_rectangle)
+                                                             image_shape=(160, 90),
+                                                             opencv_rectangle=asparagus_contours_bounding_rectangle)
 
         # that
-        self.assertEqual(np.array_equal(actual_rectangle_on_original_image,
-                                        expected_rectangle_on_original_image), True)
+        self.assertEqual(actual_rectangle_on_original_image, expected_rectangle_on_original_image)
 
 
 
@@ -162,18 +161,6 @@ class TestAsparagusesDetector2(unittest.TestCase):
 
         # that
         self.assertEqual(sorted(actual_candidates), sorted(expected_candidates))
-
-    def test_rotate_about_center(self):
-        # given
-        image = cv2.imread("./images/AsparagusesDetector2/test_rotate_about_center_input.jpg")
-
-        expected_rotated_image = cv2.imread("./images/AsparagusesDetector2/test_rotate_about_center_output.png")
-
-        # when
-        actual_rotated_image = AsparagusesDetector2.rotate_about_center(image, 25)
-
-        # that
-        self.assertEqual(np.array_equal(actual_rotated_image, expected_rotated_image), True)
 
 
 if __name__ == '__main__':
