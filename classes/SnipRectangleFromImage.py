@@ -39,42 +39,6 @@ class SnipRectangleFromImage(object):
             return rotated_image[y1: y2, x1: x2, :]
 
     @staticmethod
-    def calculate_original_coordinate_before_rotation(image, angle, vertex):
-        point_numpy = np.array([[vertex[0]], [vertex[1]]])
-
-        w_original = image.shape[1]
-        h_original = image.shape[0]
-
-        # now calculate new image width and height
-        radian_angle = np.deg2rad(angle)  # angle in radians
-        w_rotated = abs(np.sin(radian_angle) * h_original) + abs(np.cos(radian_angle) * w_original)
-        h_rotated = abs(np.cos(radian_angle) * h_original) + abs(np.sin(radian_angle) * w_original)
-
-        # From top left corner to central of image
-        central_vector = np.array([[-w_rotated / 2], [-h_rotated / 2]])
-
-        point_relative_to_central = point_numpy + central_vector
-
-        # Rotation back
-        theta = np.deg2rad(angle)
-        rotation_matrix = np.array([[np.cos(theta), -np.sin(theta)],
-                                    [np.sin(theta), np.cos(theta)]])
-        rotated_point_relative_to_central = np.dot(rotation_matrix, point_relative_to_central)
-
-        # Central to top left corner
-        top_left_central_point = rotated_point_relative_to_central - central_vector
-
-        # Compensation with picture growth
-        w_growth_on_one_side = (w_rotated - w_original) / 2
-        h_growth_on_one_side = (h_rotated - h_original) / 2
-        compensation_vector = np.array([[w_growth_on_one_side], [h_growth_on_one_side]])
-
-        original_point = top_left_central_point - compensation_vector
-        original_point_list = original_point.tolist()
-        original_point_list_single_level = original_point_list[0] + original_point_list[1]
-        return original_point_list_single_level
-
-    @staticmethod
     def calculate_new_coordinate_after_rotation(image, angle, vertex):
         point_numpy = np.array([[vertex[0]], [vertex[1]]])
 
@@ -108,8 +72,6 @@ class SnipRectangleFromImage(object):
         original_point_list_single_level = original_point_list[0] + original_point_list[1]
         return original_point_list_single_level
 
-
-
     @staticmethod
     def rotate_about_center(image, angle):
         w = image.shape[1]
@@ -132,4 +94,3 @@ class SnipRectangleFromImage(object):
                               rot_mat,
                               (int(math.ceil(nw)), int(math.ceil(nh))),
                               flags=cv2.INTER_LANCZOS4)
-

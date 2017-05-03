@@ -148,6 +148,17 @@ class TestSnipRectangleFromImage(unittest.TestCase):
         # that
         self.assertAlmostEqual(actual_rotated_point, expected_rotated_point, delta=0.0000001)
 
+    def test_rotate_about_center(self):
+        # given
+        image = cv2.imread("./images/SnipRectangleFromImage/test_rotate_about_center_input.jpg")
+
+        expected_rotated_image = cv2.imread("./images/SnipRectangleFromImage/test_rotate_about_center_output.png")
+
+        # when
+        actual_rotated_image = SnipRectangleFromImage.rotate_about_center(image, 25)
+
+        # that
+        self.assertEqual(np.array_equal(actual_rotated_image, expected_rotated_image), True)
 
 
             # def test_calculate_new_coordinate_after_rotation__real_rectangle(self):
