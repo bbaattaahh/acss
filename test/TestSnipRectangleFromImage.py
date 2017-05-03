@@ -54,8 +54,8 @@ class TestSnipRectangleFromImage(unittest.TestCase):
     def test_snipped_image__rgb_image__45_angle(self):
         # given
         image = cv2.imread("./images/SnipRectangleFromImage/test_snipped_image__45_angle__rgb_image_input.jpg")
-        rectangle = Rectangle(top_left_x=94,
-                              top_left_y=75,
+        rectangle = Rectangle(top_left_x=30,
+                              top_left_y=100,
                               width=100,
                               high=200,
                               angle=45)

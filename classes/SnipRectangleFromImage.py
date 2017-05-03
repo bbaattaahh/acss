@@ -21,7 +21,7 @@ class SnipRectangleFromImage(object):
             vertex=self.rectangle.vertices[0]
         )
 
-        rotated_image = self.rotate_about_center(self.image, self.rectangle.angle)
+        rotated_image = self.rotate_about_center(self.image, -1*self.rectangle.angle)
 
         cv2.imwrite("temp.png", rotated_image)
 
@@ -93,7 +93,6 @@ class SnipRectangleFromImage(object):
         w_growth_on_one_side = (w_rotated - w_original) / 2
         h_growth_on_one_side = (h_rotated - h_original) / 2
         compensation_vector = np.array([[w_growth_on_one_side], [h_growth_on_one_side]])
-
 
         point_relative_to_central = point_numpy + central_vector
 
