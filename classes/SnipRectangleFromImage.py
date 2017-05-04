@@ -23,7 +23,7 @@ class SnipRectangleFromImage(object):
 
         rotated_image = self.rotate_about_center(self.image, -1*self.rectangle.angle)
 
-        cv2.imwrite("temp.png", rotated_image)
+        # cv2.imwrite("temp.png", rotated_image)
 
         x1 = int(new_top_left_corner[0])
         x2 = int(new_top_left_corner[0] + self.rectangle.width)

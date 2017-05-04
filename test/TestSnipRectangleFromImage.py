@@ -159,21 +159,3 @@ class TestSnipRectangleFromImage(unittest.TestCase):
 
         # that
         self.assertEqual(np.array_equal(actual_rotated_image, expected_rotated_image), True)
-
-
-            # def test_calculate_new_coordinate_after_rotation__real_rectangle(self):
-    #     # given
-    #     point = [5, 0]
-    #     blank_image = np.zeros((10, 100, 3))
-    #
-    #     expected_rotated_point = [10/4*3*(np.sqrt(2)), 10/4*(np.sqrt(2))]
-    #
-    #     # when
-    #     actual_rotated_point = \
-    #         SnipRectangleFromImage.calculate_new_coordinate_after_rotation(image=blank_image,
-    #                                                                        angle=45,
-    #                                                                        vertex=point)
-    #
-    #     # that
-    #     self.assertAlmostEqual(actual_rotated_point, expected_rotated_point, delta=0.0000001)
-
