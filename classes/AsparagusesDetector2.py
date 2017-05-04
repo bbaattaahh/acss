@@ -1,16 +1,8 @@
 import cv2
 import numpy as np
-import math
 
-from operator import itemgetter
-
-from Rectangle import Rectangle
-from RectangleResizer import RectangleResizer
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
-from SnipFromImage import SnipFromImage
 from ImageResizer import ImageResizer
-from PositionConverter import PositionConverter
-from SnipRectangleFromImage import SnipRectangleFromImage
 
 
 class AsparagusesDetector2(object):
@@ -43,12 +35,6 @@ class AsparagusesDetector2(object):
 
             opencv_rectangle_on_original_image = self.extend_opencv_rectangle(opencv_rectangle_on_original_image)
 
-
-            rectangle_on_original_image = self.rectangle_on_original_image(opencv_rectangle_on_original_image)
-
-
-
-
             snipped_asparagus = self.subimage(image=image,
                           theta=opencv_rectangle_on_original_image[2],
                           center=opencv_rectangle_on_original_image[0],
@@ -70,7 +56,7 @@ class AsparagusesDetector2(object):
 
             actual_detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
                 image=snipped_asparagus,
-                rectangle_on_original_image=rectangle_on_original_image)
+                opencv_rectangle_on_original_image=opencv_rectangle_on_original_image)
 
             to_asparagus_analysis.append(actual_detection_to_one_asparagus_analysis)
 
@@ -108,19 +94,6 @@ class AsparagusesDetector2(object):
             asparagus_contours.append(rect)
 
         return asparagus_contours
-
-    @staticmethod
-    def rectangle_on_original_image(opencv_rectangle):
-
-        top_left_corner = AsparagusesDetector2.get_top_left_corner_of_opencv_rectangle(opencv_rectangle)
-
-        rectangle_on_original_image = Rectangle(top_left_x=top_left_corner[0],
-                                                top_left_y=top_left_corner[1],
-                                                width=opencv_rectangle[1][1],
-                                                high=opencv_rectangle[1][0],
-                                                angle=opencv_rectangle[2])
-
-        return rectangle_on_original_image
 
     @staticmethod
     def opencv_rectangle_on_original_image(image_shape, image_detection_on_shape, opencv_rectangle):
