@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 from Asparagus import Asparagus
 
@@ -27,18 +28,11 @@ class MergeBucketsAndAsparagusPositions:
 
     @property
     def asparagus_image_middles(self):
-        asparagus_image_middles = list(map(self.horizontal_middle_of_oblique_rectangle,
+        asparagus_image_middles = list(map(self.horizontal_middle_of_opencv_rectangle,
                                            self.one_asparagus_image_rectangles))
         return asparagus_image_middles
 
     @staticmethod
-    def horizontal_middle_of_oblique_rectangle(rectangle):
-        a = np.cos(np.deg2rad(rectangle.angle)) * rectangle.width
-        b = np.cos(np.deg2rad(90 - rectangle.angle)) * rectangle.high
-
-        max_x = rectangle.top_left_x + a
-        min_x = rectangle.top_left_x - b
-
-        middle = round((max_x + min_x) / 2)
-
+    def horizontal_middle_of_opencv_rectangle(opencv_rectangle):
+        middle = opencv_rectangle[0][0]
         return middle

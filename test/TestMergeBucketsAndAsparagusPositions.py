@@ -2,7 +2,6 @@ import unittest
 import numpy as np
 
 from MergeBucketsAndAsparagusesPositions import MergeBucketsAndAsparagusPositions
-from Rectangle import Rectangle
 from Bucket import Bucket
 
 
@@ -15,8 +14,10 @@ class TestMergeBucketsAndAsparagusesPositions(unittest.TestCase):
         bucket4 = Bucket(start=300, end=400, bucket_number="004")
         buckets = [bucket1, bucket2, bucket3, bucket4]
 
-        one_asparagus_image_rectangle_1 = Rectangle(top_left_x=10, top_left_y=20, width=6, high=40, angle=0)
-        one_asparagus_image_rectangle_2 = Rectangle(top_left_x=110, top_left_y=20, width=6, high=40, angle=0)
+        one_asparagus_image_rectangle_1 = (13, 40), (6, 40), 0
+        one_asparagus_image_rectangle_2 = (113, 40), (6, 40), 0
+
+
         one_asparagus_image_rectangles = [one_asparagus_image_rectangle_1, one_asparagus_image_rectangle_2]
 
         asparagus_classes = ["Solo I", "Solo II"]
@@ -34,8 +35,8 @@ class TestMergeBucketsAndAsparagusesPositions(unittest.TestCase):
 
     def test_asparagus_image_middles_working(self):
         # given
-        one_asparagus_image_rectangle_1 = Rectangle(top_left_x=10, top_left_y=20, width=6, high=40, angle=0)
-        one_asparagus_image_rectangle_2 = Rectangle(top_left_x=110, top_left_y=20, width=6, high=40, angle=0)
+        one_asparagus_image_rectangle_1 = (13, 40), (6, 40), 0
+        one_asparagus_image_rectangle_2 = (113, 40), (6, 40), 0
         one_asparagus_image_rectangles = [one_asparagus_image_rectangle_1, one_asparagus_image_rectangle_2]
 
         merge_buckets_and_asparaguses_positions = MergeBucketsAndAsparagusPositions(
@@ -51,36 +52,28 @@ class TestMergeBucketsAndAsparagusesPositions(unittest.TestCase):
         # that
         self.assertEqual(actual_asparagus_image_middles, expected_asparagus_image_middles)
 
-    def test_horizontal_middle_of_oblique_rectangle_anagel_0(self):
+    def test_horizontal_middle_of_opencv_rectangle_anagel_0(self):
         # given
-        rectangle = Rectangle(top_left_x=10,
-                              top_left_y=20,
-                              width=6,
-                              high=40,
-                              angle=0)
+        opencv_rectangle = (13, 40), (6, 40), 0
 
         expected_horizontal_middle_of_oblique_rectangle = 13
 
         # when
         actual_horizontal_middle_of_oblique_rectangle = \
-            MergeBucketsAndAsparagusPositions.horizontal_middle_of_oblique_rectangle(rectangle)
+            MergeBucketsAndAsparagusPositions.horizontal_middle_of_opencv_rectangle(opencv_rectangle)
 
         # that
         self.assertEqual(actual_horizontal_middle_of_oblique_rectangle, expected_horizontal_middle_of_oblique_rectangle)
 
-    def test_horizontal_middle_of_oblique_rectangle_anagel_45(self):
+    def test_horizontal_middle_of_opencv_rectangle_anagel_45(self):
         # given
-        rectangle = Rectangle(top_left_x=10,
-                              top_left_y=20,
-                              width=np.sqrt(2)*6,
-                              high=np.sqrt(2)*10,
-                              angle=45)
+        opencv_rectangle = (8, 20), (np.sqrt(2)*6, np.sqrt(2)*10), 45
 
         expected_horizontal_middle_of_oblique_rectangle = 8
 
         # when
         actual_horizontal_middle_of_oblique_rectangle = \
-            MergeBucketsAndAsparagusPositions.horizontal_middle_of_oblique_rectangle(rectangle)
+            MergeBucketsAndAsparagusPositions.horizontal_middle_of_opencv_rectangle(opencv_rectangle)
 
         # that
         self.assertEqual(actual_horizontal_middle_of_oblique_rectangle, expected_horizontal_middle_of_oblique_rectangle)
