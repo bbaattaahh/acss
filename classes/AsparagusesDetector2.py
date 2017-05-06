@@ -35,30 +35,21 @@ class AsparagusesDetector2(object):
 
             opencv_rectangle_on_original_image = self.extend_opencv_rectangle(opencv_rectangle_on_original_image)
 
-            snipped_asparagus = self.subimage(image=image,
-                          theta=opencv_rectangle_on_original_image[2],
-                          center=opencv_rectangle_on_original_image[0],
-                          width=opencv_rectangle_on_original_image[1][0],
-                          height=opencv_rectangle_on_original_image[1][1])
+            if self.is_rectangle_vertically_on_image(image.shape[0], opencv_rectangle_on_original_image):
 
-            snipped_asparagus = self.orientation_correction(snipped_asparagus)
+                snipped_asparagus = self.subimage(image=image,
+                              theta=opencv_rectangle_on_original_image[2],
+                              center=opencv_rectangle_on_original_image[0],
+                              width=opencv_rectangle_on_original_image[1][0],
+                              height=opencv_rectangle_on_original_image[1][1])
 
-            # cv2.imwrite("temp2.png", snipped_asparagus)
-            #
-            #
-            #
-            # box = cv2.boxPoints(opencv_rectangle)
-            # box = np.int0(box)
-            # cv2.drawContours(image_detection_on, [box], 0, (0, 0, 255), 2)
-            # cv2.imwrite("temp1.png", image)
+                snipped_asparagus = self.orientation_correction(snipped_asparagus)
 
+                actual_detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
+                    image=snipped_asparagus,
+                    opencv_rectangle_on_original_image=opencv_rectangle_on_original_image)
 
-
-            actual_detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
-                image=snipped_asparagus,
-                opencv_rectangle_on_original_image=opencv_rectangle_on_original_image)
-
-            to_asparagus_analysis.append(actual_detection_to_one_asparagus_analysis)
+                to_asparagus_analysis.append(actual_detection_to_one_asparagus_analysis)
 
         return to_asparagus_analysis
 
@@ -107,7 +98,6 @@ class AsparagusesDetector2(object):
 
         return back_scaled_opencv_rectangle
 
-
     @staticmethod
     def subimage(image, center, theta, width, height):
         theta *= 3.14159 / 180  # convert to rad
@@ -141,17 +131,16 @@ class AsparagusesDetector2(object):
 
         return image
 
-    # not tested not perfect
     @staticmethod
-    def get_top_left_corner_of_opencv_rectangle(opencv_rectangle):
-        box_points = cv2.boxPoints(opencv_rectangle)
-        min_distance = np.inf
-        top_left_corner = box_points[0]
+    def is_rectangle_vertically_on_image(image_width, opencv_rectangle):
+        box = cv2.boxPoints(opencv_rectangle)
+        box = np.int0(box)
+        x_coordinates = box[:, 0]
 
-        for box_point in box_points:
-            actual_distance = sum(box_point)
-            if actual_distance < min_distance:
-                min_distance = actual_distance
-                top_left_corner = box_point
+        if min(x_coordinates) < 0:
+            return False
 
-        return top_left_corner.tolist()
+        if max(x_coordinates)>image_width:
+            return False
+
+        return True

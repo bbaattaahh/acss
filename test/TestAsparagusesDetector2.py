@@ -4,7 +4,6 @@ import numpy as np
 
 from AsparagusesDetector2 import AsparagusesDetector2
 from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
-from Rectangle import Rectangle
 
 
 class TestAsparagusesDetector2(unittest.TestCase):
@@ -107,6 +106,34 @@ class TestAsparagusesDetector2(unittest.TestCase):
         # that
         self.assertEqual(np.array_equal(actual_asparagus_contours_bounding_rectangles,
                                         expected_asparagus_contours_bounding_rectangles), True)
+
+    def test_is_rectangle_vertically_on_image__hangs_to_the_left(self):
+        # given
+        opencv_rectangle = (5, 10), (20, 100), 0
+
+        expected_is_rectangle_vertically_on_image = False
+
+        # when
+        actual_is_rectangle_vertically_on_image = AsparagusesDetector2.is_rectangle_vertically_on_image(
+                                                        image_width=1080,
+                                                        opencv_rectangle=opencv_rectangle)
+
+        # that
+        self.assertEqual(actual_is_rectangle_vertically_on_image, expected_is_rectangle_vertically_on_image)
+
+    def test_is_rectangle_vertically_on_image__hangs_to_the_right(self):
+        # given
+        opencv_rectangle = (1075, 10), (20, 100), 0
+
+        expected_is_rectangle_vertically_on_image = False
+
+        # when
+        actual_is_rectangle_vertically_on_image = AsparagusesDetector2.is_rectangle_vertically_on_image(
+            image_width=1080,
+            opencv_rectangle=opencv_rectangle)
+
+        # that
+        self.assertEqual(actual_is_rectangle_vertically_on_image, expected_is_rectangle_vertically_on_image)
 
 if __name__ == '__main__':
     unittest.main()
