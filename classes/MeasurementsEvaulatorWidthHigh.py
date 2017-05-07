@@ -38,8 +38,8 @@ class MeasurementsEvaluatorWidthHigh:
 
             if no_on_screen_condition and repeated_measurement_condition:
                 self.delete_displayed_item_from_measurement_feed(unique_bucket_number)
-                avg_width = actual_bucket_number_measurements.width.mean()
-                avg_high = actual_bucket_number_measurements.high.mean()
+                avg_width = actual_bucket_number_measurements.width.median()
+                avg_high = actual_bucket_number_measurements.high.median()
                 return [unique_bucket_number, avg_width, avg_high]
 
         return None
