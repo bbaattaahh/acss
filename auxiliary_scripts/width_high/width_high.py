@@ -5,12 +5,17 @@ import numpy as np
 import datetime
 
 from BucketsDetector import BucketsDetector
-from AsparagusesDetector import AsparagusesDetector
+from AsparagusesDetector2 import AsparagusesDetector2
 from OneAsparagusAnalyzer import OneAsparagusAnalyzer
-from MergeBucketsAndAsparagusesPositions import MergeBucketsAndAsparagusPositions
+from MergeBucketsAndAsparagusesPositionsWidthHigh import MergeBucketsAndAsparagusPositionsWidthHigh
 from MeasurementsEvaulatorWidthHigh import MeasurementsEvaluatorWidthHigh
 from DisplayClassification import DisplayClassification
 
+
+def change_pixel_to_mm(measurement, mm_pixel_ratio):
+    measurement = measurement * mm_pixel_ratio
+    measurement = round(measurement, 1)
+    return measurement
 
 with open('./auxiliary_scripts/width_high/config_width_high.json') as data_file:
     config = json.load(data_file)
@@ -27,9 +32,11 @@ buckets_detector = BucketsDetector(bucket_marker_template,
                                    config["bucket_detector"]["numbers_folder"],
                                    config["bucket_detector"]["number_matching_resolution"])
 
-asparaguses_detector = AsparagusesDetector(config["asparaguses_detector"]["cascade_file"],
-                                           tuple(config["asparaguses_detector"]["detection_resolution"]),
-                                           config["asparaguses_detector"]["swing_angle"])
+asparaguses_detector = AsparagusesDetector2(config["asparaguses_detector"]["global_threshold"],
+                                            config["asparaguses_detector"]["high_width_ratio"],
+                                            config["asparaguses_detector"]["minimum_area"],
+                                            tuple(config["asparaguses_detector"]["detection_resolution"]),
+                                            config["asparaguses_detector"]["extension_factor"])
 
 one_asparagus_analyzer = OneAsparagusAnalyzer(asparagus_head_classifier=None)
 
@@ -38,12 +45,11 @@ measurements_evaluator = MeasurementsEvaluatorWidthHigh(
                                 config["measurements_evaluator_width_high"]["no_on_screen_time_before_display"],
                                 config["measurements_evaluator_width_high"]["survive_time"])
 
+mm_pixel_ratio = config["asparagus_classifier"]["millimeter_pixel_ratio"]
+
 displayer = DisplayClassification()
 
-clip = VideoFileClip("/Users/h.bata/Dropbox/acss/videos/live_test_2.avi")
-snip = clip.get_frame("00:00:18")
-snip = cv2.cvtColor(snip, cv2.COLOR_BGR2RGB)
-cv2.imwrite("snip.png", snip)
+clip = VideoFileClip("c:\\Users\\Henrik\\Google Drive\\sparga_videok\\Video 9.mp4")
 
 # cap = cv2.VideoCapture(0)
 # cap.set(3, config["web_camera_distribution"][0])
@@ -59,63 +65,73 @@ for x in clip.iter_frames():
     frame = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
     frame = np.array(np.rot90(frame, config["rotation_factor"]))
 
-    start_asparagus_detection = datetime.datetime.now()
+    # start_asparagus_detection = datetime.datetime.now()
     data_to_analysis_one_asparagus_images = asparaguses_detector.data_to_analysis_one_asparagus_images(frame)
-    end_asparagus_detection = datetime.datetime.now()
-    print("Asparagus detection:")
-    print(end_asparagus_detection - start_asparagus_detection)
+    # end_asparagus_detection = datetime.datetime.now()
+    # print("Asparagus detection:")
+    # print(end_asparagus_detection - start_asparagus_detection)
 
-
-
+    actual_width_high = []
     actual_asparaguses_bounding_rectangle = []
-    actual_shape = []
 
     for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
-        actual_asparaguses_bounding_rectangle.append(data_to_analysis_one_asparagus_image.rectangle_on_original_image)
+        box = cv2.boxPoints(data_to_analysis_one_asparagus_image.opencv_rectangle_on_original_image)
+        box = np.int0(box)
         frame = frame.copy()
+        cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
 
-        p1 = (int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_x),
-              int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_y))
-        p2 = (int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_x + data_to_analysis_one_asparagus_image.rectangle_on_original_image.width),
-              int(data_to_analysis_one_asparagus_image.rectangle_on_original_image.top_left_y + data_to_analysis_one_asparagus_image.rectangle_on_original_image.high))
+        ac = one_asparagus_analyzer.asparagus_contour(data_to_analysis_one_asparagus_image.image)
+        ac_small = cv2.resize(ac, (0, 0), fx=0.3, fy=0.3)
+        cv2.imshow('ac', ac_small)
 
+        thickness_and_length = one_asparagus_analyzer.asparagus_thickness_and_length(data_to_analysis_one_asparagus_image.image)
+        thickness =  change_pixel_to_mm(thickness_and_length[0], mm_pixel_ratio)
+        length = change_pixel_to_mm(thickness_and_length[1], mm_pixel_ratio)
 
-        cv2.rectangle(frame,
-                      p1,
-                      p2,
-                      (255, 0, 0),
-                      2)
-    #
-    #     thickness = one_asparagus_analyzer.asparagus_thickness(data_to_analysis_one_asparagus_image.image)
-    #     length = one_asparagus_analyzer.asparagus_length(data_to_analysis_one_asparagus_image.image)
-    #
-    #     actual_shape.append(str(thickness) + "___" + str(length))
+        actual_asparaguses_bounding_rectangle.append(data_to_analysis_one_asparagus_image.opencv_rectangle_on_original_image)
+        actual_width_high.append([thickness, length])
 
-    start_bucket_detection = datetime.datetime.now()
+    # start_bucket_detection = datetime.datetime.now()
     buckets = buckets_detector.buckets_on_image(frame)
-    end_bucket_detection = datetime.datetime.now()
-    print("Bucket detection time:")
-    print(end_bucket_detection - start_bucket_detection)
+    # end_bucket_detection = datetime.datetime.now()
+    # print("Bucket detection time:")
+    # print(end_bucket_detection - start_bucket_detection)
 
 
     if buckets:
         for bucket in buckets:
             frame[:, bucket.start, :] = 0
-            print(bucket.bucket_number)
+            # print(bucket.bucket_number)
 
     bucket_markers = buckets_detector.bucket_markers(frame)
-    if bucket_markers:
-        bucket_marker_image = bucket_markers[0].bucket_marker_image
-        cv2.imshow('bucket_marker', bucket_marker_image)
+    # if bucket_markers:
+    #     bucket_marker_image = bucket_markers[0].bucket_marker_image
+    #     cv2.imshow('bucket_marker', bucket_marker_image)
 
-    # bucket_asparagus_pairs = MergeBucketsAndAsparagusPositions(buckets,
-    #                                                            actual_asparaguses_bounding_rectangle,
-    #                                                            actual_shape).bucket_asparagus_pairs
+    bucket_asparagus_pairs = MergeBucketsAndAsparagusPositionsWidthHigh(buckets,
+                                                                        actual_asparaguses_bounding_rectangle,
+                                                                        actual_width_high).bucket_asparagus_pairs
 
-    # for bucket_asparagus_pair in bucket_asparagus_pairs:
-    #     displayer.add_new_result(bucket_asparagus_pair[0], bucket_asparagus_pair[1])
+    if bucket_asparagus_pairs:
+        print(bucket_asparagus_pairs)
+        for bucket_asparagus_pair in bucket_asparagus_pairs:
+            measurements_evaluator.add_measurement(bucket_number=bucket_asparagus_pair[0],
+                                                   width=bucket_asparagus_pair[1][0],
+                                                   high=bucket_asparagus_pair[1][1])
 
-    cv2.imshow('frame', frame)
+            actual_raw_feed = measurements_evaluator.get_display_feed()
+            # print(measurements_evaluator.measurements_feed)
+            if actual_raw_feed:
+                # print(actual_raw_feed)
+                width_high_data = str(actual_raw_feed[1]) + "    " + str(actual_raw_feed[2])
+                displayer.add_new_result(actual_raw_feed[0], width_high_data)
+    else:
+        print("No detection")
+
+
+    small = cv2.resize(frame, (0, 0), fx=0.3, fy=0.3)
+    cv2.imshow('frame', small)
+    displayer.display_actual()
 
 
     k = cv2.waitKey(5) & 0xFF
@@ -131,3 +147,4 @@ end = datetime.datetime.now()
 # cap.release()
 
 print(end - start)
+displayer.kill()

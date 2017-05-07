@@ -6,17 +6,19 @@
         "bucket_marker_template_original_resolution": [1920, 1080],
         "template_matching_resolution": [480, 270],
         "max_bucket_number" : 110,
-        "expected_template_matching_threshold": 1.8,
+        "expected_template_matching_threshold": 1.6,
         "numbers_folder": "./config/numbers",
         "number_matching_resolution": [25, 13]
     },
     "asparaguses_detector": {
-        "cascade_file" : "./auxiliary_scripts/width_high/cascade.xml",
-        "detection_resolution" : [120, 160],
-        "swing_angle": 45
+        "global_threshold": 180,
+        "high_width_ratio": 4,
+        "minimum_area": 100,
+        "detection_resolution": [160, 90],
+        "extension_factor": 0.5
     },
     "asparagus_classifier":{
-        "millimeter_pixel_ratio": 1,
+        "millimeter_pixel_ratio": 0.216,
         "classification_specification_file": "./test/json_files/test_asparagus_classification_solo_I.json"
     },
     "asparagus_head_classifier":{
@@ -47,7 +49,7 @@
     },
     "measurements_evaluator_width_high": {
         "minimum_repeated_measurement_number": 2,
-        "no_on_screen_time_before_display": 2,
-        "survive_time": 5
+        "no_on_screen_time_before_display": 25,
+        "survive_time": 1600
     }
 }
