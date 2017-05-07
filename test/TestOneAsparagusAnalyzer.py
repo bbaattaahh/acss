@@ -80,26 +80,6 @@ class TestOneAsparagusAnalyzer(unittest.TestCase):
         # that
         self.assertEqual(np.array_equal(actual_contour, expected_contour), True)
 
-    def test_asparagus_in_smallest_enclosing_box_working(self):
-        # given
-        asparagus_head_classifier = None
-        one_asparagus_analysis = OneAsparagusAnalyzer(asparagus_head_classifier)
-
-        one_asparagus_image = cv2.imread(
-            "./images/OneAsparagusAnalyzer/test_asparagus_in_smallest_enclosing_box_working_input.jpg")
-
-        expected_asparagus_in_smallest_enclosing_box = \
-            cv2.imread("./images/OneAsparagusAnalyzer/test_asparagus_in_smallest_enclosing_box_working_output.png")
-
-        # when
-        actual_asparagus_in_smallest_enclosing_box = \
-            one_asparagus_analysis.asparagus_in_smallest_enclosing_box(one_asparagus_image)
-
-        # that
-        self.assertEqual(np.array_equal(actual_asparagus_in_smallest_enclosing_box,
-                                        expected_asparagus_in_smallest_enclosing_box),
-                         True)
-
     def test_asparagus_thickness_working(self):
         # given
         asparagus_head_classifier = None
