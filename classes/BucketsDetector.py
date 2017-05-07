@@ -34,6 +34,8 @@ class BucketsDetector:
 
         corrected_bucket_numbers = self.corrected_bucket_numbers(bucket_markers)
         unique_bucket_numbers = self.unique_bucket_numbers(corrected_bucket_numbers)
+        if unique_bucket_numbers == [""]:
+            return []
         bucket_borders = self.bucket_borders(bucket_markers, image)
         buckets_on_image = []
 
