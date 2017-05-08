@@ -7,7 +7,8 @@ from DetectionToOneAsparagusAnalysis import DetectionToOneAsparagusAnalysis
 
 
 class TestAsparagusesDetector2(unittest.TestCase):
-    def test_data_to_analysis_one_asparagus_images_two_asparaguses(self):
+    def test_data_to_analysis_one_asparagus_images_working(self):
+        # One asparagus detected. Other don't because its bounding rectangle hangs out.
         # given
         asparagus_detector_2 = AsparagusesDetector2(global_threshold=180,
                                                     high_width_ratio=4,
@@ -17,23 +18,16 @@ class TestAsparagusesDetector2(unittest.TestCase):
 
         image = \
             cv2.imread("./images/AsparagusesDetector2/"
-                       "test_data_to_analysis_one_asparagus_images_two_asparaguses_input.png")
+                       "test_data_to_analysis_one_asparagus_images_working__input.png")
 
         expected_image1 = cv2.imread("./images/AsparagusesDetector2/"
-                                    "test_data_to_analysis_one_asparagus_images_two_asparaguses_output1.png")
+                                    "test_data_to_analysis_one_asparagus_images_working__output1.png")
         expected_opencv_rectangle1 = ((320.37474060058594, 1109.6187744140625),
                                       (1666.9730072021484, 169.24445343017578),
                                       -73.55961608886719)
 
-        expected_image2 = cv2.imread("./images/AsparagusesDetector2/"
-                                    "test_data_to_analysis_one_asparagus_images_two_asparaguses_output2.png")
-        expected_opencv_rectangle2 = ((978.5949096679688, 1115.748046875),
-                                      (276.78464126586914, 1766.16650390625),
-                                      -1.1457629203796387)
-
         expected_data_to_analysis = \
-            [DetectionToOneAsparagusAnalysis(expected_image1, expected_opencv_rectangle1),
-             DetectionToOneAsparagusAnalysis(expected_image2, expected_opencv_rectangle2)]
+            [DetectionToOneAsparagusAnalysis(expected_image1, expected_opencv_rectangle1)]
 
         # when
         actual_data_to_analysis = asparagus_detector_2.data_to_analysis_one_asparagus_images(image)
