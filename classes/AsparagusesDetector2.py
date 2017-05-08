@@ -35,7 +35,7 @@ class AsparagusesDetector2(object):
 
             opencv_rectangle_on_original_image = self.extend_opencv_rectangle(opencv_rectangle_on_original_image)
 
-            if self.is_rectangle_vertically_on_image(image.shape[0], opencv_rectangle_on_original_image):
+            if self.is_rectangle_vertically_on_image(image.shape[1], opencv_rectangle_on_original_image):
 
                 snipped_asparagus = self.subimage(image=image,
                               theta=opencv_rectangle_on_original_image[2],
@@ -122,7 +122,6 @@ class AsparagusesDetector2(object):
              opencv_rectangle[2])
         return extended_opencv_rectangle
 
-    # not tested
     @staticmethod
     def orientation_correction(image):
         if image.shape[0] < image.shape[1]:
@@ -136,10 +135,10 @@ class AsparagusesDetector2(object):
         box = np.int0(box)
         x_coordinates = box[:, 0]
 
-        if min(x_coordinates) < 0:
+        if min(x_coordinates) <= 0:
             return False
 
-        if max(x_coordinates)>image_width:
+        if max(x_coordinates) >= image_width:
             return False
 
         return True

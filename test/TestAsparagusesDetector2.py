@@ -107,6 +107,39 @@ class TestAsparagusesDetector2(unittest.TestCase):
         self.assertEqual(np.array_equal(actual_asparagus_contours_bounding_rectangles,
                                         expected_asparagus_contours_bounding_rectangles), True)
 
+    def test_opencv_rectangle_on_original_image_working(self):
+        # given
+        opencv_rectangle = (5, 10), (20, 100), 45
+
+        expected_opencv_rectangle_on_original_image = (10, 20), (40, 200), 45
+
+        # when
+        actual_is_rectangle_vertically_on_image = AsparagusesDetector2.opencv_rectangle_on_original_image(
+                                                        image_shape=(1920, 1080),
+                                                        image_detection_on_shape=(960, 540),
+                                                        opencv_rectangle=opencv_rectangle)
+
+        # that
+        self.assertEqual(actual_is_rectangle_vertically_on_image, expected_opencv_rectangle_on_original_image)
+
+    def test_extend_opencv_rectangle_working(self):
+        # given
+        opencv_rectangle = (5, 10), (20, 100), 45
+
+        asparagus_detector = AsparagusesDetector2(global_threshold=None,
+                                                  high_width_ratio=None,
+                                                  minimum_area=None,
+                                                  detection_resolution=None,
+                                                  extension_factor=0.5)
+
+        expected_extended_opencv_rectangle = (5, 10), (30, 150), 45
+
+        # when
+        actual_extended_opencv_rectangle = asparagus_detector.extend_opencv_rectangle(opencv_rectangle)
+
+        # that
+        self.assertEqual(actual_extended_opencv_rectangle, expected_extended_opencv_rectangle)
+
     def test_is_rectangle_vertically_on_image__hangs_to_the_left(self):
         # given
         opencv_rectangle = (5, 10), (20, 100), 0
@@ -134,6 +167,21 @@ class TestAsparagusesDetector2(unittest.TestCase):
 
         # that
         self.assertEqual(actual_is_rectangle_vertically_on_image, expected_is_rectangle_vertically_on_image)
+
+    def test_orientation_correction__hangs_to_the_right(self):
+        # given
+        horizontally_long_image = np.zeros((10, 100))
+
+        expected_corrected_image = np.zeros((100, 10))
+
+        # when
+        actual_corrected_image = AsparagusesDetector2.orientation_correction(horizontally_long_image)
+
+        # that
+        self.assertEqual(np.array_equal(actual_corrected_image, expected_corrected_image), True)
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
