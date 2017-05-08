@@ -49,7 +49,7 @@ mm_pixel_ratio = config["asparagus_classifier"]["millimeter_pixel_ratio"]
 
 displayer = DisplayClassification()
 
-clip = VideoFileClip("c:\\Users\\Henrik\\Google Drive\\sparga_videok\\Video 9.mp4")
+clip = VideoFileClip("/Users/h.bata/Videos/acss/two_lamps/Video 8.mp4")
 
 # cap = cv2.VideoCapture(0)
 # cap.set(3, config["web_camera_distribution"][0])
