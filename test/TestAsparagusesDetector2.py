@@ -180,6 +180,19 @@ class TestAsparagusesDetector2(unittest.TestCase):
         # that
         self.assertEqual(np.array_equal(actual_corrected_image, expected_corrected_image), True)
 
+    def test_subimage__snip_horse_head(self):
+        # given
+        image = cv2.imread("./images/AsparagusesDetector2/test_subimage__snip_horse_head_input.jpg")
+        opencv_rectangle = (77, 93), (75, 100), 45
+
+        expected_subimage = cv2.imread("./images/AsparagusesDetector2/test_subimage__snip_horse_head_output.png")
+
+        # when
+        actual_subimage = AsparagusesDetector2.subimage(image, opencv_rectangle)
+
+        # that
+        self.assertEqual(np.array_equal(actual_subimage, expected_subimage), True)
+
 
 
 

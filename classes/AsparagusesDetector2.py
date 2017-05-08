@@ -37,11 +37,7 @@ class AsparagusesDetector2(object):
 
             if self.is_rectangle_vertically_on_image(image.shape[1], opencv_rectangle_on_original_image):
 
-                snipped_asparagus = self.subimage(image=image,
-                              theta=opencv_rectangle_on_original_image[2],
-                              center=opencv_rectangle_on_original_image[0],
-                              width=opencv_rectangle_on_original_image[1][0],
-                              height=opencv_rectangle_on_original_image[1][1])
+                snipped_asparagus = self.subimage(image, opencv_rectangle_on_original_image)
 
                 snipped_asparagus = self.orientation_correction(snipped_asparagus)
 
@@ -98,7 +94,13 @@ class AsparagusesDetector2(object):
         return back_scaled_opencv_rectangle
 
     @staticmethod
-    def subimage(image, center, theta, width, height):
+    def subimage(image, opencv_rectangle):
+        # mapping
+        theta = opencv_rectangle[2]
+        center = opencv_rectangle[0]
+        width = opencv_rectangle[1][0]
+        height = opencv_rectangle[1][1]
+
         theta *= 3.14159 / 180  # convert to rad
 
         v_x = (np.cos(theta), np.sin(theta))
