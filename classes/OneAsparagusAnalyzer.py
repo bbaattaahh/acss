@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 
-from SnipFromImage import SnipFromImage
 from Asparagus import Asparagus
 from KeepNLargestAreaContours import KeepNLargestAreaContours
 
@@ -14,7 +13,7 @@ class OneAsparagusAnalyzer:
 
     def asparagus(self, one_asparagus_image):
         # Speed up one calculate asparagus contour
-        #asparagus_contour = self.asparagus_contour(one_asparagus_image)
+        # asparagus_contour = self.asparagus_contour(one_asparagus_image)
 
         asparagus = Asparagus(length=self.asparagus_length(one_asparagus_image),
                               thickness=self.asparagus_thickness(one_asparagus_image),
@@ -81,7 +80,6 @@ class OneAsparagusAnalyzer:
         length = asparagus_contour.shape[0]
         return [thicknesses_max, length]
 
-
     def asparagus_length(self, one_asparagus_image):
         return self.asparagus_contour(one_asparagus_image).shape[0]
 
@@ -129,4 +127,3 @@ class OneAsparagusAnalyzer:
             image = np.rot90(image)
 
         return image
-
