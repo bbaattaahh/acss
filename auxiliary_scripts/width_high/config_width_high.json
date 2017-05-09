@@ -13,7 +13,7 @@
     "asparaguses_detector": {
         "global_threshold": 180,
         "high_width_ratio": 4,
-        "minimum_area": 100,
+        "minimum_area": 200,
         "detection_resolution": [160, 90],
         "extension_factor": 0.5
     },
@@ -48,8 +48,8 @@
         }
     },
     "measurements_evaluator_width_high": {
-        "minimum_repeated_measurement_number": 2,
-        "no_on_screen_time_before_display": 25,
-        "survive_time": 1600
+        "minimum_repeated_measurement_number": 4,
+        "no_on_screen_time_before_display": 19,
+        "survive_time": 160
     }
 }
