@@ -60,10 +60,7 @@ class OneAsparagusAnalyzer:
         min_area_bounding_rectangle = cv2.minAreaRect(largest_contour)
 
         asparagus_contour = self.subimage(image=th_to_snip_asparagus_contour,
-                                          center=min_area_bounding_rectangle[0],
-                                          theta=min_area_bounding_rectangle[2],
-                                          width=min_area_bounding_rectangle[1][0],
-                                          height=min_area_bounding_rectangle[1][1])
+                                          opencv_rectangle=min_area_bounding_rectangle)
 
         asparagus_contour = self.orientation_correction(asparagus_contour)
 
@@ -73,7 +70,6 @@ class OneAsparagusAnalyzer:
 
         return opened_asparagus_contour
 
-    # TODO : test
     def asparagus_thickness_and_length(self, one_asparagus_image):
         asparagus_contour = self.asparagus_contour(one_asparagus_image)
 
@@ -107,7 +103,13 @@ class OneAsparagusAnalyzer:
         return largest_contour
 
     @staticmethod
-    def subimage(image, center, theta, width, height):
+    def subimage(image, opencv_rectangle):
+        # mapping
+        center = opencv_rectangle[0]
+        theta = opencv_rectangle[2]
+        width = opencv_rectangle[1][0]
+        height = opencv_rectangle[1][1]
+
         theta *= 3.14159 / 180  # convert to rad
 
         v_x = (np.cos(theta), np.sin(theta))
