@@ -12,11 +12,10 @@ class OneAsparagusAnalyzer:
         self.asparagus_head_classifier = asparagus_head_classifier
 
     def asparagus(self, one_asparagus_image):
-        # Speed up one calculate asparagus contour
-        # asparagus_contour = self.asparagus_contour(one_asparagus_image)
+        asparagus_contour = self.asparagus_contour(one_asparagus_image)
 
-        asparagus = Asparagus(length=self.asparagus_length(one_asparagus_image),
-                              thickness=self.asparagus_thickness(one_asparagus_image),
+        asparagus = Asparagus(length=self.asparagus_length(asparagus_contour),
+                              thickness=self.asparagus_thickness(asparagus_contour),
                               white_head=False,
                               no_head=False,
                               purple_head=False,
@@ -69,22 +68,13 @@ class OneAsparagusAnalyzer:
 
         return opened_asparagus_contour
 
-    def asparagus_thickness_and_length(self, one_asparagus_image):
-        asparagus_contour = self.asparagus_contour(one_asparagus_image)
+    @staticmethod
+    def asparagus_length(asparagus_contour):
+        return asparagus_contour.shape[0]
 
+    @staticmethod
+    def asparagus_thickness(asparagus_contour):
         thicknesses = (asparagus_contour != 0).sum(1)
-        thicknesses_sorted = np.sort(thicknesses)
-        thicknesses_narrowed = thicknesses_sorted[0:int(len(thicknesses_sorted)*0.8)]
-        thicknesses_max = max(thicknesses_narrowed)
-
-        length = asparagus_contour.shape[0]
-        return [thicknesses_max, length]
-
-    def asparagus_length(self, one_asparagus_image):
-        return self.asparagus_contour(one_asparagus_image).shape[0]
-
-    def asparagus_thickness(self, one_asparagus_image):
-        thicknesses = (self.asparagus_contour(one_asparagus_image) != 0).sum(1)
         thicknesses_sorted = np.sort(thicknesses)
         thicknesses_narrowed = thicknesses_sorted[0:int(len(thicknesses_sorted)*0.8)]
         thicknesses_max = max(thicknesses_narrowed)

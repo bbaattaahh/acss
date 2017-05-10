@@ -81,48 +81,31 @@ class TestOneAsparagusAnalyzer(unittest.TestCase):
 
     def test_asparagus_thickness_working(self):
         # given
-        asparagus_head_classifier = None
-        one_asparagus_analysis = OneAsparagusAnalyzer(asparagus_head_classifier)
-
-        one_asparagus_image = cv2.imread("./images/OneAsparagusAnalyzer/test_test_asparagus_thickness_working.jpg")
+        asparagus_contour = \
+            cv2.imread("./images/OneAsparagusAnalyzer/test_asparagus_thickness_working__asparagus_contour.png",
+                       cv2.IMREAD_GRAYSCALE)
 
         expected_asparagus_thickness = 20
 
         # when
-        actual_asparagus_thickness = one_asparagus_analysis.asparagus_thickness(one_asparagus_image)
+        actual_asparagus_thickness = OneAsparagusAnalyzer.asparagus_thickness(asparagus_contour)
 
         # that
         self.assertEqual(actual_asparagus_thickness, expected_asparagus_thickness)
 
     def test_asparagus_length_working(self):
         # given
-        one_asparagus_analysis = OneAsparagusAnalyzer(asparagus_head_classifier = None)
-
-        one_asparagus_image = cv2.imread("./images/OneAsparagusAnalyzer/test_asparagus_length_working.jpg")
+        asparagus_contour = \
+            cv2.imread("./images/OneAsparagusAnalyzer/test_asparagus_length_working__asparagus_contour.png",
+                       cv2.IMREAD_GRAYSCALE)
 
         expected_asparagus_length = 430
 
         # when
-        actual_asparagus_length = one_asparagus_analysis.asparagus_length(one_asparagus_image)
+        actual_asparagus_length = OneAsparagusAnalyzer.asparagus_length(asparagus_contour)
 
         # that
         self.assertEqual(actual_asparagus_length, expected_asparagus_length)
-
-    def test_asparagus_thickness_and_length_working(self):
-        # given
-        one_asparagus_analysis = OneAsparagusAnalyzer(asparagus_head_classifier=None)
-
-        one_asparagus_image = \
-            cv2.imread("./images/OneAsparagusAnalyzer/test_asparagus_thickness_and_length_working.jpg")
-
-        expected_asparagus_thickness_and_length = [20, 430]
-
-        # when
-        actual_asparagus_thickness_and_length = \
-            one_asparagus_analysis.asparagus_thickness_and_length(one_asparagus_image)
-
-        # that
-        self.assertEqual(actual_asparagus_thickness_and_length, expected_asparagus_thickness_and_length)
 
 if __name__ == '__main__':
     unittest.main()
