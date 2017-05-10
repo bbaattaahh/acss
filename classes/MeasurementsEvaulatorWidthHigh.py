@@ -16,10 +16,9 @@ class MeasurementsEvaluatorWidthHigh:
         self.measurements_feed = pd.DataFrame(columns=["frame_id", "time", "bucket_number", "width", "high"])
 
     def add_measurement(self, bucket_number, width, high):
-        self.frame_id += 1
         new_row = [self.frame_id, datetime.datetime.now(), bucket_number, width, high]
-
-        self.measurements_feed.loc[len(self.measurements_feed)] = new_row
+        self.measurements_feed.loc[self.frame_id] = new_row
+        self.frame_id += 1
 
     def get_display_feed(self):
         self.delete_old_measurements()

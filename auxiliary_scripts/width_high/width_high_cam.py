@@ -75,19 +75,23 @@ while True:
     actual_asparaguses_bounding_rectangle = []
 
     for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
+        asparagus_contour = one_asparagus_analyzer.asparagus_contour(data_to_analysis_one_asparagus_image.image)
+
+
         if TEST_FLAG:
             box = cv2.boxPoints(data_to_analysis_one_asparagus_image.opencv_rectangle_on_original_image)
             box = np.int0(box)
             frame = frame.copy()
             cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
 
-            ac = one_asparagus_analyzer.asparagus_contour(data_to_analysis_one_asparagus_image.image)
-            ac_small = cv2.resize(ac, (0, 0), fx=0.3, fy=0.3)
+            ac_small = cv2.resize(asparagus_contour, (0, 0), fx=0.3, fy=0.3)
             cv2.imshow('ac', ac_small)
 
-        thickness_and_length = one_asparagus_analyzer.asparagus_thickness_and_length(data_to_analysis_one_asparagus_image.image)
-        thickness = change_pixel_to_mm(thickness_and_length[0], mm_pixel_ratio)
-        length = change_pixel_to_mm(thickness_and_length[1], mm_pixel_ratio)
+        raw_thickness = one_asparagus_analyzer.asparagus_thickness(asparagus_contour)
+        thickness = change_pixel_to_mm(raw_thickness, mm_pixel_ratio)
+
+        raw_length = one_asparagus_analyzer.asparagus_length(asparagus_contour)
+        length = change_pixel_to_mm(raw_length, mm_pixel_ratio)
 
         actual_asparaguses_bounding_rectangle.append(data_to_analysis_one_asparagus_image.opencv_rectangle_on_original_image)
         actual_width_high.append([thickness, length])
@@ -119,13 +123,6 @@ while True:
             measurements_evaluator.add_measurement(bucket_number=bucket_asparagus_pair[0],
                                                    width=bucket_asparagus_pair[1][0],
                                                    high=bucket_asparagus_pair[1][1])
-
-            actual_raw_feed = measurements_evaluator.get_display_feed()
-            # print(measurements_evaluator.measurements_feed)
-            if actual_raw_feed:
-                # print(actual_raw_feed)
-                width_high_data = str(actual_raw_feed[1]) + "    " + str(actual_raw_feed[2])
-                displayer.add_new_result(actual_raw_feed[0], width_high_data)
     else:
         print("No detection")
 
@@ -133,6 +130,13 @@ while True:
     if TEST_FLAG:
         small = cv2.resize(frame, (0, 0), fx=0.3, fy=0.3)
         cv2.imshow('frame', small)
+
+    actual_raw_feed = measurements_evaluator.get_display_feed()
+    # print(measurements_evaluator.measurements_feed)
+    if actual_raw_feed:
+        # print(actual_raw_feed)
+        width_high_data = str(actual_raw_feed[1]) + "    " + str(actual_raw_feed[2])
+        displayer.add_new_result(actual_raw_feed[0], width_high_data)
 
     displayer.display_actual()
 
