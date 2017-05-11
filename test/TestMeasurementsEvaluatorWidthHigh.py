@@ -17,7 +17,7 @@ class TestMeasurementsEvaluatorWidthHigh(unittest.TestCase):
             survive_time=1)
 
         expected_measurements_feed = pd.DataFrame(columns=["frame_id", "time", "bucket_number", "width", "high"])
-        expected_measurements_feed.loc[0] = [1, datetime.datetime.now(), "001", 6784, 6784]
+        expected_measurements_feed.loc[0] = [0, datetime.datetime.now(), "001", 6784, 6784]
 
         # when
         measurement_evaluator_width_high.add_measurement(bucket_number="001", width=6784, high=6784)
@@ -58,8 +58,8 @@ class TestMeasurementsEvaluatorWidthHigh(unittest.TestCase):
             survive_time=10)
 
         expected_measurements_feed = pd.DataFrame(columns=["frame_id", "time", "bucket_number", "width", "high"])
-        expected_measurements_feed.loc[2] = [3, datetime.datetime.now(), "002", 6785, 6785]
-        expected_measurements_feed.loc[3] = [4, datetime.datetime.now(), "002", 6785, 6785]
+        expected_measurements_feed.loc[2] = [2, datetime.datetime.now(), "002", 6785, 6785]
+        expected_measurements_feed.loc[3] = [3, datetime.datetime.now(), "002", 6785, 6785]
 
         # when
         measurement_evaluator_width_high.add_measurement(bucket_number="001", width=6784, high=6784)
@@ -84,7 +84,7 @@ class TestMeasurementsEvaluatorWidthHigh(unittest.TestCase):
             survive_time=1)
 
         expected_measurements_feed = pd.DataFrame(columns=["frame_id", "time", "bucket_number", "width", "high"])
-        expected_measurements_feed.loc[1] = [2.0, datetime.datetime.now(), "002", 6785, 6785]
+        expected_measurements_feed.loc[1] = [1.0, datetime.datetime.now(), "002", 6785, 6785]
 
         # when
         measurement_evaluator_width_high.add_measurement(bucket_number="001", width=6784, high=6784)
@@ -108,7 +108,7 @@ class TestMeasurementsEvaluatorWidthHigh(unittest.TestCase):
             survive_time=1)
 
         expected_measurements_feed = pd.DataFrame(columns=["frame_id", "time", "bucket_number", "width", "high"])
-        expected_measurements_feed.loc[1] = [2.0, datetime.datetime.now(), "002", 6785, 6785]
+        expected_measurements_feed.loc[1] = [1.0, datetime.datetime.now(), "002", 6785, 6785]
 
         # when
         measurement_evaluator_width_high.add_measurement(bucket_number="001", width=6784, high=6784)
@@ -131,8 +131,7 @@ class TestMeasurementsEvaluatorWidthHigh(unittest.TestCase):
             survive_time=5)
 
         expected_measurements_feed = pd.DataFrame(columns=["frame_id", "time", "bucket_number", "width", "high"])
-        #expected_measurements_feed.loc[2] = [3, datetime.datetime.now(), "002", 6785, 6785]
-        expected_measurements_feed.loc[3] = [4, datetime.datetime.now(), "002", 6785, 6785]
+        expected_measurements_feed.loc[3] = [3, datetime.datetime.now(), "002", 6785, 6785]
 
         # when
         measurement_evaluator_width_high.add_measurement(bucket_number="001", width=6784, high=6784)
