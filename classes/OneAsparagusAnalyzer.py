@@ -10,6 +10,7 @@ class OneAsparagusAnalyzer:
                  asparagus_head_classifier):
 
         self.asparagus_head_classifier = asparagus_head_classifier
+        self.kernel = np.ones((9, 9), np.uint8)
 
     def asparagus(self, one_asparagus_image):
         asparagus_contour = self.asparagus_contour(one_asparagus_image)
@@ -47,7 +48,9 @@ class OneAsparagusAnalyzer:
                                 255,
                                 cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-        th_to_snip_asparagus_contour = KeepNLargestAreaContours(image=th,
+        closed_th = cv2.morphologyEx(th, cv2.MORPH_OPEN, self.kernel)
+
+        th_to_snip_asparagus_contour = KeepNLargestAreaContours(image=closed_th,
                                                                 kept_contour_number=1,
                                                                 invert_flag=False).kept_n_largest_area_contours_image
 
