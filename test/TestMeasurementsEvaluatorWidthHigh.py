@@ -140,8 +140,6 @@ class TestMeasurementsEvaluatorWidthHigh(unittest.TestCase):
         time.sleep(5)
         measurement_evaluator_width_high.add_measurement(bucket_number="002", width=6785, high=6785)
 
-        x = measurement_evaluator_width_high.get_display_feed()
-
         actual_measurements_feed = measurement_evaluator_width_high.measurements_feed
 
         # that

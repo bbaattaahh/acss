@@ -50,6 +50,6 @@
     "measurements_evaluator_width_high": {
         "minimum_repeated_measurement_number": 4,
         "no_on_screen_time_before_display": 15,
-        "survive_time": 16000
+        "survive_time": 60
     }
 }
