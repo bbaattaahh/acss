@@ -17,7 +17,9 @@ class KeepNLargestAreaContours:
         if self.invert_flag:
             self.invert_image()
 
+        self.image = self.add_black_edge(self.image)
         self.delete_contours()
+        self.image = self.remove_black_edge(self.image)
 
         if self.invert_flag:
             self.invert_image()
@@ -69,3 +71,16 @@ class KeepNLargestAreaContours:
             actual_contour_index = hierarchy[0][actual_contour_index][0]
 
         return first_level_contours
+
+    @staticmethod
+    def add_black_edge(image):
+        new_width = image.shape[0] + 2
+        new_high = image.shape[1] + 2
+        black_edge_image = np.zeros((new_width, new_high), dtype=np.uint8)
+        black_edge_image[1:new_width-1, 1:new_high - 1] = image
+        return black_edge_image
+
+    @staticmethod
+    def remove_black_edge(image):
+        removed_black_edge_image = image[1:image.shape[0]-1, 1:image.shape[1]-1]
+        return removed_black_edge_image

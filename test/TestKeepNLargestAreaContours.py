@@ -28,6 +28,27 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
         # that
         self.assertEqual(np.array_equal(actual_image, expected_image), True)
 
+    def test_kept_n_largest_area_contours_image__contour_at_the_edge(self):
+        # given
+        image = cv2.imread("./images/KeepNLargestAreaContours/"
+                           "test_kept_n_largest_area_contours__contour_at_the_edge__input_image.png",
+                           cv2.IMREAD_GRAYSCALE)
+
+        keep_n_largest_area_contours = KeepNLargestAreaContours(image=image,
+                                                                kept_contour_number=1,
+                                                                invert_flag=False)
+
+        expected_output_image = \
+            cv2.imread("./images/KeepNLargestAreaContours/"
+                       "test_kept_n_largest_area_contours__contour_at_the_edge__output_image.png",
+                       cv2.IMREAD_GRAYSCALE)
+
+        # when
+        actual_output_image = keep_n_largest_area_contours.kept_n_largest_area_contours_image
+
+        # that
+        self.assertEqual(np.array_equal(actual_output_image, expected_output_image), True)
+
     def test_kept_n_largest_area_contours_image__no_contours(self):
         # given
         image = cv2.imread("./images/KeepNLargestAreaContours/"
@@ -130,6 +151,36 @@ class TestKeepOnlyNLargestAreaContours(unittest.TestCase):
 
         # that
         self.assertEqual(np.array_equal(actual_first_level_contours, expected_first_level_contours), True)
+
+    def test_add_black_edge_working(self):
+        # given
+        image = cv2.imread("./images/KeepNLargestAreaContours/test_add_black_edge_working__input_image.jpg",
+                           cv2.IMREAD_GRAYSCALE)
+
+        expected_black_edged_image = \
+            cv2.imread("./images/KeepNLargestAreaContours/test_add_black_edge_working__output_image.png",
+                       cv2.IMREAD_GRAYSCALE)
+
+        # when
+        actual_black_edged_image = KeepNLargestAreaContours.add_black_edge(image)
+
+        # that
+        self.assertEqual(np.array_equal(actual_black_edged_image, expected_black_edged_image), True)
+
+    def test_remove_black_edge_working(self):
+        # given
+        image = cv2.imread("./images/KeepNLargestAreaContours/test_remove_black_edge_working__input_image.png",
+                           cv2.IMREAD_GRAYSCALE)
+
+        expected_removed_black_edge_image = \
+            cv2.imread("./images/KeepNLargestAreaContours/test_remove_black_edge_working__output_image.png",
+                       cv2.IMREAD_GRAYSCALE)
+
+        # when
+        actual_removed_black_edge_image = KeepNLargestAreaContours.remove_black_edge(image)
+
+        # that
+        self.assertEqual(np.array_equal(actual_removed_black_edge_image, expected_removed_black_edge_image), True)
 
 if __name__ == '__main__':
     unittest.main()
