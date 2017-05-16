@@ -1,6 +1,5 @@
 import json
 import cv2
-import time
 
 from BucketsDetector import BucketsDetector
 from AsparagusesDetector2 import AsparagusesDetector2
@@ -10,8 +9,7 @@ from MergeBucketsAndAsparagusesPositionsWidthHigh import MergeBucketsAndAsparagu
 
 class OneFrameWidthHighProcessor(object):
     def __init__(self,
-                 config_file,
-                 measurements_evaluator):
+                 config_file):
 
         with open(config_file) as data_file:
             config = json.load(data_file)
@@ -35,13 +33,10 @@ class OneFrameWidthHighProcessor(object):
 
         self.one_asparagus_analyzer = OneAsparagusAnalyzer(asparagus_head_classifier=None)
         self.mm_pixel_ratio = config["asparagus_classifier"]["millimeter_pixel_ratio"]
-        self.measurements_evaluator = measurements_evaluator
-        self.is_it_free=True
 
     def process_frame(self, frame):
-        self.is_it_free = False
 
-        time.sleep(10)
+        # time.sleep(10)
 
         data_to_analysis_one_asparagus_images = self.asparaguses_detector.data_to_analysis_one_asparagus_images(frame)
 
@@ -64,19 +59,11 @@ class OneFrameWidthHighProcessor(object):
 
         buckets = self.buckets_detector.buckets_on_image(frame)
 
-
         bucket_asparagus_pairs = MergeBucketsAndAsparagusPositionsWidthHigh(buckets,
                                                                             actual_asparaguses_bounding_rectangle,
                                                                             actual_width_high).bucket_asparagus_pairs
 
-        if bucket_asparagus_pairs:
-            print(bucket_asparagus_pairs)
-            for bucket_asparagus_pair in bucket_asparagus_pairs:
-                self.measurements_evaluator.add_measurement(bucket_number=bucket_asparagus_pair[0],
-                                                            width=bucket_asparagus_pair[1][0],
-                                                            high=bucket_asparagus_pair[1][1])
-
-        self.is_it_free = True
+        return bucket_asparagus_pairs
 
     def change_pixel_to_mm(self, measurement):
         measurement = measurement * self.mm_pixel_ratio

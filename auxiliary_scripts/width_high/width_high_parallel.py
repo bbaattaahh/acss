@@ -10,9 +10,10 @@ from DisplayClassification import DisplayClassification
 from OneFrameWidthHighProcessor import OneFrameWidthHighProcessor
 
 
-def dummy(processor_1, frame):
-    processor_1.process_frame(frame)
-    return None
+def evaluate_frame(process_instance, frame, queue):
+    bucket_asparagus_pairs = process_instance.process_frame(frame)
+    queue.put(bucket_asparagus_pairs)
+
 
 
 with open('./auxiliary_scripts/width_high/config_width_high.json') as data_file:
@@ -23,14 +24,10 @@ measurements_evaluator = MeasurementsEvaluatorWidthHigh(
                                 config["measurements_evaluator_width_high"]["no_on_screen_time_before_display"],
                                 config["measurements_evaluator_width_high"]["survive_time"])
 
-processor_1 = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_high/config_width_high.json',
-                                         measurements_evaluator=measurements_evaluator)
-
-processor_2 = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_high/config_width_high.json',
-                                         measurements_evaluator=measurements_evaluator)
+processor = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_high/config_width_high.json')
 
 
-p = mp.Pool(processes=2)
+q = mp.Queue()
 
 displayer = DisplayClassification()
 
@@ -50,14 +47,24 @@ for x in clip.iter_frames():
     frame = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
     frame = np.array(np.rot90(frame, config["rotation_factor"]))
 
-    while not processor_1.is_it_free:
-        print("please stand by")
 
-    p.apply_async(processor_1.process_frame, args=(frame, ))
-    # p.apply_async(print("jani"))
+    p = mp.Process(target=evaluate_frame, args=(processor, frame, q))
+    p.start()
+    # p.join()
+
 
     small = cv2.resize(frame, (0, 0), fx=0.3, fy=0.3)
     cv2.imshow('frame', small)
+
+    if not q.empty():
+        bucket_asparagus_pairs = q.get()
+        if bucket_asparagus_pairs:
+            print(bucket_asparagus_pairs)
+            for bucket_asparagus_pair in bucket_asparagus_pairs:
+                measurements_evaluator.add_measurement(bucket_number=bucket_asparagus_pair[0],
+                                                       width=bucket_asparagus_pair[1][0],
+                                                       high=bucket_asparagus_pair[1][1])
+
 
     actual_raw_feed = measurements_evaluator.get_display_feed()
 

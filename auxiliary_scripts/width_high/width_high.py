@@ -75,15 +75,15 @@ for x in clip.iter_frames():
     actual_asparaguses_bounding_rectangle = []
 
     for data_to_analysis_one_asparagus_image in data_to_analysis_one_asparagus_images:
-        box = cv2.boxPoints(data_to_analysis_one_asparagus_image.opencv_rectangle_on_original_image)
-        box = np.int0(box)
-        frame = frame.copy()
-        cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
+        # box = cv2.boxPoints(data_to_analysis_one_asparagus_image.opencv_rectangle_on_original_image)
+        # box = np.int0(box)
+        # frame = frame.copy()
+        # cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
 
         asparagus_contour = one_asparagus_analyzer.asparagus_contour(data_to_analysis_one_asparagus_image.image)
 
-        ac_small = cv2.resize(asparagus_contour, (0, 0), fx=0.3, fy=0.3)
-        cv2.imshow('ac', ac_small)
+        # ac_small = cv2.resize(asparagus_contour, (0, 0), fx=0.3, fy=0.3)
+        # cv2.imshow('ac', ac_small)
 
         raw_thickness = one_asparagus_analyzer.asparagus_thickness(asparagus_contour)
         thickness = change_pixel_to_mm(raw_thickness, mm_pixel_ratio)
@@ -101,10 +101,10 @@ for x in clip.iter_frames():
     # print(end_bucket_detection - start_bucket_detection)
 
 
-    if buckets:
-        for bucket in buckets:
-            frame[:, bucket.start, :] = 0
-            # print(bucket.bucket_number)
+    # if buckets:
+    #     for bucket in buckets:
+    #         frame[:, bucket.start, :] = 0
+    #         # print(bucket.bucket_number)
 
     bucket_markers = buckets_detector.bucket_markers(frame)
     # if bucket_markers:
