@@ -13,6 +13,7 @@ keras
 operator
 pandas
 multiprocessing
+sqlite3
 
 
 # Other programs

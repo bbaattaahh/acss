@@ -4,6 +4,8 @@ import json
 import numpy as np
 import datetime
 import multiprocessing as mp
+import sqlite3
+import time
 
 from MeasurementsEvaulatorWidthHigh import MeasurementsEvaluatorWidthHigh
 from DisplayClassification import DisplayClassification
@@ -32,7 +34,8 @@ q = mp.Queue()
 displayer = DisplayClassification()
 
 clip = VideoFileClip("/Users/h.bata/Videos/acss/two_lamps/Video 8.mp4")
-
+conn = sqlite3.connect(config["local_db_path"])
+c = conn.cursor()
 # cap = cv2.VideoCapture(0)
 # cap.set(3, config["web_camera_distribution"][0])
 # cap.set(4, config["web_camera_distribution"][1])
@@ -70,6 +73,10 @@ for x in clip.iter_frames():
 
     if actual_raw_feed:
         # print(actual_raw_feed)
+        timestamp = int(time.time())
+        c.execute("INSERT INTO measurements VALUES (?, ?, ?, ?)",
+                  (timestamp, actual_raw_feed[1], actual_raw_feed[2], actual_raw_feed[0]))
+        conn.commit()
         width_high_data = str(actual_raw_feed[1]) + "    " + str(actual_raw_feed[2])
         displayer.add_new_result(actual_raw_feed[0], width_high_data)
 
@@ -90,3 +97,6 @@ end = datetime.datetime.now()
 
 print(end - start)
 displayer.kill()
+
+
+conn.close()

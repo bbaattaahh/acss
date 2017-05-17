@@ -36,8 +36,6 @@ class OneFrameWidthHighProcessor(object):
 
     def process_frame(self, frame):
 
-        # time.sleep(10)
-
         data_to_analysis_one_asparagus_images = self.asparaguses_detector.data_to_analysis_one_asparagus_images(frame)
 
         actual_width_high = []
