@@ -47,7 +47,8 @@ measurements_evaluator = MeasurementsEvaluatorWidthHigh(
 
 mm_pixel_ratio = config["asparagus_classifier"]["millimeter_pixel_ratio"]
 
-displayer = DisplayClassification()
+displayer = DisplayClassification(image_size=tuple(config["display"]["image_size"]),
+                                  letter_pixel_high=config["display"]["letter_pixel_high"])
 
 clip = VideoFileClip("/Users/h.bata/Videos/acss/two_lamps/Video 8.mp4")
 

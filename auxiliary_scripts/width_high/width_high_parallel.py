@@ -31,7 +31,8 @@ processor = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_hi
 
 q = mp.Queue()
 
-displayer = DisplayClassification()
+displayer = DisplayClassification(image_size=tuple(config["display"]["image_size"]),
+                                  letter_pixel_high=config["display"]["letter_pixel_high"])
 
 clip = VideoFileClip("/Users/h.bata/Videos/acss/two_lamps/Video 8.mp4")
 conn = sqlite3.connect(config["local_db_path"])

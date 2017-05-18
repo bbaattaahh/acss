@@ -14,7 +14,7 @@ class DisplayClassification:
         new_result = str(bucket_number) + " : " + classification_result
         self.results = [new_result] + self.results
 
-        if len(self.results) * self.letter_pixel_high > self.image_size[0]:
+        if len(self.results) * self.letter_pixel_high > self.image_size[0] * 2:
             del self.results[-1]
 
     def display_actual(self):
@@ -31,6 +31,11 @@ class DisplayClassification:
 
             image = cv2.putText(image, result, (pos_x, pos_y), font, 1, (255,255,255), 2, cv2.LINE_AA)
             pos_y += self.letter_pixel_high
+            if pos_y + self.letter_pixel_high > self.image_size[0]:
+                pos_x += int(self.image_size[1] / 2) + 10
+                pos_y = 30
+
+            image[:, int(self.image_size[1] / 2) - 3 : int(self.image_size[1] / 2) + 3, :] = 255
 
         return image
 
