@@ -52,7 +52,7 @@
         "no_on_screen_time_before_display": 15,
         "survive_time": 60
     },
-    "local_db_path": "/Users/h.bata/Dropbox/acss/databases/ascc_test.db",
+    "local_db_path": "c:\\Users\\Henrik\\Dropbox\\acss\\databases\\ascc_test.db",
     "display":{
         "image_size": [960, 1200],
         "letter_pixel_high": 30
