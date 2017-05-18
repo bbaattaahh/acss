@@ -62,7 +62,10 @@ start = datetime.datetime.now()
 while True:
 
     start_1 = datetime.datetime.now()
-    _, frame = cap.read()
+    try:
+        _, frame = cap.read()
+    except Exception:
+        continue
 
     frame = np.array(np.rot90(frame, config["rotation_factor"]))
 

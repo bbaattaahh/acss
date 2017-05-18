@@ -34,27 +34,21 @@ q = mp.Queue()
 displayer = DisplayClassification(image_size=tuple(config["display"]["image_size"]),
                                   letter_pixel_high=config["display"]["letter_pixel_high"])
 
-clip = VideoFileClip("/Users/h.bata/Videos/acss/two_lamps/Video 12.mp4")
 conn = sqlite3.connect(config["local_db_path"])
 c = conn.cursor()
-# cap = cv2.VideoCapture(0)
-# cap.set(3, config["web_camera_distribution"][0])
-# cap.set(4, config["web_camera_distribution"][1])
 
-#while True:
-start = datetime.datetime.now()
+cap = cv2.VideoCapture(0)
+cap.set(3, config["web_camera_distribution"][0])
+cap.set(4, config["web_camera_distribution"][1])
 
-for x in clip.iter_frames():
-    start_1 = datetime.datetime.now()
-    #_, frame = cap.read()
+while True:
 
-    frame = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
+    _, frame = cap.read()
+
     frame = np.array(np.rot90(frame, config["rotation_factor"]))
-
 
     p = mp.Process(target=evaluate_frame, args=(processor, frame, q))
     p.start()
-    # p.join()
 
 
     small = cv2.resize(frame, (0, 0), fx=0.3, fy=0.3)
@@ -94,10 +88,10 @@ for x in clip.iter_frames():
 
 cv2.destroyAllWindows()
 end = datetime.datetime.now()
-# cap.release()
+cap.release()
 
-print(end - start)
 displayer.kill()
 
 
 conn.close()
+print("the end")
