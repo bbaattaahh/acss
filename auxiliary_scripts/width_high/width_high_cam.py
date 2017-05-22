@@ -1,8 +1,9 @@
-from moviepy.editor import *
+import sqlite3
 import cv2
 import json
 import numpy as np
 import datetime
+import time
 
 from BucketsDetector import BucketsDetector
 from AsparagusesDetector2 import AsparagusesDetector2
@@ -52,6 +53,9 @@ displayer = DisplayClassification(image_size=tuple(config["display"]["image_size
 
 TEST_FLAG = True
 
+conn = sqlite3.connect(config["local_db_path"])
+c = conn.cursor()
+
 
 cap = cv2.VideoCapture(0)
 cap.set(3, config["web_camera_distribution"][0])
@@ -62,10 +66,7 @@ start = datetime.datetime.now()
 while True:
 
     start_1 = datetime.datetime.now()
-    try:
-        _, frame = cap.read()
-    except Exception:
-        continue
+    _, frame = cap.read()
 
     frame = np.array(np.rot90(frame, config["rotation_factor"]))
 
@@ -138,7 +139,10 @@ while True:
     actual_raw_feed = measurements_evaluator.get_display_feed()
     # print(measurements_evaluator.measurements_feed)
     if actual_raw_feed:
-        # print(actual_raw_feed)
+        timestamp = int(time.time())
+        c.execute("INSERT INTO measurements VALUES (?, ?, ?, ?)",
+                  (timestamp, actual_raw_feed[1], actual_raw_feed[2], actual_raw_feed[0]))
+        conn.commit()
         width_high_data = str(actual_raw_feed[1]) + "    " + str(actual_raw_feed[2])
         displayer.add_new_result(actual_raw_feed[0], width_high_data)
 
