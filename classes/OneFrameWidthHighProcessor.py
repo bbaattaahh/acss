@@ -25,11 +25,13 @@ class OneFrameWidthHighProcessor(object):
                                            config["bucket_detector"]["numbers_folder"],
                                            config["bucket_detector"]["number_matching_resolution"])
 
-        self.asparaguses_detector = AsparagusesDetector2(config["asparaguses_detector"]["global_threshold"],
-                                                    config["asparaguses_detector"]["high_width_ratio"],
-                                                    config["asparaguses_detector"]["minimum_area"],
-                                                    tuple(config["asparaguses_detector"]["detection_resolution"]),
-                                                    config["asparaguses_detector"]["extension_factor"])
+        self.asparaguses_detector = AsparagusesDetector2(
+                                                config["asparaguses_detector"]["global_threshold"],
+                                                config["asparaguses_detector"]["high_width_ratio"],
+                                                config["asparaguses_detector"]["minimum_area"],
+                                                tuple(config["asparaguses_detector"]["detection_resolution"]),
+                                                config["asparaguses_detector"]["vertical_extension_factor"],
+                                                config["asparaguses_detector"]["horizontal_extension_factor"])
 
         self.one_asparagus_analyzer = OneAsparagusAnalyzer(asparagus_head_classifier=None)
         self.mm_pixel_ratio = config["asparagus_classifier"]["millimeter_pixel_ratio"]

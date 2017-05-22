@@ -11,11 +11,12 @@
         "number_matching_resolution": [25, 13]
     },
     "asparaguses_detector": {
-        "global_threshold": 180,
+        "global_threshold": 160,
         "high_width_ratio": 4,
         "minimum_area": 100,
         "detection_resolution": [160, 90],
-        "extension_factor": 0.5
+        "vertical_extension_factor": 0.2,
+        "horizontal_extension_factor": 1
     },
     "asparagus_classifier":{
         "millimeter_pixel_ratio": 0.216,

@@ -36,7 +36,8 @@ asparaguses_detector = AsparagusesDetector2(config["asparaguses_detector"]["glob
                                             config["asparaguses_detector"]["high_width_ratio"],
                                             config["asparaguses_detector"]["minimum_area"],
                                             tuple(config["asparaguses_detector"]["detection_resolution"]),
-                                            config["asparaguses_detector"]["extension_factor"])
+                                            config["asparaguses_detector"]["vertical_extension_factor"],
+                                            config["asparaguses_detector"]["horizontal_extension_factor"])
 
 one_asparagus_analyzer = OneAsparagusAnalyzer(asparagus_head_classifier=None)
 
