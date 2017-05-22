@@ -60,8 +60,8 @@ class AsparagusesDetector2(object):
     def get_candidate_contours(self, image_detection_on):
         _, thresholded_image = cv2.threshold(image_detection_on, self.global_threshold, 255, cv2.THRESH_BINARY)
         kernel = np.ones((5, 5), np.uint8)
-        closed_thresholded_image = cv2.morphologyEx(thresholded_image, cv2.MORPH_CLOSE, kernel)
-        _, contours, _ = cv2.findContours(closed_thresholded_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        opened_thresholded_image = cv2.morphologyEx(thresholded_image, cv2.MORPH_OPEN, kernel)
+        _, contours, _ = cv2.findContours(opened_thresholded_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         return contours
 
     def asparagus_contours_bounding_rectangles(self, candidate_contours):
