@@ -15,7 +15,7 @@
         "high_width_ratio": 4,
         "minimum_area": 100,
         "detection_resolution": [160, 90],
-        "vertical_extension_factor": 0.2,
+        "vertical_extension_factor": 0.3,
         "horizontal_extension_factor": 1
     },
     "asparagus_classifier":{

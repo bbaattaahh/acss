@@ -17,6 +17,14 @@ def change_pixel_to_mm(measurement, mm_pixel_ratio):
     measurement = round(measurement, 1)
     return measurement
 
+
+def fast_classification(width):
+    if width < 10: return "Leves"
+    if 10 <= width < 18: return "Solo II"
+    if 18 <= width < 22: return "Solo I"
+    if 22 <= width: return "Extra"
+
+
 with open('./auxiliary_scripts/width_high/config_width_high.json') as data_file:
     config = json.load(data_file)
 
@@ -136,7 +144,11 @@ for x in clip.iter_frames():
 
     if actual_raw_feed:
         # print(actual_raw_feed)
-        width_high_data = str(actual_raw_feed[1]) + "    " + str(actual_raw_feed[2])
+        width_high_data = str(actual_raw_feed[1])[:4] + \
+                          "    " + \
+                          str(actual_raw_feed[2])[:5] + \
+                          "  " + \
+                          fast_classification(actual_raw_feed[1])
         displayer.add_new_result(actual_raw_feed[0], width_high_data)
 
     displayer.display_actual()
