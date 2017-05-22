@@ -35,13 +35,14 @@ class AsparagusesDetector2(object):
                                                         image_detection_on_shape=image_detection_on.shape,
                                                         opencv_rectangle=opencv_rectangle)
 
+            opencv_rectangle_on_original_image = self.orientation_correction(opencv_rectangle_on_original_image)
+
             opencv_rectangle_on_original_image = self.extend_opencv_rectangle(opencv_rectangle_on_original_image)
+
 
             if self.is_rectangle_vertically_on_image(image.shape[1], opencv_rectangle_on_original_image):
 
                 snipped_asparagus = self.subimage(image, opencv_rectangle_on_original_image)
-
-                snipped_asparagus = self.orientation_correction(snipped_asparagus)
 
                 actual_detection_to_one_asparagus_analysis = DetectionToOneAsparagusAnalysis(
                     image=snipped_asparagus,
@@ -128,11 +129,16 @@ class AsparagusesDetector2(object):
         return extended_opencv_rectangle
 
     @staticmethod
-    def orientation_correction(image):
-        if image.shape[0] < image.shape[1]:
-            image = np.rot90(image)
+    def orientation_correction(opencv_rectangle):
+        if opencv_rectangle[1][0] > opencv_rectangle[1][1]:
+            rotated_rectangle = (opencv_rectangle[0],
+                                 (opencv_rectangle[1][1], opencv_rectangle[1][0]),
+                                 opencv_rectangle[2] + 90)
+            return rotated_rectangle
 
-        return image
+        return opencv_rectangle
+
+
 
     @staticmethod
     def is_rectangle_vertically_on_image(image_width, opencv_rectangle):

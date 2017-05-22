@@ -24,8 +24,8 @@ class TestAsparagusesDetector2(unittest.TestCase):
         expected_image1 = cv2.imread("./images/AsparagusesDetector2/"
                                     "test_data_to_analysis_one_asparagus_images_working__output1.png")
         expected_opencv_rectangle1 = ((320.37474060058594, 1109.6187744140625),
-                                      (1666.9730072021484, 169.24445343017578),
-                                      -73.55961608886719)
+                                      (169.24445343017578, 1666.9730072021484),
+                                      16.440383911132812)
 
         expected_data_to_analysis = \
             [DetectionToOneAsparagusAnalysis(expected_image1, expected_opencv_rectangle1)]
@@ -169,15 +169,15 @@ class TestAsparagusesDetector2(unittest.TestCase):
 
     def test_orientation_correction__hangs_to_the_right(self):
         # given
-        horizontally_long_image = np.zeros((10, 100))
+        horizontally_long_rectangle = ((20, 30), (100, 25), -10)
 
-        expected_corrected_image = np.zeros((100, 10))
+        expected_corrected_opencv_rectangle = ((20, 30), (25, 100), 80)
 
         # when
-        actual_corrected_image = AsparagusesDetector2.orientation_correction(horizontally_long_image)
+        actual_corrected_opencv_rectangle = AsparagusesDetector2.orientation_correction(horizontally_long_rectangle)
 
         # that
-        self.assertEqual(np.array_equal(actual_corrected_image, expected_corrected_image), True)
+        self.assertEqual(np.array_equal(actual_corrected_opencv_rectangle, expected_corrected_opencv_rectangle), True)
 
     def test_subimage__snip_horse_head(self):
         # given
