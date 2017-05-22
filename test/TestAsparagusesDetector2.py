@@ -14,7 +14,8 @@ class TestAsparagusesDetector2(unittest.TestCase):
                                                     high_width_ratio=4,
                                                     minimum_area=200,
                                                     detection_resolution=(160, 90),
-                                                    extension_factor=0.5)
+                                                    vertical_extension_factor=0.5,
+                                                    horizontal_extension_factor=0.5)
 
         image = \
             cv2.imread("./images/AsparagusesDetector2/"
@@ -41,7 +42,8 @@ class TestAsparagusesDetector2(unittest.TestCase):
                                                     high_width_ratio=None,
                                                     minimum_area=None,
                                                     detection_resolution=(160, 90),
-                                                    extension_factor=None)
+                                                    vertical_extension_factor=None,
+                                                    horizontal_extension_factor=None)
 
         image = cv2.imread("./images/AsparagusesDetector2/test_image_detection_on_input.png")
 
@@ -62,7 +64,8 @@ class TestAsparagusesDetector2(unittest.TestCase):
                                                     high_width_ratio=None,
                                                     minimum_area=None,
                                                     detection_resolution=(160, 90),
-                                                    extension_factor=None)
+                                                    vertical_extension_factor=None,
+                                                    horizontal_extension_factor=None)
 
         image_detection_on = \
             cv2.imread("./images/AsparagusesDetector2/test_get_candidate_contours_working__image_detection_on.png",
@@ -84,7 +87,8 @@ class TestAsparagusesDetector2(unittest.TestCase):
                                                     high_width_ratio=4,
                                                     minimum_area=300,
                                                     detection_resolution=None,
-                                                    extension_factor=None)
+                                                    vertical_extension_factor=None,
+                                                    horizontal_extension_factor=None)
 
         candidate_contours = \
             [np.array([[[8,   28]], [[8, 144]], [[9, 145]], [[23, 145]], [[24, 144]], [[24,  28]]], dtype=np.int32),
@@ -124,9 +128,10 @@ class TestAsparagusesDetector2(unittest.TestCase):
                                                   high_width_ratio=None,
                                                   minimum_area=None,
                                                   detection_resolution=None,
-                                                  extension_factor=0.5)
+                                                  vertical_extension_factor=0.5,
+                                                  horizontal_extension_factor=0.25)
 
-        expected_extended_opencv_rectangle = (5, 10), (30, 150), 45
+        expected_extended_opencv_rectangle = (5, 10), (25, 150), 45
 
         # when
         actual_extended_opencv_rectangle = asparagus_detector.extend_opencv_rectangle(opencv_rectangle)

@@ -11,13 +11,15 @@ class AsparagusesDetector2(object):
                  high_width_ratio,
                  minimum_area,
                  detection_resolution,
-                 extension_factor):
+                 vertical_extension_factor,
+                 horizontal_extension_factor):
 
         self.global_threshold = global_threshold
         self.high_width_ratio = high_width_ratio
         self.minimum_area = minimum_area
         self.detection_resolution = detection_resolution
-        self.extension_factor = extension_factor
+        self.vertical_extension_factor = vertical_extension_factor
+        self.horizontal_extension_factor = horizontal_extension_factor
 
     def data_to_analysis_one_asparagus_images(self, image):
         image_detection_on = self.image_detection_on(image)
@@ -116,11 +118,12 @@ class AsparagusesDetector2(object):
 
     def extend_opencv_rectangle(self, opencv_rectangle):
 
-        extension_factor = 1 + self.extension_factor
+        vertical_extension_factor = 1 + self.vertical_extension_factor
+        horizontal_extension_factor = 1 + self.horizontal_extension_factor
 
         extended_opencv_rectangle = \
             ((opencv_rectangle[0][0], opencv_rectangle[0][1]),
-             (opencv_rectangle[1][0]*extension_factor, opencv_rectangle[1][1]*extension_factor),
+             (opencv_rectangle[1][0]*horizontal_extension_factor, opencv_rectangle[1][1]*vertical_extension_factor),
              opencv_rectangle[2])
         return extended_opencv_rectangle
 
