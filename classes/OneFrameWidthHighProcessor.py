@@ -1,5 +1,6 @@
 import json
 import cv2
+import time
 
 from BucketsDetector import BucketsDetector
 from AsparagusesDetector2 import AsparagusesDetector2
@@ -37,6 +38,8 @@ class OneFrameWidthHighProcessor(object):
         self.mm_pixel_ratio = config["asparagus_classifier"]["millimeter_pixel_ratio"]
 
     def process_frame(self, frame):
+
+        time.sleep(10)
 
         data_to_analysis_one_asparagus_images = self.asparaguses_detector.data_to_analysis_one_asparagus_images(frame)
 

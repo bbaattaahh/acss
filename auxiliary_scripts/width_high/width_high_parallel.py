@@ -6,6 +6,9 @@ import datetime
 import multiprocessing as mp
 import sqlite3
 import time
+import sys
+from multiprocessing import Process, Queue
+
 
 from MeasurementsEvaulatorWidthHigh import MeasurementsEvaluatorWidthHigh
 from DisplayClassification import DisplayClassification
@@ -30,6 +33,8 @@ processor = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_hi
 
 
 q = mp.Queue()
+number_of_cores = mp.cpu_count()
+processes = []
 
 displayer = DisplayClassification(image_size=tuple(config["display"]["image_size"]),
                                   letter_pixel_high=config["display"]["letter_pixel_high"])
@@ -51,11 +56,15 @@ for x in clip.iter_frames():
     frame = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
     frame = np.array(np.rot90(frame, config["rotation_factor"]))
 
+    if len(processes) < number_of_cores:
+        p = mp.Process(target=evaluate_frame, args=(processor, frame, q))
+        p.start()
+        processes.append(p)
 
-    p = mp.Process(target=evaluate_frame, args=(processor, frame, q))
-    p.start()
-    # p.join()
-
+    for process in processes:
+        if not process.is_alive():
+            process.join()
+            processes.remove(process)
 
     small = cv2.resize(frame, (0, 0), fx=0.3, fy=0.3)
     cv2.imshow('frame', small)
