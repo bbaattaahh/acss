@@ -7,6 +7,7 @@ import multiprocessing as mp
 import sqlite3
 import time
 from multiprocessing import Process, Queue
+import threading
 
 
 from MeasurementsEvaulatorWidthHigh import MeasurementsEvaluatorWidthHigh
@@ -15,8 +16,12 @@ from OneFrameWidthHighProcessor import OneFrameWidthHighProcessor
 
 
 def evaluate_frame(process_instance, frame, queue):
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    frame = np.array(np.rot90(frame, 1))
     bucket_asparagus_pairs = process_instance.process_frame(frame)
     queue.put(bucket_asparagus_pairs)
+
+counter = 0
 
 if __name__ == '__main__':
 
@@ -28,17 +33,18 @@ if __name__ == '__main__':
                                     config["measurements_evaluator_width_high"]["no_on_screen_time_before_display"],
                                     config["measurements_evaluator_width_high"]["survive_time"])
 
-    processor = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_high/config_width_high.json')
+    processor1 = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_high/config_width_high.json')
+    processor2 = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_high/config_width_high.json')
 
 
     q = mp.Queue()
     number_of_cores = mp.cpu_count()
-    processes = []
+    threads = []
 
     displayer = DisplayClassification(image_size=tuple(config["display"]["image_size"]),
                                       letter_pixel_high=config["display"]["letter_pixel_high"])
 
-    clip = VideoFileClip("c:\\Users\\Henrik\\Google Drive\\sparga_videok\\Video 8.mp4")
+    clip = VideoFileClip("/Users/h.bata/Videos/acss/two_lamps/Video 8.mp4")
     conn = sqlite3.connect(config["local_db_path"])
     c = conn.cursor()
     # cap = cv2.VideoCapture(0)
@@ -46,25 +52,28 @@ if __name__ == '__main__':
     # cap.set(4, config["web_camera_distribution"][1])
 
     #while True:
+
+
+    #for x in clip.iter_frames():
     start = datetime.datetime.now()
 
-    for x in clip.iter_frames():
+    for frame in clip.iter_frames():
         start_1 = datetime.datetime.now()
         #_, frame = cap.read()
 
-        frame = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
-        frame = np.array(np.rot90(frame, config["rotation_factor"]))
 
-        while len(processes) >= number_of_cores:
-            for process in processes:
-                if not process.is_alive():
-                    process.join()
-                    processes.remove(process)
+        while len(threads) >= number_of_cores:
+            for thread in threads:
+                if not thread.is_alive():
+                    thread.join()
+                    threads.remove(thread)
 
-        if len(processes) < number_of_cores:
-            p = mp.Process(target=evaluate_frame, args=(processor, frame, q))
-            p.start()
-            processes.append(p)
+        if len(threads) < number_of_cores:
+            counter += 1
+            t = threading.Thread(name=str(counter), target=evaluate_frame, args=(processor1, frame, q))
+
+            t.start()
+            threads.append(t)
 
 
         small = cv2.resize(frame, (0, 0), fx=0.3, fy=0.3)
@@ -94,9 +103,9 @@ if __name__ == '__main__':
         displayer.display_actual()
 
 
-        k = cv2.waitKey(5) & 0xFF
-        if k == 27:
-            break
+        # k = cv2.waitKey(5) & 0xFF
+        # if k == 27:
+        #     break
 
         end_1 = datetime.datetime.now()
         #print("Loop time:")

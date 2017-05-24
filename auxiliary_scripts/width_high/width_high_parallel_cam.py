@@ -1,4 +1,3 @@
-from moviepy.editor import *
 import cv2
 import json
 import numpy as np
@@ -6,6 +5,7 @@ import datetime
 import multiprocessing as mp
 import sqlite3
 import time
+import threading
 
 from MeasurementsEvaulatorWidthHigh import MeasurementsEvaluatorWidthHigh
 from DisplayClassification import DisplayClassification
@@ -13,6 +13,7 @@ from OneFrameWidthHighProcessor import OneFrameWidthHighProcessor
 
 
 def evaluate_frame(process_instance, frame, queue):
+    frame = np.array(np.rot90(frame, config["rotation_factor"]))
     bucket_asparagus_pairs = process_instance.process_frame(frame)
     queue.put(bucket_asparagus_pairs)
 
@@ -28,8 +29,10 @@ if __name__ == '__main__':
 
     processor = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_high/config_width_high.json')
 
-
     q = mp.Queue(maxsize=2)
+    number_of_cores = mp.cpu_count()
+    threads = []
+
 
     displayer = DisplayClassification(image_size=tuple(config["display"]["image_size"]),
                                       letter_pixel_high=config["display"]["letter_pixel_high"])
@@ -42,14 +45,21 @@ if __name__ == '__main__':
     cap.set(4, config["web_camera_distribution"][1])
 
     while True:
-
+        start_1 = datetime.datetime.now()
         _, frame = cap.read()
 
-        frame = np.array(np.rot90(frame, config["rotation_factor"]))
 
-        p = mp.Process(target=evaluate_frame, args=(processor, frame, q))
-        p.start()
+        while len(threads) >= number_of_cores:
+            for thread in threads:
+                if not thread.is_alive():
+                    thread.join()
+                    threads.remove(thread)
 
+        if len(threads) < number_of_cores:
+            t = threading.Thread(name='my_service', target=evaluate_frame, args=(processor, frame, q))
+
+            t.start()
+            threads.append(t)
 
         small = cv2.resize(frame, (0, 0), fx=0.3, fy=0.3)
         cv2.imshow('frame', small)
@@ -83,8 +93,8 @@ if __name__ == '__main__':
             break
 
         end_1 = datetime.datetime.now()
-        #print("Loop time:")
-        #print(end_1 - start_1)
+        print("Loop time:")
+        print(end_1 - start_1)
 
     cv2.destroyAllWindows()
     end = datetime.datetime.now()
