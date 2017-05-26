@@ -19,6 +19,8 @@ def evaluate_frame(process_instance, frame, queue):
 
 if __name__ == '__main__':
 
+    counter = 0
+
     with open('./auxiliary_scripts/width_high/config_width_high.json') as data_file:
         config = json.load(data_file)
 
@@ -27,10 +29,12 @@ if __name__ == '__main__':
                                     config["measurements_evaluator_width_high"]["no_on_screen_time_before_display"],
                                     config["measurements_evaluator_width_high"]["survive_time"])
 
-    processor = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_high/config_width_high.json')
+    processor1 = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_high/config_width_high.json')
+    processor2 = OneFrameWidthHighProcessor(config_file='./auxiliary_scripts/width_high/config_width_high.json')
 
     q = mp.Queue(maxsize=2)
     number_of_cores = mp.cpu_count()
+    number_of_cores = 1
     threads = []
 
 
@@ -56,7 +60,11 @@ if __name__ == '__main__':
                     threads.remove(thread)
 
         if len(threads) < number_of_cores:
-            t = threading.Thread(name='my_service', target=evaluate_frame, args=(processor, frame, q))
+            counter += 1
+            if counter % 2 == 1:
+                t = threading.Thread(name='my_service', target=evaluate_frame, args=(processor1, frame, q))
+            else:
+                t = threading.Thread(name='my_service', target=evaluate_frame, args=(processor2, frame, q))
 
             t.start()
             threads.append(t)
